@@ -1,4 +1,11 @@
 <?php
+/**
+ * @package   yii2-user
+ * @author    Yuri Shekhovtsov <shekhovtsovy@yandex.ru>
+ * @copyright Copyright &copy; Yuri Shekhovtsov, lowbase.ru, 2015 - 2016
+ * @version   1.0.0
+ */
+
 use yii\helpers\Html;
 
 /* @var $this \yii\web\View view component instance */

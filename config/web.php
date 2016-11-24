@@ -135,8 +135,17 @@ $config = [
         ],
         'lowbase-user' => [
             'class' => '\lowbase\user\Module',
+            'customViews' => [
+                'login' => '@app/views/user/login',
+                'signup' => '@app/views/user/signup',
+                'profile' => '@app/views/user/profile',
+                'repass' => '@app/views/user/repass',
+                'show' => '@app/views/user/show',
+                'confirmEmail' => '@app/mail/confirmEmail',
+                'passwordResetToken' => '@app/mail/passwordResetToken',
+            ]
         ],
-       /* 'user' => [
+       /*'user' => [
             'class' => 'budyaga\users\Module',
             'userPhotoUrl' => '/uploads/user-photo',
             'userPhotoPath' => '@app/web/uploads/user-photo',
