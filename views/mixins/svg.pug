@@ -1,0 +1,5 @@
+
+mixin svg_poly_angle(name, mods,points)
+    - mods = mods || ''
+    svg(class="icon icon-" + name class=mods,viewPort="0 0 100 20")
+        polygon(points= points)

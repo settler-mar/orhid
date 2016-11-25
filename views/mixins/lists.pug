@@ -1,0 +1,43 @@
+mixin list_menu(itemsList, classBlock,nav_modificator,selectItem)
+    nav(class= classBlock+' '+(typeof (nav_modificator)!="undefined"?classBlock+nav_modificator:''))
+        if typeof (nav_modificator) == "undefined"
+            -nav_modificator= false
+        ul(class=classBlock + '__list '+(nav_modificator?classBlock+ '__list'+nav_modificator:''))
+            each item,this_id in itemsList
+                if typeof (item.class)=="undefined"
+                    -var cl= ''
+                else
+                    -var cl= item.class
+                - cl+=(nav_modificator?' '+classBlock+'__link'+nav_modificator:'')
+
+                li(class= classBlock+ '__item '+(nav_modificator?classBlock+ '__item'+nav_modificator:'')+(selectItem==this_id?classBlock+ '__item_active':''))
+                    if(typeof(item.target)!='undefined')
+                        a(href!= item.href,class= classBlock+'__link '+cl,target= item.target)
+                            +icon_span(item,classBlock)
+                    else
+                        a(href!= item.href,class= classBlock+'__link '+cl)
+                            +icon_span(item,classBlock)
+mixin icon_span(item,classBlock)
+    if typeof (item.icon) != "undefined"
+        +icon_font(item.icon)
+    span(class= classBlock + '__item-name ' + (nav_modificator ? classBlock + '__item-name' + nav_modificator : ''))= item['text']
+
+mixin link_list(itemsList, classBlock,nav_modificator,selectItem)
+    div(class= classBlock+' '+(typeof (nav_modificator)!="undefined"?classBlock+nav_modificator:''))
+        if typeof (nav_modificator) == "undefined"
+            -nav_modificator= false
+        ul(class=classBlock + '__list '+(nav_modificator?classBlock+ '__list'+nav_modificator:''))
+            each item,this_id in itemsList
+                if typeof (item.class)=="undefined"
+                    -var cl= ''
+                else
+                    -var cl= item.class
+                - cl+=(nav_modificator?' '+classBlock+'__link'+nav_modificator:'')
+
+                li(class= classBlock+ '__item '+(nav_modificator?classBlock+ '__item'+nav_modificator:'')+(selectItem==this_id?classBlock+ '__item_active':''))
+                    if(typeof(item.target)!='undefined')
+                        a(href!= item.href,class= classBlock+'__link '+cl,target= item.target)
+                            +icon_span(item,classBlock)
+                    else
+                        a(href!= item.href,class= classBlock+'__link '+cl)
+                            +icon_span(item,classBlock)
