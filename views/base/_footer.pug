@@ -1,0 +1,16 @@
+footer.footer(class= 'footer-'+body_css)
+    .footer__full-menu(class= 'footer__full-menu-'+body_css)
+        div.footer__full-menu__column.footer__full-menu__column_description
+            | Этот сайт я сделал в рамках обучения в Школе онлайн образования LoftSchool.
+        div.footer__full-menu__column
+            include _site_menu_footer
+            -var social_modificator='_footer'
+            include _social
+        div.footer__full-menu__column.footer__full-menu__column_contact
+            .footer__contact-line settler_mar
+            .footer__contact-line matuhinmax@mail.com
+            .footer__contact-line +3 80 63 23 9 92 92
+            .footer__contact-line г. Мариуполь, ул. Открытая, д.23
+    .footer__copyright(class= 'footer__copyright-'+body_css)
+        span.footer__copyright_user © Матюхин Максим
+        span.footer__copyright_text создано с любовью в LoftSchool | 2016
