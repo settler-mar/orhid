@@ -1,0 +1,30 @@
+.footer
+    .into
+        .foot_logo
+            img(src='img/logo_bot.png', alt='')
+        // foot_logo
+        .news_letter
+            .news_letter_in
+                .foot_title
+                    p
+                        | Newsletter
+                        span Be the first to know about the latest fashion news and get exclusive offerts
+                form.newsfrm(method='post', name='newsfrm', action='/')
+                    input(type='hidden', value='0', name='')
+                    input.foot_box(type='text', name='', placeholder='E-mail', value='')
+                    input.foot_button(type='submit', name='', value='Subscribe')
+        // news_letter
+        .foot_soc
+            span
+                a(href='#')
+                    img(src='img/vk_1.png')
+                a(href='#')
+                    img(src='img/ok_1.png')
+                a(href='#')
+                    img(src='img/f_1.png')
+                a(href='#')
+                    img(src='img/in_1.png')
+            p
+                a(href='http://galay.by') Создание сайтов Galay.by
+                br
+                |            Брачное агентство Orhid Legend © 2016
