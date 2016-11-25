@@ -19,7 +19,8 @@
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
         "lowbase/yii2-user": "*",
-        "jacmoe/yii2-tale-jade": "*"
+        "jacmoe/yii2-gii-jade": "^0.2.0",
+        "conquer/jade": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

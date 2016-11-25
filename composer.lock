@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9b4437474e4c26d876206739f3b59513",
-    "content-hash": "f3ae9437d0ef31f3c002f771090c31f6",
+    "hash": "5f84df8cb6449acfb49dfecae4b68d49",
+    "content-hash": "1fc5223993f31a2a362c09062d01ec7e",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -309,6 +309,54 @@
             "time": "2016-09-14 20:40:20"
         },
         {
+            "name": "conquer/jade",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/borodulin/yii2-jade.git",
+                "reference": "d181f9a36a9bd10c3cb41895bd85aec0539fd262"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/borodulin/yii2-jade/zipball/d181f9a36a9bd10c3cb41895bd85aec0539fd262",
+                "reference": "d181f9a36a9bd10c3cb41895bd85aec0539fd262",
+                "shasum": ""
+            },
+            "require": {
+                "talesoft/tale-jade": "*",
+                "yiisoft/yii2": ">=2.0.5"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "conquer\\jade\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrey Borodulin",
+                    "email": "borodulin@gmail.com"
+                }
+            ],
+            "description": "Jade renderer for the Yii2 framework",
+            "homepage": "https://github.com/borodulin/yii2-jade",
+            "keywords": [
+                "jade",
+                "renderer",
+                "yii2"
+            ],
+            "time": "2016-04-05 18:19:28"
+        },
+        {
             "name": "ezyang/htmlpurifier",
             "version": "v4.8.0",
             "source": {
@@ -410,28 +458,27 @@
             "time": "2015-09-19 16:54:05"
         },
         {
-            "name": "jacmoe/yii2-tale-jade",
-            "version": "1.5.0",
+            "name": "jacmoe/yii2-gii-jade",
+            "version": "0.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jacmoe/yii2-tale-jade.git",
-                "reference": "9fa78245ec7b3085fc15bd664087ebe693fd4082"
+                "url": "https://github.com/jacmoe/yii2-gii-jade.git",
+                "reference": "fb84016827ea16c012dae0cfe1f5d1e741f02178"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jacmoe/yii2-tale-jade/zipball/9fa78245ec7b3085fc15bd664087ebe693fd4082",
-                "reference": "9fa78245ec7b3085fc15bd664087ebe693fd4082",
+                "url": "https://api.github.com/repos/jacmoe/yii2-gii-jade/zipball/fb84016827ea16c012dae0cfe1f5d1e741f02178",
+                "reference": "fb84016827ea16c012dae0cfe1f5d1e741f02178",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.5.0",
-                "talesoft/tale-jade": "^1.4",
+                "php": ">=5.4.0",
                 "yiisoft/yii2": "*"
             },
             "type": "yii2-extension",
             "autoload": {
                 "psr-4": {
-                    "jacmoe\\talejade\\": "src/"
+                    "jacmoe\\giijade\\": ""
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -440,19 +487,18 @@
             ],
             "authors": [
                 {
-                    "name": "Jacob Moen",
+                    "name": "jacmoe",
                     "email": "jacmoe.dk@gmail.com",
-                    "homepage": "https://jacmoe.dk"
+                    "homepage": "http://jacmoe.dk"
                 }
             ],
-            "description": "A Tale Jade for PHP integration for the Yii2 framework",
+            "description": "Jade Gii Generator for Yii2",
             "keywords": [
+                "gii",
                 "jade",
-                "renderer",
-                "tale",
                 "yii2"
             ],
-            "time": "2016-03-02 07:17:47"
+            "time": "2015-11-10 16:35:12"
         },
         {
             "name": "kartik-v/bootstrap-fileinput",
