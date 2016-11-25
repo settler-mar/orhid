@@ -18,7 +18,8 @@
         "yiisoft/yii2": "~2.0.5",
         "yiisoft/yii2-bootstrap": "~2.0.0",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
-        "lowbase/yii2-user": "*"
+        "lowbase/yii2-user": "*",
+        "jacmoe/yii2-tale-jade": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
