@@ -12,14 +12,22 @@ use lowbase\user\UserAsset;
 use kartik\widgets\Select2;
 use yii\web\JsExpression;
 use lowbase\user\components\AuthKeysManager;
-use lowbase\user\models\Country;
+//use lowbase\user\models\Country;
 use lowbase\user\models\User;
 use yii\helpers\Url;
+
+use app\models\LbCountry;
+use app\models\LbCity;
+use app\components\chosen\Chosen;
+use app\components\geoip\Geoip;
 
 
 $this->title = Yii::t('user', 'Регистрация');
 $this->params['breadcrumbs'][] = $this->title;
 UserAsset::register($this);
+Geoip::widget();
+//var_dump(\Yii::$app->session->get('ip_city'));
+//var_dump(\Yii::$app->session->get('ip_country'));
 ?>
 
 <div class="site-signup row">
@@ -61,32 +69,34 @@ UserAsset::register($this);
                 'placeholder' => $model->getAttributeLabel('password')
             ]); ?>
 
-            <?= $form->field($model, 'sex')->dropDownList(User::getSexArray())?>
+            <?= Chosen::widget([
+                'name' => 'sex',
+                'data' => User::getSexArray(),
+                'options' => ['placeholder' => $model->getAttributeLabel('Sex')],
 
-            <?= $form->field($model, 'country_id')->widget(Select2::classname(), [
-                'data' => Country::getAll(),
-                'options' => ['placeholder' => $model->getAttributeLabel('country_id')],
-                'pluginOptions' => [
-                    'allowClear' => true
-                ],
             ]); ?>
 
-            <?= $form->field($model, 'city_id')->widget(Select2::classname(), [
-                'initValueText' => ($model->city_id && $model->city) ? $model->city->city .
-                    ' (' . $model->city->state.", ".$model->city->region . ")": '',
+            <?= Chosen::widget([
+                'name' => 'country_id',
+                'data' => LbCountry::find()->all(),
+                'valueText' => 'name',
+                'selected' => \Yii::$app->session->get('ip_country'),
+                'options' => ['data-img-src'=>'iso','src_prefix'=>'/img/flags/16/','placeholder' => $model->getAttributeLabel('country_id')],
+                'className'=>'my_select_box icon-select',
+                'type'=>'object'
+            ]); ?>
+
+            <?= Chosen::widget([
+                'name' => 'city_id',
+                'data' => LbCity::find()
+                            ->where(['country_id' => \Yii::$app->session->get('ip_country')])
+                            ->orderBy('city')
+                            ->all(),
+                'valueText' => 'city',
+                'valueDopText' => 'state',
+                'selected' => \Yii::$app->session->get('ip_city'),
                 'options' => ['placeholder' => $model->getAttributeLabel('city_id')],
-                'pluginOptions' => [
-                    'allowClear' => true,
-                    'minimumInputLength' => 3,
-                    'ajax' => [
-                        'url' => Url::to(['city/find']),
-                        'dataType' => 'json',
-                        'data' => new JsExpression('function(params) { return {q:params.term}; }')
-                    ],
-                    'escapeMarkup' => new JsExpression('function (markup) { return markup; }'),
-                    'templateResult' => new JsExpression('function(city) { return city.text; }'),
-                    'templateSelection' => new JsExpression('function (city) { return city.text; }'),
-                ],
+                'type'=>'object'
             ]); ?>
 
             <?php
