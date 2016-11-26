@@ -1,11 +1,8 @@
--
-    use lowbase\yii2\components\LoginWidget;
-
 .into
-    a.logo
+    a(href='/').logo
         img(src='img/logo.png', alt='')
     .uzer_hed
-        !=LoginWidget::widget(['oauth' => false])
+        !=Yii::$app->user->isGuest ? (UserLoginWidget::widget()) : "Авторизирован"
     //    | {{user_block}}
     // uzer_hed
     .top_slogan

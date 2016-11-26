@@ -51,12 +51,12 @@ Geoip::widget();
 
             <?= $form->field($model, 'first_name')->textInput([
                 'maxlength' => true,
-                'placeholder' => $model->getAttributeLabel('first_name')
+                'placeholder' => 'First name'
             ]);?>
 
             <?= $form->field($model, 'last_name')->textInput([
                 'maxlength' => true,
-                'placeholder' => $model->getAttributeLabel('last_name')
+                'placeholder' => 'Last name'
             ]);?>
 
             <?= $form->field($model, 'email')->textInput([
@@ -120,12 +120,6 @@ Geoip::widget();
             </div>
 
             <?php ActiveForm::end(); ?>
-
-
-            <p class="hint-block">
-                <?= Yii::t('user', 'Если регистрировались ранее, можете')?> <?=Html::a(Yii::t('user', 'войти на сайт'), ['login'])?>,
-                <?= Yii::t('user', 'используя Email или социальные сети')?>.
-            </p>
 
             <?php } ?>
 

@@ -1,11 +1,15 @@
 -
     /* @var $this \yii\web\View */
     /* @var $content string */
-    use app\assets\AppAsset;
+    //use app\assets\AppAsset;
+
+    use app\components\assets\AppAsset;
     use yii\helpers\Html;
-    use yii\bootstrap\Nav;
-    use yii\bootstrap\NavBar;
-    use yii\widgets\Breadcrumbs;
+    //use yii\bootstrap\Nav;
+    //use yii\bootstrap\NavBar;
+    //use yii\widgets\Breadcrumbs;
+
+    use app\components\user\UserLoginWidget;
 
     AppAsset::register($this);
 
@@ -27,4 +31,7 @@ html(lang=Yii::$app->language xmlns="http://www.w3.org/1999/xhtml")
         include ../base/_footer
         - $view->endBody()
         - $view->endPage()
+        script(src='/js/my.js')
+        script(src='/js/chosen.jquery.min.js')
+        script(src='/js/chosenImage.jquery.js')
 

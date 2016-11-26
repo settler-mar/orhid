@@ -6,6 +6,7 @@ $personal = require(__DIR__ . '/personal.php');
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
+    'language' => 'en-US',
     //'bootstrap' => ['log'],
     'layout' => 'main.jade',
     'components' => [
@@ -19,7 +20,7 @@ $config = [
         'user' => [
             'identityClass' => 'lowbase\user\models\User',
             'enableAutoLogin' => true,
-            'loginUrl' => ['/login'],
+            'loginUrl' => ['/'],
             'on afterLogin' => function($event) {
                 lowbase\user\models\User::afterLogin($event->identity->id);
             }
@@ -31,25 +32,27 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'enableStrictParsing' => false,
             'rules' => [
+                //закрываем все прямые ссылки на модуль авторизации
+                'lowbase-user/<alias:(user|auth|country|city|auth-rule)>/<dopalias>'=>'404',
                 //Взаимодействия с пользователем на сайте
                 '<action:(login|logout|signup|confirm|reset|profile|remove|online)>' => 'lowbase-user/user/<action>',
                 //Взаимодействия с пользователем в панели админстрирования
                 'admin/user/<action:(index|update|delete|view|rmv|multidelete|multiactive|multiblock)>' => 'lowbase-user/user/<action>',
                 //Авторизация через социальные сети
-                'auth/<authclient:[\w\-]+>' => 'lowbase-user/auth/index',
+                //'auth/<authclient:[\w\-]+>' => 'lowbase-user/auth/index',
                 //Просмотр пользователя
                 'user/<id:\d+>' => 'lowbase-user/user/show',
                 //Взаимодействия со странами в панели админстрирования
                 'admin/country/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/country/<action>',
-                //Поиск населенного пункта (города)
-                'city/find' => 'lowbase-user/city/find',
                 //Взаимодействия с городами в панели администрирования
                 'admin/city/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/city/<action>',
                 //Работа с ролями и разделением прав доступа
                 'admin/role/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/auth-item/<action>',
                 //Работа с правилами контроля доступа
                 'admin/rule/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/auth-rule/<action>',
+
             ],
         ],
         'authManager' => [
@@ -111,19 +114,6 @@ $config = [
                 'passwordResetToken' => '@app/mail/passwordResetToken',
             ]
         ],
-       /*'user' => [
-            'class' => 'budyaga\users\Module',
-            'userPhotoUrl' => '/uploads/user-photo',
-            'userPhotoPath' => '@app/web/uploads/user-photo',
-            'customViews' => [
-                //'login' => '@app/views/site/login'
-            ],
-            'customMailViews' => [
-                'confirmChangeEmail' => '@app/mail/confirmChangeEmail', //in this case you have to create files confirmChangeEmail-html.php and confirmChangeEmail-text.php in mail folder
-                'confirmNewEmail' => '@app/mail/confirmNewEmail',
-                'confirmResetToken' => '@app/mail/confirmResetToken',
-            ]
-        ],*/
     ],
 ];
 

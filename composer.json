@@ -17,10 +17,11 @@
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.5",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
-        "yiisoft/yii2-swiftmailer": "~2.0.0",
         "lowbase/yii2-user": "*",
         "jacmoe/yii2-gii-jade": "^0.2.0",
-        "jacmoe/yii2-tale-jade": "^1.5"
+        "jacmoe/yii2-tale-jade": "^1.5",
+        "jisoft/yii2-sypexgeo": "dev-master",
+        "cyneek/yii2-routes": "^0.0.4"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
