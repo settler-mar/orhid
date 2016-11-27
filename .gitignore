@@ -34,3 +34,4 @@ db.php
 personal.php
 params.php
 Будет удалено .gitignore
+/vendor_/

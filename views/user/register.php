@@ -7,7 +7,6 @@ use yii\helpers\Html;
 use lowbase\user\components\AuthChoice;
 use yii\captcha\Captcha;
 use yii\widgets\ActiveForm;
-use lowbase\user\UserAsset;
 
 use kartik\widgets\Select2;
 use yii\web\JsExpression;
@@ -22,9 +21,8 @@ use app\components\chosen\Chosen;
 use app\components\geoip\Geoip;
 
 
-$this->title = Yii::t('user', 'Регистрация');
+$this->title = 'Registration';
 $this->params['breadcrumbs'][] = $this->title;
-UserAsset::register($this);
 Geoip::widget();
 //var_dump(\Yii::$app->session->get('ip_city'));
 //var_dump(\Yii::$app->session->get('ip_country'));
@@ -59,20 +57,20 @@ Geoip::widget();
                 'placeholder' => 'Last name'
             ]);?>
 
-            <?= $form->field($model, 'email')->textInput([
+            <?= $form->field($model, 'public_email')->textInput([
                 'maxlength' => true,
-                'placeholder' => $model->getAttributeLabel('email')
+                'placeholder' => 'Email'
             ]);?>
 
             <?= $form->field($model, 'password')->passwordInput([
                 'maxlength' => true,
-                'placeholder' => $model->getAttributeLabel('password')
+                'placeholder' => 'Password'
             ]); ?>
 
             <?= Chosen::widget([
                 'name' => 'sex',
                 'data' => User::getSexArray(),
-                'options' => ['placeholder' => $model->getAttributeLabel('Sex')],
+                'options' => ['placeholder' => 'Sex'],
 
             ]); ?>
 
@@ -81,7 +79,7 @@ Geoip::widget();
                 'data' => LbCountry::find()->all(),
                 'valueText' => 'name',
                 'selected' => \Yii::$app->session->get('ip_country'),
-                'options' => ['data-img-src'=>'iso','src_prefix'=>'/img/flags/16/','placeholder' => $model->getAttributeLabel('country_id')],
+                'options' => ['data-img-src'=>'iso','src_prefix'=>'/img/flags/16/','placeholder' => 'Country'],
                 'className'=>'my_select_box icon-select',
                 'type'=>'object'
             ]); ?>
@@ -95,7 +93,7 @@ Geoip::widget();
                 'valueText' => 'city',
                 'valueDopText' => 'state',
                 'selected' => \Yii::$app->session->get('ip_city'),
-                'options' => ['placeholder' => $model->getAttributeLabel('city_id')],
+                'options' => ['placeholder' => 'City'],
                 'type'=>'object'
             ]); ?>
 
@@ -104,7 +102,7 @@ Geoip::widget();
                 'captchaAction' => '/lowbase-user/default/captcha',
                 'options' => [
                     'class' => 'form-control',
-                    'placeholder' => $model->getAttributeLabel('captcha')
+                    'placeholder' => 'Captcha'
                 ],
                 'template' => '<div class="row">
                 <div class="col-lg-8">{input}</div>
@@ -114,7 +112,7 @@ Geoip::widget();
             ?>
 
             <div class="form-group">
-                <?= Html::submitButton('<i class="glyphicon glyphicon-user"></i> '.Yii::t('user', 'Зарегистрироваться'), [
+                <?= Html::submitButton('<i class="glyphicon glyphicon-user"></i>', [
                     'class' => 'btn btn-lg btn-primary',
                     'name' => 'signup-button']) ?>
             </div>
@@ -123,7 +121,5 @@ Geoip::widget();
 
             <?php } ?>
 
-        </div>
-        <div class="col-lg-6">
         </div>
 </div>

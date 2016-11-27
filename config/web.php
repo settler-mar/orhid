@@ -18,26 +18,18 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'lowbase\user\models\User',
+            'identityClass' => 'app\modules\user\models\User',
             'enableAutoLogin' => true,
-            'loginUrl' => ['/'],
-            'on afterLogin' => function($event) {
-                lowbase\user\models\User::afterLogin($event->identity->id);
-            }
-        ],
-        'authClientCollection' => [
-            'class' => 'yii\authclient\Collection',
-            'clients' => [],
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
-                //закрываем все прямые ссылки на модуль авторизации
+                /*//закрываем все прямые ссылки на модуль авторизации
                 'lowbase-user/<alias:(user|auth|country|city|auth-rule)>/<dopalias>'=>'404',
                 //Взаимодействия с пользователем на сайте
-                '<action:(login|logout|signup|confirm|reset|profile|remove|online)>' => 'lowbase-user/user/<action>',
+                //'<action:(login|logout|signup|confirm|reset|profile|remove|online)>' => 'lowbase-user/user/<action>',
                 //Взаимодействия с пользователем в панели админстрирования
                 'admin/user/<action:(index|update|delete|view|rmv|multidelete|multiactive|multiblock)>' => 'lowbase-user/user/<action>',
                 //Авторизация через социальные сети
@@ -52,16 +44,10 @@ $config = [
                 'admin/role/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/auth-item/<action>',
                 //Работа с правилами контроля доступа
                 'admin/rule/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/auth-rule/<action>',
-
+                   */
             ],
         ],
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager',
-            'itemTable' => 'lb_auth_item',
-            'itemChildTable' => 'lb_auth_item_child',
-            'assignmentTable' => 'lb_auth_assignment',
-            'ruleTable' => 'lb_auth_rule'
-        ],
+
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -72,6 +58,10 @@ $config = [
             // for the mailer to send real emails.
             'useFileTransport' => true,
             'transport' => $personal['MailTransport'],
+            'messageConfig' => [
+                //'from' => ['admin@website.com' => 'Admin'], // this is needed for sending emails
+                'charset' => 'UTF-8',
+            ]
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -102,18 +92,9 @@ $config = [
         'gridview' =>  [
             'class' => '\kartik\grid\Module'
         ],
-        'lowbase-user' => [
-            'class' => '\lowbase\user\Module',
-            'customViews' => [
-                'login' => '@app/views/user/login',
-                'signup' => '@app/views/user/signup',
-                'profile' => '@app/views/user/profile',
-                'repass' => '@app/views/user/repass',
-                'show' => '@app/views/user/show',
-                'confirmEmail' => '@app/mail/confirmEmail',
-                'passwordResetToken' => '@app/mail/passwordResetToken',
-            ]
-        ],
+        'user' => [
+            'class' => 'app\modules\user\Module',
+        ]
     ],
 ];
 
