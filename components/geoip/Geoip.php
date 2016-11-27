@@ -16,7 +16,7 @@ class Geoip extends Widget
         $ip_city = \Yii::$app->session->get('ip_city');
         if ($ip_city === null){
             $geo = new \jisoft\sypexgeo\Sypexgeo();
-            $geo->get('31.202.224.10');
+            $geo->get();
             $country_id=$geo->country['id'];
             $city_id=$geo->city['id'];
 

@@ -22,7 +22,8 @@
         "jacmoe/yii2-gii-jade": "^0.2.0",
         "jacmoe/yii2-tale-jade": "^1.5",
         "jisoft/yii2-sypexgeo": "dev-master",
-        "cyneek/yii2-routes": "^0.0.4"
+        "cyneek/yii2-routes": "^0.0.4",
+        "karpoff/yii2-crop-image-upload": "^0.0.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

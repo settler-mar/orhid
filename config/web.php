@@ -26,6 +26,7 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
+                'city/get/<id:\d+>' => 'city/get'
                 /*//закрываем все прямые ссылки на модуль авторизации
                 'lowbase-user/<alias:(user|auth|country|city|auth-rule)>/<dopalias>'=>'404',
                 //Взаимодействия с пользователем на сайте

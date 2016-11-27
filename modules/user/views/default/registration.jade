@@ -8,6 +8,8 @@
 -use app\components\geoip\Geoip;
 -use yii\helpers\Url;
 
+-use karpoff\icrop\CropImageUpload;
+
 -Geoip::widget();
 -$view->title = 'Registration';
 -$view->params['breadcrumbs'][] = $view->title;
@@ -57,6 +59,8 @@
         'type'=>'object'
       ];
     != Chosen::widget($cityOption);
+
+    != $form->field($model, 'photo')->widget(CropImageUpload::className());
 
     -
       $capchaOption=[

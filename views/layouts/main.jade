@@ -27,7 +27,8 @@ html(lang=Yii::$app->language xmlns="http://www.w3.org/1999/xhtml")
             include ../base/_header
         .main
             .top_menu
-            != $content
+            .wrapper
+                != $content
         include ../base/_footer
         - $view->endBody()
         - $view->endPage()

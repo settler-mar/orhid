@@ -4,7 +4,7 @@ namespace app\modules\user\models;
 
 use Yii;
 use app\modules\user\models\User;
-
+use karpoff\icrop\CropImageUploadBehavior;
 
 class User extends \yii\db\ActiveRecord
 {
@@ -19,6 +19,22 @@ class User extends \yii\db\ActiveRecord
     public static function tableName()
     {
         return 'user';
+    }
+
+    function behaviors()
+    {
+        return [
+            [
+                'class' => CropImageUploadBehavior::className(),
+                'attribute' => 'photo',
+                'scenarios' => ['insert', 'update'],
+                'path' => '@webroot/upload/docs',
+                'url' => '@web/upload/docs',
+                'ratio' => 1,
+                /*'crop_field' => 'photo_crop',
+                'cropped_field' => 'photo_cropped',*/
+            ],
+        ];
     }
 
     /**
@@ -36,6 +52,7 @@ class User extends \yii\db\ActiveRecord
             //['verificationCode', 'captcha'],
             [['sex','city','country'], 'integer'],
             ['captcha', 'captcha', 'captchaAction' => 'user/default/captcha'], // Проверка капчи
+            ['photo', 'file', 'extensions' => 'jpeg, gif, png', 'on' => ['insert', 'update']],
         ];
     }
 
@@ -86,6 +103,15 @@ class User extends \yii\db\ActiveRecord
     public static function findByEmail($email)
     {
         return static::findOne(['email' => $email]);
+    }
+    /**
+     * Поиск пользователя по Username
+     * @param $username - электронная почта
+     * @return null|static
+     */
+    public static function findByUsername($username)
+    {
+        return static::findOne(['username' => $username]);
     }
     /**
      * Ключ авторизации

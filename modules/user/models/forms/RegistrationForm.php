@@ -19,6 +19,19 @@ class RegistrationForm extends User
      */
     public function beforeSave($insert)
     {
+        //var_dump($this);
+
+        //проверяем существовние пользователя
+        if($this->findByEmail($this->email)) {
+            $this->addError('email', 'Email already exists');
+        }
+
+        if($this->findByUsername($this->username)) {
+            $this->addError('username', 'Username already exists');
+        }
+
+        if ($this->hasErrors()) return false;
+
         if (parent::beforeSave($insert)) {
             $this->setPassword($this->password);
             $this->generateAuthKey();
@@ -40,6 +53,9 @@ class RegistrationForm extends User
         if (method_exists(\Yii::$app->controller->module, 'getCustomMailView')) {
             $view = \Yii::$app->controller->module->getCustomMailView('confirmEmail', $view);
         }
+
+        $this->saveImage();
+
         Yii::$app->mailer->compose($view, ['model' => $this])
             ->setFrom([Yii::$app->params['adminEmail']])
             ->setTo($this->email)
