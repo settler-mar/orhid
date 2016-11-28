@@ -10,7 +10,6 @@ class RegistrationForm extends User
     public $password;   // Пароль
     public $captcha;    // Капча
 
-
     /**
      * Генерация ключа авторизации, токена подтверждения регистрации
      * и хеширование пароля перед сохранением
@@ -33,7 +32,10 @@ class RegistrationForm extends User
         if ($this->hasErrors()) return false;
 
         if (parent::beforeSave($insert)) {
-            $this->setPassword($this->password);
+            $this->status = 2;
+            //var_dump($this);
+            $this->password = $this->setPassword($this->password);
+            var_dump($this);
             $this->generateAuthKey();
             $this->generateEmailConfirmToken();
             return true;

@@ -31,11 +31,12 @@
 
     != $form->field($model, 'password')->passwordInput(['placeholder' => 'Password']);
 
-    != Chosen::widget(['name' => 'sex','data' => User::getSexArray(),'options' => ['placeholder' => 'Sex'],]);
+    != Chosen::widget(['model'=>$model,'name' => 'sex','data' => User::getSexArray(),'options' => ['placeholder' => 'Sex'],]);
 
     -
       $countryOption=[
-        'name' => 'country_id',
+        'model'=>$model,
+        'name' => 'country',
         'data' => LbCountry::find()->all(),
         'valueText' => 'name',
         'selected' => \Yii::$app->session->get('ip_country'),
@@ -47,7 +48,8 @@
 
     -
       $cityOption = [
-        'name' => 'city_id',
+        'model'=>$model,
+        'name' => 'city',
         'data' => LbCity::find()
           ->where(['country_id' => \Yii::$app->session->get('ip_country')])
           ->orderBy('city')

@@ -9,6 +9,12 @@ use JBZoo\Image\Image;
 
 class User extends \yii\db\ActiveRecord
 {
+    // Статусы пользователя
+    const STATUS_BLOCKED = 0;   // заблокирован
+    const STATUS_ACTIVE = 1;    // активен
+    const STATUS_WAIT = 2;      // ожидает подтверждения
+    const STATUS_NOT_MODERATE = 3;      // ожидает модерации
+
 
     /** @var string Default username regexp */
     public static $usernameRegexp = '/^[-a-zA-Z0-9_\.@]+$/';
@@ -54,6 +60,10 @@ class User extends \yii\db\ActiveRecord
             [['sex','city','country'], 'integer'],
             ['captcha', 'captcha', 'captchaAction' => 'user/default/captcha'], // Проверка капчи
             ['photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
+            [['photo'], 'image',
+                'minHeight' => 500,
+                'skipOnEmpty' => true
+            ],  // Изображение не менее 100 пикселей в высоту
         ];
     }
 
@@ -71,7 +81,8 @@ class User extends \yii\db\ActiveRecord
             'city' => 'City',
             'country' => 'Country',
             'sex' => 'Sex',
-            'captcha' => ' captcha'
+            'captcha' => ' captcha',
+            'photo' => 'avatar'
         ];
     }
 
@@ -164,7 +175,7 @@ class User extends \yii\db\ActiveRecord
      */
     public function setPassword($password)
     {
-        $this->password = Yii::$app->security->generatePasswordHash($password);
+        return Yii::$app->security->generatePasswordHash($password);
     }
     /**
      * Поиск по токену восстановления паролья
@@ -251,8 +262,11 @@ class User extends \yii\db\ActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        parent::afterSave($insert, $changedAttributes);
         $this->saveImage();
+        $this::getDb()
+            ->createCommand()
+            ->update($this->tableName(), ['password' => $this->password], ['id' => $this->id])
+            ->execute();
     }
     /**
      * Действия, выполняющиеся после авторизации.

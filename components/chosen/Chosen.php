@@ -17,6 +17,7 @@ class Chosen extends Widget
     public $valueDopText;
     public $type='list';
     public $className='my_select_box';
+    public $model=false;
 
     public function init()
     {
@@ -28,7 +29,11 @@ class Chosen extends Widget
 
     public function run()
     {
-        $out='<select class="'.$this->className.'" name="'.$this->name.'" data-placeholder="'.$this->options['placeholder'].'">';
+        $name=$this->model?get_class($this->model).'['.$this->name.']':'$this->name';
+        $name=str_replace('\\','/',$name);
+        $name=explode('/',$name);
+        $name=$name[count($name)-1];
+        $out='<select class="'.$this->className.'" name="'.$name.'" data-placeholder="'.$this->options['placeholder'].'">';
         foreach ($this->data as $key => $row){
             $out.='<option ';
 
