@@ -5,6 +5,7 @@ namespace app\modules\user\models;
 use Yii;
 use app\modules\user\models\User;
 use karpoff\icrop\CropImageUploadBehavior;
+use JBZoo\Image\Image;
 
 class User extends \yii\db\ActiveRecord
 {
@@ -52,7 +53,7 @@ class User extends \yii\db\ActiveRecord
             //['verificationCode', 'captcha'],
             [['sex','city','country'], 'integer'],
             ['captcha', 'captcha', 'captchaAction' => 'user/default/captcha'], // Проверка капчи
-            ['photo', 'file', 'extensions' => 'jpeg, gif, png', 'on' => ['insert', 'update']],
+            ['photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
         ];
     }
 
@@ -83,7 +84,7 @@ class User extends \yii\db\ActiveRecord
     }
 
     public function getSexArray(){
-        return array( 0 => 'men', 1 => 'female');
+        return array( 0 => 'Men', 1 => 'Female');
     }
 
     /**
@@ -275,44 +276,62 @@ class User extends \yii\db\ActiveRecord
      */
     public function saveImage()
     {
-        if ($this->photo) {
-            $this->removeImage();   // Сначала удаляем старое изображение
-            $module = Yii::$app->controller->module;
-            $path = $module->userPhotoPath; // Путь для сохранения аватаров
+        $photo = \yii\web\UploadedFile::getInstance($this, 'photo');
+
+        if ($photo) {
+            $path=$this->getUserPath($this->id);// Путь для сохранения аватаров
+            $oldImage=$this->photo;
+
             $name = time() . '-' . $this->id; // Название файла
-            $this->image = $path. '/' . $name . $this::EXT;   // Путь файла и название
+            $exch = explode('.',$photo->name);
+            $exch=$exch[count($exch)-1];
+            $name .= '.' . $exch;
+            $this->photo = $path . $name ;   // Путь файла и название
             if (!file_exists($path)) {
                 mkdir($path, 0777, true);   // Создаем директорию при отсутствии
             }
-            if (is_object($this->photo)) {
-                // Загружено через FileUploadInterface
-                Image::thumbnail($this->photo->tempName, 200, 200)->save($this->image);   // Сохраняем изображение в формате 200x200 пикселей
-            } else {
-                // Загружено по ссылке с удаленного сервера
-                file_put_contents($this->image, $this->photo);
+
+            $request = Yii::$app->request;
+            $post = $request->post();
+            $cropParam=explode('-',$post['RegistrationForm']['photo']);
+            if(count($cropParam)!=4) {
+                $cropParam=array(0,0,100,100);
             }
-            $this::getDb()
-                ->createCommand()
-                ->update($this->tableName(), ['image' => $this->image], ['id' => $this->id])
-                ->execute();
+
+            $img = (new Image($photo->tempName));
+            $imgWidth = $img->getWidth();
+            $imgHeight = $img->getHeight();
+
+
+            $cropParam[0]=(int)($cropParam[0]*$imgWidth/100);
+            $cropParam[1]=(int)($cropParam[1]*$imgHeight/100);
+            $cropParam[2]=(int)($cropParam[2]*$imgWidth/100);
+            $cropParam[3]=(int)($cropParam[3]*$imgHeight/100);
+
+            $img->crop($cropParam[0], $cropParam[1], $cropParam[2], $cropParam[3])
+                ->fitToWidth(500)
+                ->saveAs($this->photo);
+
+
+            if($img) {
+                $this->removeImage($oldImage);   // удаляем старое изображение
+
+                $this::getDb()
+                    ->createCommand()
+                    ->update($this->tableName(), ['photo' => $this->photo], ['id' => $this->id])
+                    ->execute();
+            }
         }
     }
     /**
      * Удаляем изображение при его наличии
      */
-    public function removeImage()
+    public function removeImage($img)
     {
-        if ($this->image) {
+        if ($img) {
             // Если файл существует
-            if (file_exists($this->image)) {
-                unlink($this->image);
-            }
-            // Не регистрация пользователя
-            if (!$this->isNewRecord) {
-                $this::getDb()
-                    ->createCommand()
-                    ->update($this::tableName(), ['image' => null], ['id' => $this->id])
-                    ->execute();
+            if (file_exists($img)) {
+                unlink($img);
             }
         }
     }
@@ -335,5 +354,16 @@ class User extends \yii\db\ActiveRecord
             }
         }
         return $users;
+    }
+
+
+    /**
+     * Путь к папке пользователя
+     * @id - ID пользователя
+     * @return путь(string)
+     */
+    public function getUserPath($id){
+        $path = 'user_file/'.floor($id/100).'/'.($id % 100).'/';
+        return $path;
     }
 }

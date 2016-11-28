@@ -54,8 +54,6 @@ class RegistrationForm extends User
             $view = \Yii::$app->controller->module->getCustomMailView('confirmEmail', $view);
         }
 
-        $this->saveImage();
-
         Yii::$app->mailer->compose($view, ['model' => $this])
             ->setFrom([Yii::$app->params['adminEmail']])
             ->setTo($this->email)

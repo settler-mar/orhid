@@ -12,7 +12,7 @@
         "irc": "irc://irc.freenode.net/yii",
         "source": "https://github.com/yiisoft/yii2"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.5",
@@ -23,7 +23,8 @@
         "jacmoe/yii2-tale-jade": "^1.5",
         "jisoft/yii2-sypexgeo": "dev-master",
         "cyneek/yii2-routes": "^0.0.4",
-        "karpoff/yii2-crop-image-upload": "^0.0.1"
+        "karpoff/yii2-crop-image-upload": "^0.0.1",
+        "jbzoo/image": "^3.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

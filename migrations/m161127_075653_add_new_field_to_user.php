@@ -21,7 +21,7 @@ class m161127_075653_add_new_field_to_user extends Migration
             'status'               => Schema::TYPE_INTEGER . ' DEFAULT \'0\'',
             'role'                  => Schema::TYPE_INTEGER . ' DEFAULT \'0\'',
             'password'             => Schema::TYPE_STRING . '(60)',
-            'photo'             => Schema::TYPE_STRING . '(60)',
+            'photo'                 => Schema::TYPE_STRING . '(60)',
             'password_reset_token' => Schema::TYPE_STRING . '(60)',
             'email_confirm_token' => Schema::TYPE_STRING . '(60)',
             'auth_key'             => Schema::TYPE_STRING . '(32)',

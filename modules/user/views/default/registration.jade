@@ -19,7 +19,7 @@
     p.signup-success= Yii::$app->session->getFlash('signup-success');
   - } else {
     -
-      $form = ActiveForm::begin(['id' => 'form-signup','fieldConfig' => ['template' => "{input}\n{hint}\n{error}"]]);
+      $form = ActiveForm::begin(['id' => 'form-signup','fieldConfig' => ['template' => "{input}\n{hint}\n{error}"],'options' => ['enctype'=>'multipart/form-data']]);
 
     != $form->field($model, 'username')->textInput(['placeholder' => 'Username']);
 
@@ -60,12 +60,10 @@
       ];
     != Chosen::widget($cityOption);
 
-    != $form->field($model, 'photo')->widget(CropImageUpload::className());
+    != $form->field($model, 'photo')->widget(CropImageUpload::className(),['options'=>['accept'=>'image/jpeg']]);
 
     -
       $capchaOption=[
-          //'captchaAction' => '/lowbase-user/default/captcha',
-          //'captchaAction' => '/user/default/captcha',
           'captchaAction' => '/user/default/captcha',
           'options' => [
         'class' => 'form-control',
