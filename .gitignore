@@ -35,3 +35,5 @@ personal.php
 params.php
 Будет удалено .gitignore
 /vendor_/
+/web/user_file/
+/web/assets/*
