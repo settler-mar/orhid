@@ -87,10 +87,13 @@ class UserController extends Controller
             throw new BadRequestHttpException($e->getMessage());
         }
         if ($user_id = $model->confirmEmail()) {
+            echo 'ok-';
             // Авторизируемся при успешном подтверждении
-            Yii::$app->user->login(User::findIdentity($user_id));
+            echo $user_id;
+            $identity =User::findIdentity($user_id);
+            Yii::$app->user->login($identity);
         }
-        //return $this->redirect(['/']);
+        return $this->redirect(['/']);
     }
 
     /**

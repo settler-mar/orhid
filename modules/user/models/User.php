@@ -4,10 +4,12 @@ namespace app\modules\user\models;
 
 use Yii;
 use app\modules\user\models\User;
+use yii\web\IdentityInterface;
 use karpoff\icrop\CropImageUploadBehavior;
 use JBZoo\Image\Image;
+use \yii\db\ActiveRecord;
 
-class User extends \yii\db\ActiveRecord
+class User extends ActiveRecord  implements IdentityInterface
 {
     // Статусы пользователя
     const STATUS_BLOCKED = 0;   // заблокирован
@@ -27,6 +29,7 @@ class User extends \yii\db\ActiveRecord
     {
         return 'user';
     }
+
 
     function behaviors()
     {
@@ -50,7 +53,7 @@ class User extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'password', 'email', 'last_name', 'first_name','captcha'], 'required'],
+            [['username', 'password', 'email', 'last_name', 'first_name'], 'required'],
             [['password', 'email', 'last_name', 'first_name'], 'string', 'max' => 60],
             [['username'], 'string', 'max' => 25],
             ['username', 'match', 'pattern' => '/^[a-z]\w*$/i'],
@@ -58,7 +61,6 @@ class User extends \yii\db\ActiveRecord
             ['password', 'string', 'min' => 6, 'max' => 72, 'on' => ['register', 'create']],
             //['verificationCode', 'captcha'],
             [['sex','city','country'], 'integer'],
-            ['captcha', 'captcha', 'captchaAction' => 'user/default/captcha'], // Проверка капчи
             ['photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
             [['photo'], 'image',
                 'minHeight' => 500,
@@ -254,6 +256,8 @@ class User extends \yii\db\ActiveRecord
     {
         $this->email_confirm_token = null;
     }
+
+
     /**
      * @param bool $insert
      * @param array $changedAttributes

@@ -19,14 +19,16 @@ class m161127_075653_add_new_field_to_user extends Migration
             'country'              => Schema::TYPE_INTEGER . ' NOT NULL',
             'sex'                  => Schema::TYPE_INTEGER . ' NOT NULL',
             'status'               => Schema::TYPE_INTEGER . ' DEFAULT \'0\'',
-            'role'                  => Schema::TYPE_INTEGER . ' DEFAULT \'0\'',
+            'role'                 => Schema::TYPE_INTEGER . ' DEFAULT \'0\'',
             'password'             => Schema::TYPE_STRING . '(60)',
-            'photo'                 => Schema::TYPE_STRING . '(60)',
+            'photo'                => Schema::TYPE_STRING . '(60)',
             'password_reset_token' => Schema::TYPE_STRING . '(60)',
-            'email_confirm_token' => Schema::TYPE_STRING . '(60)',
+            'email_confirm_token'  => Schema::TYPE_STRING . '(60)',
             'auth_key'             => Schema::TYPE_STRING . '(32)',
-            'created_at'           => Schema::TYPE_INTEGER . '',
-            'updated_at'           => Schema::TYPE_INTEGER . '',
+            'created_at'           => Schema::TYPE_DATETIME . ' NULL DEFAULT NULL',
+            'updated_at'           => Schema::TYPE_DATETIME . ' NULL DEFAULT NULL',
+            'login_at'             => Schema::TYPE_DATETIME . ' NULL DEFAULT NULL',
+            'ip'                   => Schema::TYPE_STRING . '(20) NULL DEFAULT NULL',
         ], $this->tableOptions);
         $this->createIndex('user_unique_username', '{{%user}}', 'username', true);
         $this->createIndex('user_unique_email', '{{%user}}', 'email', true);

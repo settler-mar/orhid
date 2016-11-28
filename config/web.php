@@ -18,11 +18,11 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'lowbase\user\models\User',
+            'identityClass' => 'app\modules\user\models\User',
             'enableAutoLogin' => true,
-            'loginUrl' => ['/'],
+            //'loginUrl' => ['/'],
             'on afterLogin' => function($event) {
-                lowbase\user\models\User::afterLogin($event->identity->id);
+                app\modules\user\models\User::afterLogin($event->identity->id);
             }
         ],
         'authClientCollection' => [

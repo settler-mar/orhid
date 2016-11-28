@@ -10,6 +10,13 @@ class RegistrationForm extends User
     public $password;   // Пароль
     public $captcha;    // Капча
 
+    public function rules()
+    {
+        $rules = parent::rules();
+        $rules[] = [['captcha'], 'required'];
+        $rules[] = ['captcha', 'captcha', 'captchaAction' => 'user/default/captcha']; // Проверка капчи
+        return $rules;
+    }
     /**
      * Генерация ключа авторизации, токена подтверждения регистрации
      * и хеширование пароля перед сохранением
@@ -33,9 +40,11 @@ class RegistrationForm extends User
 
         if (parent::beforeSave($insert)) {
             $this->status = 2;
+            $this->created_at=date('Y-m-d H:i:s');
+            $this->updated_at = date('Y-m-d H:i:s');
             //var_dump($this);
             $this->password = $this->setPassword($this->password);
-            var_dump($this);
+            //var_dump($this);
             $this->generateAuthKey();
             $this->generateEmailConfirmToken();
             return true;
