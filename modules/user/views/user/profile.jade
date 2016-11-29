@@ -1,0 +1,86 @@
+-use yii\helpers\Html
+-use app\modules\user\models\User;
+-use yii\widgets\ActiveForm;
+-use app\models\LbCountry;
+-use app\models\LbCity;
+-use app\components\chosen\Chosen;
+-use app\components\geoip\Geoip;
+-use yii\helpers\Url;
+
+-use karpoff\icrop\CropImageUpload;
+
+-$view->title = 'Profile';
+-$view->params['breadcrumbs'][] = $view->title;
+-$template_input="{label}{input}{error}";
+.user-form
+  -if ( Yii::$app->session->hasFlash('signup-success')) {
+    p.signup-success= Yii::$app->session->getFlash('signup-success');
+  - } else {
+  -
+    $form = ActiveForm::begin(['id' => 'form-signup','fieldConfig' => ['template' =>$template_input ],'options' => ['enctype'=>'multipart/form-data']]);
+
+  .form-group
+    label.control-label Username
+    span= $model->username
+
+  != $form->field($model, 'first_name')->textInput(['placeholder' => 'First name']);
+
+  != $form->field($model, 'last_name')->textInput(['placeholder' => 'Last name']);
+
+  .form-group
+    label.control-label Email
+    span= $model -> email
+
+  != $form->field($model, 'password')->passwordInput(['placeholder' => 'Password']);
+
+  - $sex_var = User::getSexArray();
+  .form-group
+    label.control-label Sex
+    span= $sex_var[$model -> sex]
+
+  -
+    $countryOption=[
+      'model'=>$model,
+      'name' => 'country',
+      'data' => LbCountry::find()->all(),
+      'valueText' => 'name',
+      'selected' => $model->country,
+      'options' => ['data-img-src'=>'iso','src_prefix'=>'/img/flags/16/','placeholder' => 'Country'],
+        'className'=>'my_select_box icon-select',
+      'type'=>'object',
+      'template'=>$template_input,
+      ];
+  .form-group
+    != Chosen::widget($countryOption);
+
+  -
+    $cityOption = [
+        'model'=>$model,
+        'name' => 'city',
+      'data' => LbCity::find()
+        ->where(['country_id' => $model->country])
+          ->orderBy('city')
+          ->all(),
+      'valueText' => 'city',
+      'valueDopText' => 'state',
+      'selected' => $model->city,
+      'options' => ['placeholder' => 'City'],
+      'type'=>'object',
+      'template'=>$template_input,
+    ];
+  .form-group
+    != Chosen::widget($cityOption);
+
+  != $form->field($model, 'photo')->widget(CropImageUpload::className(),['attribute'=>'/img/male.png','options'=>['accept'=>'image/jpeg']]);
+
+
+  .form-group
+    -
+      $submitOption = [
+        'class' => 'btn btn-lg btn-primary',
+        'name' => 'signup-button'
+      ];
+    != Html::submitButton('<i class="glyphicon glyphicon-user"></i>Save', $submitOption );
+  -ActiveForm::end();
+
+  - }

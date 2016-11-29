@@ -7,6 +7,9 @@ use app\modules\user\models\User;
 use app\modules\user\models\UserSearch;
 use app\modules\user\models\EmailConfirm;
 use app\modules\user\models\forms\RegistrationForm;
+use app\modules\user\models\forms\PasswordResetForm;
+use app\modules\user\models\forms\ProfileForm;
+use app\modules\user\models\PasswordReset;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -24,11 +27,11 @@ class UserController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['login', 'signup', 'logout', 'confirm', 'reset', 'profile', 'remove', 'online', 'show',
+                'only' => ['login', 'signup', 'logout', 'confirm', 'reset', 'resetpassword', 'profile', 'remove', 'online', 'show',
                     'index', 'view', 'update', 'delete', 'rmv', 'multiactive', 'multiblock', 'multidelete'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'signup', 'confirm', 'reset', 'show'],
+                        'actions' => ['login', 'signup', 'confirm', 'reset', 'resetpassword', 'show'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -58,6 +61,18 @@ class UserController extends Controller
                         'roles' => ['userDelete'],
                     ],
                 ],
+            ],
+        ];
+    }
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ],
+            'captcha' => [
+                'class' => 'yii\captcha\CaptchaAction',
+                'fixedVerifyCode' => YII_ENV_TEST ? 'tryrty4553454' : null,
             ],
         ];
     }
@@ -97,6 +112,31 @@ class UserController extends Controller
     }
 
     /**
+     * Сброс пароля
+     * @return string|\yii\web\Response
+     */
+    public function actionResetpassword()
+    {
+        // Уже авторизированных отправляем на домашнюю страницу
+        if (!\Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+        //Восстановление пароля
+        $forget = new PasswordResetForm();
+        if ($forget->load(Yii::$app->request->post()) && $forget->validate()) {
+            if ($forget->sendEmail()) { // Отправлено подтверждение по Email
+                Yii::$app->getSession()->setFlash('reset-success', 'Link to the activation of a new password sent to the Email.');
+            }
+            //return $this->goHome();
+        }
+
+        return $this->render('resetpaessword', [
+            'forget' => $forget
+        ]);
+
+    }
+
+    /**
      * Сброс пароля через электронную почту
      * @param $token - токен сброса пароля, высылаемый почтой
      * @param $password - новый пароль
@@ -115,5 +155,39 @@ class UserController extends Controller
             Yii::$app->user->login(User::findIdentity($user_id));
         }
         return $this->redirect(['/']);
+    }
+
+    /**
+     * Профиль пользователя (личный кабинет)
+     * @return string|\yii\web\Response
+     * @throws NotFoundHttpException
+     */
+    public function actionProfile()
+    {
+        /** @var \lowbase\user\models\forms\ProfileForm $model */
+        $model = ProfileForm::findOne(Yii::$app->user->id);
+        if ($model === null) {
+            throw new NotFoundHttpException(Yii::t('user', 'The requested page could not be found.'));
+        }
+
+        /*// Преобразуем дату в понятный формат
+        if ($model->birthday) {
+            $date = new \DateTime($model->birthday);
+            $model->birthday = $date->format('d.m.Y');
+        }*/
+        if ($model->load(Yii::$app->request->post())) {
+            // Получаем изображение, если оно есть
+            $model->photo = UploadedFile::getInstance($model, 'photo');
+            if ($model->save()) {
+                Yii::$app->getSession()->setFlash('success', 'The profile updated.');
+                return $this->redirect(['profile']);
+            }
+        }
+
+
+        return $this->render('profile', [
+            'model' => $model,
+        ]);
+
     }
 }

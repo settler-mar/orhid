@@ -18,13 +18,12 @@ class Chosen extends Widget
     public $type='list';
     public $className='my_select_box';
     public $model=false;
+    public $template="{input}\n{hint}\n{error}";
 
     public function init()
     {
         parent::init();
         //print_r($this->data);
-
-
     }
 
     public function run()
@@ -56,6 +55,11 @@ class Chosen extends Widget
         }
 
         $out.='<select>';
-        return $out;
+
+        $this->template=str_replace('{input}',$out,$this->template);
+        $this->template=str_replace('{hint}','',$this->template);
+        $this->template=str_replace('{error}','',$this->template);
+        $this->template=str_replace('{label}','<label class=control-label>'.$this->options['placeholder'].'</label>',$this->template);
+        return $this->template;
     }
 }

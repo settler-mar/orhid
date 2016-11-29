@@ -4,7 +4,8 @@
 
 .reg_user_link
     a(href='/registration') Registration
-    a(href='#') Забыли пароль
+    a(href='/resetpassword') Забыли пароль
+
 - $form = ActiveForm::begin(['id' => 'contFrm','fieldConfig' => ['template' => "{input}\n{hint}\n{error}"]]);
 
 != $form -> field($model, 'email') -> textInput(['placeholder' => 'Email']);

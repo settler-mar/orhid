@@ -2533,3 +2533,10 @@ img {
 
 .err_reg {
 }
+
+.crop-image-upload-container{
+    display: inline-block !important;
+}
+.jcrop-holder>img{
+filter: blur(3px);
+}

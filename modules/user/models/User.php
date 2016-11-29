@@ -15,7 +15,10 @@ class User extends ActiveRecord  implements IdentityInterface
     const STATUS_BLOCKED = 0;   // заблокирован
     const STATUS_ACTIVE = 1;    // активен
     const STATUS_WAIT = 2;      // ожидает подтверждения
-    const STATUS_NOT_MODERATE = 3;      // ожидает модерации
+
+
+    // Время действия токенов
+    const EXPIRE = 3600;
 
 
     /** @var string Default username regexp */
@@ -38,9 +41,9 @@ class User extends ActiveRecord  implements IdentityInterface
                 'class' => CropImageUploadBehavior::className(),
                 'attribute' => 'photo',
                 'scenarios' => ['insert', 'update'],
-                'path' => '@webroot/upload/docs',
-                'url' => '@web/upload/docs',
-                'ratio' => 1,
+                'path' => '@webroot',
+                'url' => '@web',
+                'ratio' => 0.9,
                 /*'crop_field' => 'photo_crop',
                 'cropped_field' => 'photo_cropped',*/
             ],
@@ -53,7 +56,7 @@ class User extends ActiveRecord  implements IdentityInterface
     public function rules()
     {
         return [
-            [['username', 'password', 'email', 'last_name', 'first_name'], 'required'],
+            [['last_name', 'first_name'], 'required'],
             [['password', 'email', 'last_name', 'first_name'], 'string', 'max' => 60],
             [['username'], 'string', 'max' => 25],
             ['username', 'match', 'pattern' => '/^[a-z]\w*$/i'],

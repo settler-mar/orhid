@@ -38,7 +38,7 @@ $config = [
                 'city/get/<id:\d+>' => 'city/get',
 
                 //Взаимодействия с пользователем на сайте
-                '<action:(logout|confirm|reset|profile)>' => 'user/user/<action>',
+                '<action:(logout|confirm|reset|profile|resetpassword)>' => 'user/user/<action>',
                 '<action:(registration)>' => 'user/default/registration',
 
                 /*//закрываем все прямые ссылки на модуль авторизации

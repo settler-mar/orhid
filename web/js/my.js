@@ -36,10 +36,10 @@ $('.us_on').click(function(){
     var chosen_option={disable_search_threshold: 15}
      $("select.icon-select").chosenImage(chosen_option);
     $("select").not('.incon-select').chosen(chosen_option);
-    $('[name=country_id]').on('change',function(event) {
-        $('[name=city_id]').html('').trigger("chosen:updated");
+    $('[name="RegistrationForm[country]"]').on('change',function(event) {
+        $('[name="RegistrationForm[city]"]').html('').trigger("chosen:updated");
         $.post('/city/get/'+this.value,function(data){
-            city_list=$('[name=city_id]')
+            city_list=$('[name="RegistrationForm[city]"]')
             for(i=0;i<data.length;i++){
                 var opt=$('<option/>',{
                     value:data[i]['id'],

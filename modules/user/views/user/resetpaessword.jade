@@ -1,0 +1,47 @@
+-
+    use yii\helpers\Html;
+    use yii\widgets\ActiveForm;
+    use yii\captcha\Captcha;
+    use yii\helpers\Url;
+    use app\modules\user\models\User;
+
+    $view->title = 'Restore password';
+    $view->params['breadcrumbs'][] = $view->title;
+
+.user-form
+    -if ( Yii::$app->session->hasFlash('reset-success')) {
+        p.signup-success= Yii::$app->session->getFlash('reset-success');
+    - } else {
+    -
+        $form = ActiveForm::begin(['id' => 'pass-form','fieldConfig' => ['template' => "{input}\n{hint}\n{error}"]]);
+
+    != $form->field($forget, 'email')->textInput(['maxlength' => true, 'placeholder' => $forget->getAttributeLabel('email')]);
+    != $form->field($forget, 'password')->passwordInput(['maxlength' => true, 'placeholder' => $forget->getAttributeLabel('password')]);
+
+    -
+        $capchaOption=[
+            'captchaAction' => '/user/user/captcha',
+            'options' => [
+                'class' => 'form-control',
+                'placeholder' => 'Captcha'
+            ],
+            'template' => '<div class="row">
+                <div class="col-lg-8">{input}</div>
+                <div class="col-lg-4">{image}</div>
+                </div>',
+        ];
+
+    != $form -> field($forget, 'captcha') -> widget(Captcha::className(), $capchaOption);
+
+    p.hint-block
+        | Link to the activation of a new password will be sent to the Email, indicated during registration
+    .form-group.text-center
+        -
+            $submitOption = [
+                'class' => 'btn btn-lg btn-primary',
+                'name' => 'signup-button'
+            ];
+        != Html::submitButton('<i class="glyphicon glyphicon-user"></i>Reset password', $submitOption );
+    -ActiveForm::end();
+
+    -}

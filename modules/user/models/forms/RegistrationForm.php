@@ -13,7 +13,7 @@ class RegistrationForm extends User
     public function rules()
     {
         $rules = parent::rules();
-        $rules[] = [['captcha'], 'required'];
+        $rules[] = [['username', 'password', 'email', 'captcha'], 'required'];
         $rules[] = ['captcha', 'captcha', 'captchaAction' => 'user/default/captcha']; // Проверка капчи
         return $rules;
     }
