@@ -20,16 +20,16 @@ class DefaultController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['login', 'signup', 'logout', 'confirm', 'reset', 'profile', 'remove', 'online', 'show',
+                'only' => ['login', 'registration', 'logout', 'confirm', 'reset', 'profile', 'remove', 'online', 'show',
                     'index', 'view', 'update', 'delete', 'rmv', 'multiactive', 'multiblock', 'multidelete'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'signup', 'confirm', 'reset', 'show'],
+                        'actions' => ['login', 'registration', 'confirm', 'reset', 'show'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['login', 'signup', 'show', 'logout', 'profile', 'remove', 'online'],
+                        'actions' => ['login', 'registration', 'show', 'logout', 'profile', 'remove', 'online'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],

@@ -1,5 +1,7 @@
 <?php
 
+namespace app\modules\user\models;
+
 use app\modules\user\models;
 use yii\base\InvalidParamException;
 use yii\base\Model;
@@ -11,9 +13,6 @@ class ResetPassword extends Model
 {
     // Новый пароль
     public $password;
-    /**
-     * @var \lowbase\user\models\user
-     */
     private $_user;
     /**
      * @param array $token - токен

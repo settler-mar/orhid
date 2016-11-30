@@ -27,6 +27,10 @@ html(lang=Yii::$app->language xmlns="http://www.w3.org/1999/xhtml")
         .main
             .top_menu
             .wrapper
+                - if (!isset($hide_title)||$hide_title==false){
+                    .title_1
+                        span= $view->title
+                -}
                 != $content
         include ../base/_footer
         - $view->endBody()

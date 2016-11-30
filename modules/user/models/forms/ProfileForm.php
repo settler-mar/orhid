@@ -73,11 +73,13 @@ class ProfileForm extends User
                 $this->setPassword($this->password);
                 $this->generateAuthKey();
             }
-            // Преобразование дня рождения
+            //Оставляем старую фотографию
+            //$this->photo=$this->getOldAttribute('photo');
+            /*// Преобразование дня рождения
             if ($this->birthday) {
                 $date = new \DateTime($this->birthday);
                 $this->birthday = $date->format('Y-m-d');
-            }
+            }*/
             return true;
         }
         return false;

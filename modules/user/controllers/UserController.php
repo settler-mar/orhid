@@ -4,12 +4,15 @@ namespace app\modules\user\controllers;
 
 use Yii;
 use app\modules\user\models\User;
+use app\modules\user\models\Profile;
+use app\modules\user\models\profile\ProfileMale;
+use app\modules\user\models\profile\ProfileFemale;
 use app\modules\user\models\UserSearch;
 use app\modules\user\models\EmailConfirm;
 use app\modules\user\models\forms\RegistrationForm;
 use app\modules\user\models\forms\PasswordResetForm;
 use app\modules\user\models\forms\ProfileForm;
-use app\modules\user\models\PasswordReset;
+use app\modules\user\models\ResetPassword;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -27,16 +30,16 @@ class UserController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['login', 'signup', 'logout', 'confirm', 'reset', 'resetpassword', 'profile', 'remove', 'online', 'show',
+                'only' => ['login', 'registration', 'logout', 'confirm', 'reset', 'resetpassword', 'profile', 'remove', 'online', 'show',
                     'index', 'view', 'update', 'delete', 'rmv', 'multiactive', 'multiblock', 'multidelete'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'signup', 'confirm', 'reset', 'resetpassword', 'show'],
+                        'actions' => ['login', 'registration', 'confirm', 'reset', 'resetpassword', 'show'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['login', 'signup', 'show', 'logout', 'profile', 'remove', 'online'],
+                        'actions' => ['login', 'registration', 'show', 'logout', 'profile', 'remove', 'online'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -102,10 +105,10 @@ class UserController extends Controller
             throw new BadRequestHttpException($e->getMessage());
         }
         if ($user_id = $model->confirmEmail()) {
-            echo 'ok-';
+            //echo 'ok-';
             // Авторизируемся при успешном подтверждении
-            echo $user_id;
-            $identity =User::findIdentity($user_id);
+            //echo $user_id;
+            $identity = User::findIdentity($user_id);
             Yii::$app->user->login($identity);
         }
         return $this->redirect(['/']);
@@ -167,7 +170,25 @@ class UserController extends Controller
         /** @var \lowbase\user\models\forms\ProfileForm $model */
         $model = ProfileForm::findOne(Yii::$app->user->id);
         if ($model === null) {
-            throw new NotFoundHttpException(Yii::t('user', 'The requested page could not be found.'));
+            throw new NotFoundHttpException('The requested page could not be found.');
+        }
+
+        if($model->sex==0){
+                        $profile=ProfileMale::findOne(Yii::$app->user->id);
+        }else{
+            $profile=ProfileFemale::findOne(Yii::$app->user->id);
+        }
+        if ($profile === null) {
+            // INSERT
+            Yii::$app->db->createCommand()->insert('profile', [
+                'user_id' => Yii::$app->user->id
+            ])->execute();
+            if($model->sex==0){
+                $profile=ProfileMale::findOne(Yii::$app->user->id);
+            }else{
+                $profile=ProfileFemale::findOne(Yii::$app->user->id);
+            }
+            //throw new NotFoundHttpException(Yii::t('user', 'The requested page could not be found.'));
         }
 
         /*// Преобразуем дату в понятный формат
@@ -175,18 +196,27 @@ class UserController extends Controller
             $date = new \DateTime($model->birthday);
             $model->birthday = $date->format('d.m.Y');
         }*/
-        if ($model->load(Yii::$app->request->post())) {
+
+        $post=Yii::$app->request->post();
+        if(isset($post['ProfileForm'])){
+            //удаляем картинку до сохранения
+            $post['ProfileForm']['photo']=$model->photo;
+            //добавляем метку обновления
+            $post['ProfileForm']['updated_at'] = time();
+        }
+
+        if ($model->load($post)) {
             // Получаем изображение, если оно есть
-            $model->photo = UploadedFile::getInstance($model, 'photo');
             if ($model->save()) {
                 Yii::$app->getSession()->setFlash('success', 'The profile updated.');
                 return $this->redirect(['profile']);
             }
         }
 
-
+        //$profile->intro_age='';
         return $this->render('profile', [
             'model' => $model,
+            'profile' =>$profile
         ]);
 
     }

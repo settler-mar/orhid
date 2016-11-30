@@ -43,7 +43,7 @@ class RegistrationForm extends User
             $this->created_at=date('Y-m-d H:i:s');
             $this->updated_at = date('Y-m-d H:i:s');
             //var_dump($this);
-            $this->password = $this->setPassword($this->password);
+            $this->setPassword($this->password);
             //var_dump($this);
             $this->generateAuthKey();
             $this->generateEmailConfirmToken();

@@ -1,11 +1,14 @@
 -use yii\helpers\Html
 -use app\modules\user\models\User;
+-use app\modules\user\models\Profile;
 -use yii\widgets\ActiveForm;
 -use app\models\LbCountry;
 -use app\models\LbCity;
 -use app\components\chosen\Chosen;
 -use app\components\geoip\Geoip;
 -use yii\helpers\Url;
+-use yii\jui\DatePicker;
+-use yii\jui\Slider;
 
 -use karpoff\icrop\CropImageUpload;
 
@@ -13,65 +16,137 @@
 -$view->params['breadcrumbs'][] = $view->title;
 -$template_input="{label}{input}{error}";
 .user-form
-  -if ( Yii::$app->session->hasFlash('signup-success')) {
-    p.signup-success= Yii::$app->session->getFlash('signup-success');
-  - } else {
-  -
-    $form = ActiveForm::begin(['id' => 'form-signup','fieldConfig' => ['template' =>$template_input ],'options' => ['enctype'=>'multipart/form-data']]);
+  -if ( Yii::$app->session->hasFlash('success')) {
+    p.signup-success= Yii::$app->session->getFlash('success');
+  - }
+  - $form = ActiveForm::begin(['id' => 'form-signup','fieldConfig' => ['template' =>$template_input ],'options' => ['enctype'=>'multipart/form-data']]);
 
-  .form-group
-    label.control-label Username
-    span= $model->username
+  != $form -> field($model, 'photo') -> widget(CropImageUpload::className(), ['options' => ['accept' => 'image/jpeg']]);
 
-  != $form->field($model, 'first_name')->textInput(['placeholder' => 'First name']);
+  .form-left-block
+    .form-group
+      label.control-label Username
+      span= $model->username
 
-  != $form->field($model, 'last_name')->textInput(['placeholder' => 'Last name']);
+    != $form->field($model, 'first_name')->textInput(['placeholder' => 'First name']);
 
-  .form-group
-    label.control-label Email
-    span= $model -> email
+    != $form->field($model, 'last_name')->textInput(['placeholder' => 'Last name']);
 
-  != $form->field($model, 'password')->passwordInput(['placeholder' => 'Password']);
+    .form-group
+      label.control-label Email
+      span= $model -> email
 
-  - $sex_var = User::getSexArray();
-  .form-group
-    label.control-label Sex
-    span= $sex_var[$model -> sex]
+    != $form->field($model, 'phone')-> widget(\yii\widgets\MaskedInput::className(), ['mask' => '+999-99-999-9999']);
 
-  -
-    $countryOption=[
-      'model'=>$model,
-      'name' => 'country',
-      'data' => LbCountry::find()->all(),
-      'valueText' => 'name',
-      'selected' => $model->country,
-      'options' => ['data-img-src'=>'iso','src_prefix'=>'/img/flags/16/','placeholder' => 'Country'],
-        'className'=>'my_select_box icon-select',
-      'type'=>'object',
-      'template'=>$template_input,
-      ];
-  .form-group
-    != Chosen::widget($countryOption);
+    != $form->field($model, 'password')->passwordInput(['placeholder' => 'Password']);
 
-  -
-    $cityOption = [
+    - $sex_var = User::getSexArray();
+    .form-group
+      label.control-label Sex
+      span= $sex_var[$model -> sex]
+
+    -
+      $countryOption=[
         'model'=>$model,
-        'name' => 'city',
-      'data' => LbCity::find()
-        ->where(['country_id' => $model->country])
-          ->orderBy('city')
-          ->all(),
-      'valueText' => 'city',
-      'valueDopText' => 'state',
-      'selected' => $model->city,
-      'options' => ['placeholder' => 'City'],
-      'type'=>'object',
-      'template'=>$template_input,
-    ];
-  .form-group
-    != Chosen::widget($cityOption);
+        'name' => 'country',
+        'data' => LbCountry::find()->all(),
+        'valueText' => 'name',
+        'selected' => $model->country,
+        'options' => ['data-img-src'=>'iso','src_prefix'=>'/img/flags/16/','placeholder' => 'Country'],
+          'className'=>'my_select_box icon-select',
+        'type'=>'object',
+        'template'=>$template_input,
+        ];
+    .form-group
+      != Chosen::widget($countryOption);
 
-  != $form->field($model, 'photo')->widget(CropImageUpload::className(),['attribute'=>'/img/male.png','options'=>['accept'=>'image/jpeg']]);
+    -
+      $cityOption = [
+          'model'=>$model,
+          'name' => 'city',
+        'data' => LbCity::find()
+          ->where(['country_id' => $model->country])
+            ->orderBy('city')
+            ->all(),
+        'valueText' => 'city',
+        'valueDopText' => 'state',
+        'selected' => $model->city,
+        'options' => ['placeholder' => 'City'],
+        'type'=>'object',
+        'template'=>$template_input,
+      ];
+    .form-group
+      != Chosen::widget($cityOption);
+
+    != $form->field($profile, 'passport')->textInput();
+
+    != $form->field($profile, 'birthday')->widget(DatePicker::classname(), ['clientOptions' =>['changeMonth'=> true, 'changeYear'=> true,'maxDate'=> '-18y']])
+
+    .form-group
+      != Chosen::widget(['model' => $profile, 'name' => 'weight', 'data' => Profile::getList('weight'),'template'=>$template_input,]);
+
+    .form-group
+      != Chosen::widget(['model' => $profile, 'name' => 'height', 'data' => Profile::getList('height'),'options' => ['placeholder' => 'Height'],'template'=>$template_input,]);
+
+
+    .form-group
+      != Chosen::widget(['model' => $profile, 'name' => 'eyes', 'data' => Profile::getList('eyes'),'template'=>$template_input,]);
+
+
+    .form-group
+      != Chosen::widget(['model' => $profile, 'name' => 'heir', 'data' => Profile::getList('heir'),'template'=>$template_input,]);
+
+    != $form->field($profile, 'occupation')->textInput();
+
+    .form-group
+      != Chosen::widget(['model' => $profile, 'name' => 'education', 'data' => Profile::getList('education'),'template'=>$template_input,]);
+
+
+    .form-group
+      != Chosen::widget(['model' => $profile, 'name' => 'religion', 'data' => Profile::getList('religion'),'template'=>$template_input,]);
+
+    .form-group
+      != Chosen::widget(['model' => $profile, 'name' => 'marital_status', 'data' => Profile::getList('marital_status'),'template'=>$template_input,]);
+
+    .form-group
+      != Chosen::widget(['model' => $profile, 'name' => 'children_count', 'data' => Profile::getList('children_count'),'template'=>$template_input,]);
+
+    != $form -> field($profile, 'lang_name') -> textInput();
+
+    .form-group
+      != Chosen::widget(['model' => $profile, 'name' => 'lang_proficiency', 'data' => Profile::getList('lang_proficiency'),'template'=>$template_input,]);
+
+
+    .form-group
+      != Chosen::widget(['model' => $profile, 'name' => 'smoking', 'data' => Profile::getList('smoking'),'template'=>$template_input,]);
+
+
+    -
+      $slider_param=[
+        'range' => true,
+        'min' =>18,
+        'max' => 60,
+        'values'=> [ $profile->intro_age_from, $profile->intro_age_to ]
+      ]
+    .form-group
+      label.control-label Intro age
+      .range_value_block
+        != Html::activeInput('text', $profile, 'intro_age_from', ['class' => 'range_input','readonly' => true])
+        span -
+        != Html::activeInput('text', $profile, 'intro_age_to', ['class' => 'range_input','readonly' => true])
+      .amount
+      != Slider::widget(['clientOptions' => $slider_param]);
+
+
+    - $slider_param['values']= [ $profile->looking_age_from, $profile->looking_age_to ]
+    .form-group
+      label.control-label Looking age
+      .range_value_block
+        != Html::activeInput('text', $profile, 'looking_age_from', ['class' => 'range_input', 'readonly' => true])
+        span -
+        != Html::activeInput('text', $profile, 'looking_age_to', ['class' => 'range_input', 'readonly' => true])
+      .amount
+      != Slider::widget(['clientOptions' => $slider_param]);
 
 
   .form-group
@@ -83,4 +158,4 @@
     != Html::submitButton('<i class="glyphicon glyphicon-user"></i>Save', $submitOption );
   -ActiveForm::end();
 
-  - }
+

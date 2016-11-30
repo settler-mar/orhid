@@ -1,12 +1,12 @@
 ﻿$(document).ready(function() {
 
-$('.open_menu').click(function(){						
+$('.open_menu').click(function(){
     if ($('#left_open').is(":hidden")) {
 					$('#left_open').show().css({"left": "-250px"}).animate({"left": "0px"}, 300 );
 					$("body").addClass("body_in");
 					$("#main").animate({"left": "250px", "opacity": "0.5"}, 300 );
-		
-					
+
+
 			 } else {
 				$('#left_open').animate({"left": "-250px"}, 300 )
                 $("#main").animate({"left": "0px", "opacity": "1"}, 300 );
@@ -21,15 +21,15 @@ $('.open_menu').click(function(){
 
 $('.us_on').click(function(){
 	$('.user_chat').animate({"left": "-670px"}, 400 );
-	$('.chat_block').css({"right": "-670px", "position": "absolute"}).show().animate({"right": "0px"}, 300 );	
+	$('.chat_block').css({"right": "-670px", "position": "absolute"}).show().animate({"right": "0px"}, 300 );
 	setTimeout(function () {
 				$('.chat_block').css({"position": "relative"});
 				}, 250);
-	
+
 	setTimeout(function () {
 				$('.user_chat').hide();
 				}, 500);
-    
+
 	 return false;
 });
 
@@ -59,5 +59,13 @@ $('.us_on').click(function(){
       $this.find('img').parent().html('')
       $this.find('input').val('')
     })
+
+    $('.ui-slider').slider({
+      slide: function( event, ui ) {
+        elements=$(this).parent().find('.range_value_block input')
+          elements[0].value=ui.values[0]
+          elements[1].value=ui.values[1]
+      }
+    });
 
 });

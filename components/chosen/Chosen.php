@@ -12,7 +12,7 @@ class Chosen extends Widget
     public $name;
     public $data;
     public $options;
-    public $selected;
+    public $selected=null;
     public $valueText;
     public $valueDopText;
     public $type='list';
@@ -28,10 +28,13 @@ class Chosen extends Widget
 
     public function run()
     {
-        $name=$this->model?get_class($this->model).'['.$this->name.']':'$this->name';
-        $name=str_replace('\\','/',$name);
-        $name=explode('/',$name);
-        $name=$name[count($name)-1];
+        if($this->selected==null){
+            $this->selected=$this->model[$this->name];
+        }
+        if(!$this->options['placeholder']){
+            $this->options['placeholder']=Html::encode($this->model->getAttributeLabel($this->name));
+        }
+        $name=$this->model?Html::getInputName($this->model,$this->name):'$this->name';
         $out='<select class="'.$this->className.'" name="'.$name.'" data-placeholder="'.$this->options['placeholder'].'">';
         foreach ($this->data as $key => $row){
             $out.='<option ';

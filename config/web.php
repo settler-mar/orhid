@@ -20,7 +20,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\modules\user\models\User',
             'enableAutoLogin' => true,
-            //'loginUrl' => ['/'],
+            'loginUrl' => ['/'],
             'on afterLogin' => function($event) {
                 app\modules\user\models\User::afterLogin($event->identity->id);
             }

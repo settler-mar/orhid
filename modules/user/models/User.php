@@ -11,6 +11,9 @@ use \yii\db\ActiveRecord;
 
 class User extends ActiveRecord  implements IdentityInterface
 {
+
+    public $password;
+
     // Статусы пользователя
     const STATUS_BLOCKED = 0;   // заблокирован
     const STATUS_ACTIVE = 1;    // активен
@@ -56,15 +59,14 @@ class User extends ActiveRecord  implements IdentityInterface
     public function rules()
     {
         return [
-            [['last_name', 'first_name'], 'required'],
-            [['password', 'email', 'last_name', 'first_name'], 'string', 'max' => 60],
+            [['last_name', 'first_name','phone'], 'required'],
+            [['email', 'last_name', 'first_name','password_hash'], 'string', 'max' => 100],
             [['username'], 'string', 'max' => 25],
             ['username', 'match', 'pattern' => '/^[a-z]\w*$/i'],
             ['email', 'email'],
-            ['password', 'string', 'min' => 6, 'max' => 72, 'on' => ['register', 'create']],
-            //['verificationCode', 'captcha'],
+            ['password', 'string', 'min' => 6, 'max' => 61],
             [['sex','city','country'], 'integer'],
-            ['photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert', 'update']],
+            ['photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert']],
             [['photo'], 'image',
                 'minHeight' => 500,
                 'skipOnEmpty' => true
@@ -80,14 +82,17 @@ class User extends ActiveRecord  implements IdentityInterface
         return [
             'id' => 'ID',
             'username' => 'Username',
+            'password' => 'Password',
             'email' => 'Email',
             'first_name' => 'First Name',
             'last_name' => 'Last Name',
             'city' => 'City',
             'country' => 'Country',
             'sex' => 'Sex',
-            'captcha' => ' captcha',
-            'photo' => 'avatar'
+            'captcha' => ' Captcha',
+            'photo' => 'Photo',
+            'phone' => 'Phone',
+            'password_hash' => 'Хеш пароля',
         ];
     }
 
@@ -172,7 +177,7 @@ class User extends ActiveRecord  implements IdentityInterface
      */
     public function validatePassword($password)
     {
-        return Yii::$app->security->validatePassword($password, $this->password);
+        return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
     /**
      * Генераия Хеша пароля
@@ -180,7 +185,7 @@ class User extends ActiveRecord  implements IdentityInterface
      */
     public function setPassword($password)
     {
-        return Yii::$app->security->generatePasswordHash($password);
+        $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
     /**
      * Поиск по токену восстановления паролья
@@ -270,10 +275,14 @@ class User extends ActiveRecord  implements IdentityInterface
     public function afterSave($insert, $changedAttributes)
     {
         $this->saveImage();
-        $this::getDb()
-            ->createCommand()
-            ->update($this->tableName(), ['password' => $this->password], ['id' => $this->id])
-            ->execute();
+
+       /* if ($this->password && strlen($this->password)>3) {
+            $password=$this->setPassword($this->password);
+            $this::getDb()
+                ->createCommand()
+                ->update($this->tableName(), ['password' => $password], ['id' => $this->id])
+                ->execute();
+        }*/
     }
     /**
      * Действия, выполняющиеся после авторизации.
@@ -314,7 +323,13 @@ class User extends ActiveRecord  implements IdentityInterface
 
             $request = Yii::$app->request;
             $post = $request->post();
-            $cropParam=explode('-',$post['RegistrationForm']['photo']);
+
+            if(isset($post['RegistrationForm'])){
+                $cropParam=explode('-',$post['RegistrationForm']['photo']);
+            }
+            if(isset($post['ProfileForm'])){
+                $cropParam=explode('-',$post['ProfileForm']['photo']);
+            }
             if(count($cropParam)!=4) {
                 $cropParam=array(0,0,100,100);
             }
