@@ -205,15 +205,21 @@ class UserController extends Controller
             $post['ProfileForm']['updated_at'] = time();
         }
 
-        if ($model->load($post)) {
-            // Получаем изображение, если оно есть
-            if ($model->save()) {
+        //$profile->addError('address', '1234');
+        if ($profile->load($post) && $profile->validate()) {
+            //var_dump($profile);
+            if ($profile->save()) {
+                Yii::$app->getSession()->setFlash('success', 'The profile updated.');
+                //return $this->redirect(['profile']);
+            }
+        }
+        /*if ($model->load($post) && $model->validate() && $profile->validate() && $profile->load($post)) {
+            if ($model->save() && $model->save()) {
                 Yii::$app->getSession()->setFlash('success', 'The profile updated.');
                 return $this->redirect(['profile']);
             }
-        }
+        }*/
 
-        //$profile->intro_age='';
         return $this->render('profile', [
             'model' => $model,
             'profile' =>$profile

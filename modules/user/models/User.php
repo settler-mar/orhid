@@ -70,7 +70,7 @@ class User extends ActiveRecord  implements IdentityInterface
             [['photo'], 'image',
                 'minHeight' => 500,
                 'skipOnEmpty' => true
-            ],  // Изображение не менее 100 пикселей в высоту
+            ],
         ];
     }
 

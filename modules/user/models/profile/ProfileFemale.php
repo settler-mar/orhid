@@ -13,6 +13,17 @@ use yii\base\Model;
  * @package app\modules\user\models\forms
  */
 class ProfileFamale extends Profile{
+    public function rules()
+    {
+        $rule = parent::rules();
+        return $rule;
+    }
 
+    public function attributeLabels()
+    {
+        $labels = parent::attributeLabels();
+
+        return $labels;
+    }
 
 }

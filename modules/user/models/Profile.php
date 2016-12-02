@@ -3,6 +3,7 @@
 namespace app\modules\user\models;
 
 use Yii;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "profile".
@@ -42,6 +43,7 @@ use Yii;
 class Profile extends \yii\db\ActiveRecord
 {
 
+    public $photo0,$photo1,$photo2,$photo3,$photo4,$photo5;
      /**
      * @inheritdoc
      */
@@ -56,11 +58,25 @@ class Profile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id'], 'required'],
             [['user_id', 'passport', 'weight', 'height', 'eyes', 'heir', 'education', 'religion', 'marital_status', 'children_count', 'lang_proficiency', 'smoking', 'looking_age_from', 'looking_age_to', 'intro_age_from', 'intro_age_to', 'moderated'], 'integer'],
-            [['video_about','intro_age'], 'string'],
+            [['photo0','photo1','photo2','photo3','photo3','photo4','photo5','passport_img_1','passport_img_2','passport_img_3'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, jpeg'],
+            [['photo0','photo1','photo2','photo3','photo3','photo4','photo5'], 'image',
+                'minHeight' => 600,
+                'minWidth' => 600,
+                'maxSize' => 1024*1024*2,
+                'skipOnEmpty' => true
+            ],
+            [['passport_img_1','passport_img_2','passport_img_3'], 'image',
+                'minHeight' => 800,
+                'minWidth' => 800,
+                'maxSize' => 1024*1024*6,
+                'skipOnEmpty' => true
+            ],
+            /*[['video','video_about'], 'file',
+                'maxSize' => 1,//1024*1024*6,
+                'skipOnEmpty' => true
+            ],*/
             [['occupation', 'lang_name', 'address', 'about', 'ideal_relationship', 'passport_img_1', 'passport_img_2', 'passport_img_3', 'photos', 'video'], 'string', 'max' => 255],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -91,12 +107,18 @@ class Profile extends \yii\db\ActiveRecord
             'moderated' => 'Moderated',
             'occupation' => 'Occupation',
             'address' => 'Address',
-            'about' => 'About',
+            'about' => 'More about me',
             'ideal_relationship' => 'Ideal Relationship',
-            'passport_img_1' => 'Passport Img 1',
-            'passport_img_2' => 'Passport Img 2',
-            'passport_img_3' => 'Passport Img 3',
-            'photos' => 'Photos',
+            'passport_img_1' => 'Passport: 1-й разворот',
+            'passport_img_2' => 'Passport: семейное положение',
+            'passport_img_3' => 'Passport: прописка',
+            'photos' => 'Personal photos',
+            'photo1' => 'Personal photos',
+            'photo2' => 'Personal photos',
+            'photo3' => 'Personal photos',
+            'photo4' => 'Personal photos',
+            'photo5' => 'Personal photos',
+            'photo0' => 'Personal photos',
             'video' => 'Video',
             'video_about' => 'Video About',
         ];
@@ -331,5 +353,19 @@ class Profile extends \yii\db\ActiveRecord
             'smoking'=>array('no','yes'),
         );
         return $data_array[$param];
+    }
+
+    public function beforeSave($insert){
+        //$this->addError('address', '1234');
+        $className=explode('/',str_replace('\\','/',$this::className()));
+        $className=$className[count($className)-1];
+        var_dump($_FILES[$className]);
+        $video = UploadedFile::getInstance($this, 'video');
+        //$video = \yii\web\UploadedFile::getInstance($this, 'video');
+        //$this->addError('video', $video->size);
+        var_dump($video);
+        return false;
+
+        //['video','video_about']
     }
 }

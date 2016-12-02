@@ -312,6 +312,10 @@ img {
     margin-left: 16px;
 }
 
+.form-group{
+    width: 440px;
+    min-height: 30px;
+}
 .reg {
 }
 
@@ -643,34 +647,38 @@ img {
     font-style: italic;
     line-height: 0.9;
     position: relative;
-    overflow: hidden;
+    /* overflow: hidden; */
     color: #AC3B3F;
     font-size: 36px;
     font-weight: normal;
     text-align: center;
     margin-bottom: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .title_1 > span {
     display: inline-block;
     margin: 0 .4em;
+    flex: 0;
 }
 
-.title_1 > span:before, .title_1 > span:after {
+.title_1:before, .title_1:after {
     content: '';
-    position: absolute;
-    width: 100%;
-    border-top: 1px solid #AC3B3F;
+    min-width: 20px;
+    height: 1px;
     opacity: 0.4;
-    margin-top: .5em;
+    background: #AC3B3F;
+    flex: 1;
 }
 
-.title_1 > span:before {
-    margin-left: -102%;
+.title_1:before {
+    /* margin-left: -102%; */
 }
 
-.title_1 > span:after {
-    margin-left: 2%;
+.title_1:after {
+    /* margin-left: 2%; */
 }
 
 .anketa_all {
@@ -918,20 +926,21 @@ img {
     margin: 0 6px 0 5px;
 }
 
-.prof select {
+select {
     width: 290px;
     padding: 5px 8px;
     margin: 5px 6px 5px 0;
     outline: none;
 }
 
-.prof input {
+input {
     width: 270px;
     padding: 5px 8px 4px 8px;
     margin: 5px 6px 5px 0;
 ; outline: none;
 }
-
+.control-label{width: 120px;display: inline-block;text-align: right;padding: 0 10px;font-weight: bold;}
+.range_input{width: 60px;text-align: center;border: 0;}
 .tab_txt {
     display: block;
     margin: 8px 0;
@@ -2535,8 +2544,22 @@ img {
 }
 
 .crop-image-upload-container{
-    display: inline-block !important;
+    display: block !important;
+    margin: auto;
+}
+.crop-image-upload-container img{
+    max-width:400px;
 }
 .jcrop-holder>img{
-filter: blur(3px);
+    filter: blur(3px);
+}
+
+.wrapper {max-width:1200px;margin:auto}
+.ui-slider{width:200px;display: inline-block;}
+.range_block{width:210px;display:inline-block;}
+.form-left-block{float:left;}
+.help-block{
+    font-weight: normal;
+    color: #f33;
+    text-align: right;
 }

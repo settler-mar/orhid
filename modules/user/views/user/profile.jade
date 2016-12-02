@@ -10,7 +10,9 @@
 -use yii\jui\DatePicker;
 -use yii\jui\Slider;
 
+
 -use karpoff\icrop\CropImageUpload;
+-use app\components\fileImageInput\FileInput
 
 -$view->title = 'Profile';
 -$view->params['breadcrumbs'][] = $view->title;
@@ -21,9 +23,9 @@
   - }
   - $form = ActiveForm::begin(['id' => 'form-signup','fieldConfig' => ['template' =>$template_input ],'options' => ['enctype'=>'multipart/form-data']]);
 
-  != $form -> field($model, 'photo') -> widget(CropImageUpload::className(), ['options' => ['accept' => 'image/jpeg']]);
-
   .form-left-block
+    != $form -> field($model, 'photo') -> widget(CropImageUpload::className(), ['options' => ['accept' => 'image/jpeg']]);
+
     .form-group
       label.control-label Username
       span= $model->username
@@ -130,29 +132,81 @@
       ]
     .form-group
       label.control-label Intro age
-      .range_value_block
-        != Html::activeInput('text', $profile, 'intro_age_from', ['class' => 'range_input','readonly' => true])
-        span -
-        != Html::activeInput('text', $profile, 'intro_age_to', ['class' => 'range_input','readonly' => true])
-      .amount
-      != Slider::widget(['clientOptions' => $slider_param]);
+      .range_block
+        .range_value_block
+          != Html::activeInput('text', $profile, 'intro_age_from', ['class' => 'range_input','readonly' => true])
+          span -
+          != Html::activeInput('text', $profile, 'intro_age_to', ['class' => 'range_input','readonly' => true])
+        != Slider::widget(['clientOptions' => $slider_param]);
 
 
     - $slider_param['values']= [ $profile->looking_age_from, $profile->looking_age_to ]
     .form-group
       label.control-label Looking age
-      .range_value_block
-        != Html::activeInput('text', $profile, 'looking_age_from', ['class' => 'range_input', 'readonly' => true])
-        span -
-        != Html::activeInput('text', $profile, 'looking_age_to', ['class' => 'range_input', 'readonly' => true])
-      .amount
-      != Slider::widget(['clientOptions' => $slider_param]);
+      .range_block
+        .range_value_block
+          != Html::activeInput('text', $profile, 'looking_age_from', ['class' => 'range_input', 'readonly' => true])
+          span -
+          != Html::activeInput('text', $profile, 'looking_age_to', ['class' => 'range_input', 'readonly' => true])
+        != Slider::widget(['clientOptions' => $slider_param]);
 
+  //////////////////////////////////////////////////////////////////////////////
+
+  .form_block
+    .form_block_1
+      | Address is filled in English on the model: 91055 Ukraine, Lugansk, Lenina Street, dom 1, kv 15
+      | (zipcode, country, city, street, building number, apartment number)
+
+    !=  $form->field($profile, 'address')->textArea(['rows' => '6'])
+
+    !=  $form->field($profile, 'about')->textArea(['rows' => '6'])
+
+    !=  $form->field($profile, 'ideal_relationship')->textArea(['rows' => '6'])
+
+    .form_block_3
+      .f_tit
+        | Скан паспорта:
+        span *
+      p
+        | Внимание! Черно-белые копии паспорта не принимаются. Анкета девушки будет активирована только в том случае, если в ней имеется ЦВЕТНАЯ копия паспорта хорошего кач-ва размером не менее 600 пикселей в ширину.
+
+      != $form->field($profile, 'passport_img_1')->widget(FileInput::classname());
+      != $form->field($profile, 'passport_img_2')->widget(FileInput::classname());
+      != $form->field($profile, 'passport_img_3')->widget(FileInput::classname());
+
+
+    // form_block_3
+    .form_block_3
+      .f_tit
+        | Видео аттестации:
+        span *
+      p
+        | Видеоролик, на котором девушка, держа паспорт в развернутом виде в руках, читает следующий текст на русском языке.
+        | “Я, (фамилия, имя, отчество), сегодня (число, меяц, год), подтверждаю свое искреннее желание разместить анкету на сайте международных знакомств Find-Bride.com, даю согласие на размещение моих персональных данных, фото и видеороликов, и осознаю всю меру ответственности. Я не заинтересована в получении материального вознаграждения за общение на сайте, а также не преследую цели получить выгоду от общения с мужчинами. С правилами ведения переписки, общения в текстовом и видеочате ознакомлена. Я не состою в браке и не имею серьезных отношений с мужчинами.”
+        | Загрузить видео аттестацию (до 150 MB, форматы: mp4, avi):
+      != $form->field($profile, 'video')->widget(FileInput::classname(),['type'=>'video']);
+
+
+    .form_block_3
+      .f_tit
+        | Photo:
+        span *
+      != $form->field($profile, 'photo0')->widget(FileInput::classname(),['hasDelate'=>true]);
+      != $form->field($profile, 'photo1')->widget(FileInput::classname(),['hasDelate'=>true]);
+      != $form->field($profile, 'photo2')->widget(FileInput::classname(),['hasDelate'=>true]);
+      != $form->field($profile, 'photo3')->widget(FileInput::classname(),['hasDelate'=>true]);
+      != $form->field($profile, 'photo4')->widget(FileInput::classname(),['hasDelate'=>true]);
+      != $form->field($profile, 'photo5')->widget(FileInput::classname(),['hasDelate'=>true]);
+
+    .form_block_3
+      .f_tit
+        | Video about me:
+      != $form->field($profile, 'video')->widget(FileInput::classname(),['type'=>'video']);
 
   .form-group
     -
       $submitOption = [
-        'class' => 'btn btn-lg btn-primary',
+        'class' => 'btn btn-lg btn-primary sub_form_reg',
         'name' => 'signup-button'
       ];
     != Html::submitButton('<i class="glyphicon glyphicon-user"></i>Save', $submitOption );
