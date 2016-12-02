@@ -4,6 +4,7 @@ namespace app\modules\user\models;
 
 use Yii;
 use yii\web\UploadedFile;
+use JBZoo\Image\Image;
 
 /**
  * This is the model class for table "profile".
@@ -58,7 +59,8 @@ class Profile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'passport', 'weight', 'height', 'eyes', 'heir', 'education', 'religion', 'marital_status', 'children_count', 'lang_proficiency', 'smoking', 'looking_age_from', 'looking_age_to', 'intro_age_from', 'intro_age_to', 'moderated'], 'integer'],
+            [['passport', 'user_id', 'moderated', 'looking_age_from', 'looking_age_to', 'intro_age_from', 'intro_age_to'], 'integer','message' => 'Must be only numbers.'],
+            [['passport', 'weight', 'height', 'eyes', 'heir', 'education', 'religion', 'marital_status', 'children_count', 'lang_proficiency', 'smoking'], 'validateList'],
             [['photo0','photo1','photo2','photo3','photo3','photo4','photo5','passport_img_1','passport_img_2','passport_img_3'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, jpeg'],
             [['photo0','photo1','photo2','photo3','photo3','photo4','photo5'], 'image',
                 'minHeight' => 600,
@@ -78,6 +80,13 @@ class Profile extends \yii\db\ActiveRecord
             ],*/
             [['occupation', 'lang_name', 'address', 'about', 'ideal_relationship', 'passport_img_1', 'passport_img_2', 'passport_img_3', 'photos', 'video'], 'string', 'max' => 255],
         ];
+    }
+
+    public function validateList($attribute, $params){
+        if(!($list=$this->getList($attribute))) return true;
+        if(!isset($list[$this->$attribute])){
+            $this->addError($attribute, 'Error value.');
+        }
     }
 
     /**
@@ -132,7 +141,17 @@ class Profile extends \yii\db\ActiveRecord
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['user_id' => $id]);
+        $user = static::findOne(['user_id' => $id]);
+
+        if(!$user) return false;
+
+        //готовим данные для вывода
+        $photos=explode(',',$user->photos);
+        foreach($photos as $i => $photo){
+            $user['photo'.$i]=$photo;
+        }
+
+        return $user;
     }
 
     /**
@@ -140,6 +159,7 @@ class Profile extends \yii\db\ActiveRecord
      */
     public function getUser()
     {
+
         return $this->hasOne(User::className(), ['user_id' => 'user_id']);
     }
 
@@ -352,20 +372,131 @@ class Profile extends \yii\db\ActiveRecord
             ),
             'smoking'=>array('no','yes'),
         );
+        if(!isset($data_array[$param])) return false;
         return $data_array[$param];
     }
 
     public function beforeSave($insert){
+        //Перед сохранением преобрахуем данные в правильный вид
+
+        //var_dump($this);
+        //Создаем массив для обновления
+        $fileToBd = [];
+
+        //Страницы паспорта
+        if($file=$this->saveImage('passport_img_1')){
+            $this->removeImage($this->passport_img_1);
+            $fileToBd['passport_img_1']=$file;
+        }
+        if($file=$this->saveImage('passport_img_2')){
+            $this->removeImage($this->passport_img_2);
+            $fileToBd['passport_img_2']=$file;
+        }
+        if($file=$this->saveImage('passport_img_3')){
+            $this->removeImage($this->passport_img_3);
+            $fileToBd['passport_img_3']=$file;
+        }
+
+        //Видео
+
+        if($file=$this->saveImage('video')){
+            $this->removeImage($this->video);
+            $fileToBd['video']=$file;
+        }
+        if($file=$this->saveImage('video_about')){
+            $this->removeImage($this->video_about);
+            $fileToBd['video_about']=$file;
+        }
+
+        $photos=explode(',',$this->photos);
+        $fileToBd['photos']=array();
+        for($i=0;$i<6;$i++){
+            if($file=$this->saveImage('photo'.$i)){
+                if(isset($photos[$i])){
+                    $this->removeImage($photos[$i]);
+                }
+                $fileToBd['photos'][]=$file;
+            }else{
+                if(isset($photos[$i])) {
+                    if ($photos[$i] != $this['photo' . $i]) {
+                        $this->removeImage($photos[$i]);
+                    } else {
+                        $fileToBd['photos'][]=$photos[$i];
+                    }
+                }
+            }
+        }
+        $fileToBd['photos']=implode(',',$fileToBd['photos']);
+
+        //var_dump($this->passport_img_1);
+        //'passport_img_1','passport_img_2','passport_img_3'
+
         //$this->addError('address', '1234');
-        $className=explode('/',str_replace('\\','/',$this::className()));
-        $className=$className[count($className)-1];
-        var_dump($_FILES[$className]);
-        $video = UploadedFile::getInstance($this, 'video');
+        //$className=explode('/',str_replace('\\','/',$this::className()));
+        //$className=$className[count($className)-1];
+        //var_dump($_FILES[$className]);
+        //$video = UploadedFile::getInstance($this, 'video');
         //$video = \yii\web\UploadedFile::getInstance($this, 'video');
         //$this->addError('video', $video->size);
-        var_dump($video);
-        return false;
+        //var_dump($video);
+        //return false;
 
         //['video','video_about']
+        $this::getDb()
+            ->createCommand()
+            ->update($this->tableName(), $fileToBd, ['user_id' => $this->user_id])
+            ->execute();
+        return true;
+    }
+
+    public function afterSave($insert, $changedAttributes){
+        //После сохранения обрабатываем файловую информацтю
+    }
+
+    /**
+     * Сохранение изображения (аватара)
+     * пользвоателя
+     */
+    public function saveImage($name)
+    {
+        $file = \yii\web\UploadedFile::getInstance($this, $name);
+
+        if ($file) {
+            $path=Yii::$app->user->identity->userDir;// Путь для сохранения файлов
+
+            $name = rand ( 100000000000 , 999999999999 ); // Название файла
+            $exch = explode('.',$file->name);
+            $exch=$exch[count($exch)-1];
+            $name .= '.' . $exch;
+            $outFile = $path . $name ;   // Путь файла и название
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);   // Создаем директорию при отсутствии
+            }
+
+            $img = (new Image($file->tempName));
+
+            $img->fitToWidth(1024)
+                ->saveAs($outFile);
+
+
+            if($img) {
+                return $outFile;
+            }else{
+                return false;
+            }
+        }
+    }
+
+    /**
+     * Удаляем изображение при его наличии
+     */
+    public function removeImage($img)
+    {
+        if ($img) {
+            // Если файл существует
+            if (file_exists($img)) {
+                unlink($img);
+            }
+        }
     }
 }

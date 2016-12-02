@@ -17,6 +17,7 @@
 -$view->title = 'Profile';
 -$view->params['breadcrumbs'][] = $view->title;
 -$template_input="{label}{input}{error}";
+-$sex = Yii::$app->user->identity->sex;
 .user-form
   -if ( Yii::$app->session->hasFlash('success')) {
     p.signup-success= Yii::$app->session->getFlash('success');
@@ -90,10 +91,8 @@
     .form-group
       != Chosen::widget(['model' => $profile, 'name' => 'height', 'data' => Profile::getList('height'),'options' => ['placeholder' => 'Height'],'template'=>$template_input,]);
 
-
     .form-group
       != Chosen::widget(['model' => $profile, 'name' => 'eyes', 'data' => Profile::getList('eyes'),'template'=>$template_input,]);
-
 
     .form-group
       != Chosen::widget(['model' => $profile, 'name' => 'heir', 'data' => Profile::getList('heir'),'template'=>$template_input,]);
@@ -102,7 +101,6 @@
 
     .form-group
       != Chosen::widget(['model' => $profile, 'name' => 'education', 'data' => Profile::getList('education'),'template'=>$template_input,]);
-
 
     .form-group
       != Chosen::widget(['model' => $profile, 'name' => 'religion', 'data' => Profile::getList('religion'),'template'=>$template_input,]);
@@ -163,45 +161,46 @@
 
     !=  $form->field($profile, 'ideal_relationship')->textArea(['rows' => '6'])
 
-    .form_block_3
-      .f_tit
-        | Скан паспорта:
-        span *
-      p
-        | Внимание! Черно-белые копии паспорта не принимаются. Анкета девушки будет активирована только в том случае, если в ней имеется ЦВЕТНАЯ копия паспорта хорошего кач-ва размером не менее 600 пикселей в ширину.
+    -if ($sex == 1){
+      .form_block_3
+        .f_tit
+          | Скан паспорта:
+          span *
+        p
+          | Внимание! Черно-белые копии паспорта не принимаются. Анкета девушки будет активирована только в том случае, если в ней имеется ЦВЕТНАЯ копия паспорта хорошего кач-ва размером не менее 600 пикселей в ширину.
 
-      != $form->field($profile, 'passport_img_1')->widget(FileInput::classname());
-      != $form->field($profile, 'passport_img_2')->widget(FileInput::classname());
-      != $form->field($profile, 'passport_img_3')->widget(FileInput::classname());
+        != $form->field($profile, 'passport_img_1')->widget(FileInput::classname());
 
+        != $form->field($profile, 'passport_img_2')->widget(FileInput::classname());
 
-    // form_block_3
-    .form_block_3
-      .f_tit
-        | Видео аттестации:
-        span *
-      p
-        | Видеоролик, на котором девушка, держа паспорт в развернутом виде в руках, читает следующий текст на русском языке.
-        | “Я, (фамилия, имя, отчество), сегодня (число, меяц, год), подтверждаю свое искреннее желание разместить анкету на сайте международных знакомств Find-Bride.com, даю согласие на размещение моих персональных данных, фото и видеороликов, и осознаю всю меру ответственности. Я не заинтересована в получении материального вознаграждения за общение на сайте, а также не преследую цели получить выгоду от общения с мужчинами. С правилами ведения переписки, общения в текстовом и видеочате ознакомлена. Я не состою в браке и не имею серьезных отношений с мужчинами.”
-        | Загрузить видео аттестацию (до 150 MB, форматы: mp4, avi):
-      != $form->field($profile, 'video')->widget(FileInput::classname(),['type'=>'video']);
+        != $form->field($profile, 'passport_img_3')->widget(FileInput::classname());
 
+        .form_block_3
+          .f_tit
+            | Видео аттестации:
+            span *
+          p
+            | Видеоролик, на котором девушка, держа паспорт в развернутом виде в руках, читает следующий текст на русском языке.
+            | “Я, (фамилия, имя, отчество), сегодня (число, меяц, год), подтверждаю свое искреннее желание разместить анкету на сайте международных знакомств Find-Bride.com, даю согласие на размещение моих персональных данных, фото и видеороликов, и осознаю всю меру ответственности. Я не заинтересована в получении материального вознаграждения за общение на сайте, а также не преследую цели получить выгоду от общения с мужчинами. С правилами ведения переписки, общения в текстовом и видеочате ознакомлена. Я не состою в браке и не имею серьезных отношений с мужчинами.”
+            | Загрузить видео аттестацию (до 150 MB, форматы: mp4, avi):
+          != $form->field($profile, 'video')->widget(FileInput::classname(),['type'=>'video']);
+    -}
 
     .form_block_3
       .f_tit
         | Photo:
-        span *
-      != $form->field($profile, 'photo0')->widget(FileInput::classname(),['hasDelate'=>true]);
-      != $form->field($profile, 'photo1')->widget(FileInput::classname(),['hasDelate'=>true]);
-      != $form->field($profile, 'photo2')->widget(FileInput::classname(),['hasDelate'=>true]);
-      != $form->field($profile, 'photo3')->widget(FileInput::classname(),['hasDelate'=>true]);
-      != $form->field($profile, 'photo4')->widget(FileInput::classname(),['hasDelate'=>true]);
-      != $form->field($profile, 'photo5')->widget(FileInput::classname(),['hasDelate'=>true]);
+      .photo_block
+        != $form->field($profile, 'photo0')->widget(FileInput::classname(),['hasDelate'=>true]);
+        != $form->field($profile, 'photo1')->widget(FileInput::classname(),['hasDelate'=>true]);
+        != $form->field($profile, 'photo2')->widget(FileInput::classname(),['hasDelate'=>true]);
+        != $form->field($profile, 'photo3')->widget(FileInput::classname(),['hasDelate'=>true]);
+        != $form->field($profile, 'photo4')->widget(FileInput::classname(),['hasDelate'=>true]);
+        != $form->field($profile, 'photo5')->widget(FileInput::classname(),['hasDelate'=>true]);
 
     .form_block_3
       .f_tit
         | Video about me:
-      != $form->field($profile, 'video')->widget(FileInput::classname(),['type'=>'video']);
+      != $form->field($profile, 'video_about')->widget(FileInput::classname(),['type'=>'video']);
 
   .form-group
     -
@@ -210,6 +209,16 @@
         'name' => 'signup-button'
       ];
     != Html::submitButton('<i class="glyphicon glyphicon-user"></i>Save', $submitOption );
-  -ActiveForm::end();
+
+    -if ($sex == 1){
+      -
+          $submitOption = [
+          'class' => 'btn btn-lg btn-primary sub_form_moderate',
+          'name' => 'moderate-button'
+        ];
+      != Html::submitButton('<i class="glyphicon glyphicon-user"></i>Send to moderation', $submitOption );
+    - };
+
+-ActiveForm::end();
 
 

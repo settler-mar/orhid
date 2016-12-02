@@ -8,14 +8,15 @@ use app\modules\user\models\Profile;
 use yii\base\Model;
 
 /**
- * Форма профиля для женщин(личного кабинета)
+ * Форма профиля для мучин(личного кабинета)
  * Class ProfileForm
  * @package app\modules\user\models\forms
  */
-class ProfileFamale extends Profile{
+class ProfileFemale extends Profile{
     public function rules()
     {
         $rule = parent::rules();
+
         return $rule;
     }
 
@@ -25,5 +26,4 @@ class ProfileFamale extends Profile{
 
         return $labels;
     }
-
 }

@@ -36,13 +36,13 @@ class FileInput extends InputWidget
         }
         $out='<div class="input_file input_file-'.$this->type.'">';
         if(strlen($this->value) > 10) {
-            $out = HTML::activeHiddenInput($this->model, $this->attribute,['value'=>$this->value]);
+            $out .= HTML::activeHiddenInput($this->model, $this->attribute,['value'=>$this->value,'id'=>'']);
         }
         if($this->type=='image') {
-            $out .= HTML::FileInput($this->name, '', ['accept' => 'image/*','id'=>$this->options['id']]);
+            $out .= HTML::FileInput($this->name, '', ['accept' => 'image/jpeg','id'=>$this->options['id']]);
             $out .= '<div class="crop-image-upload-container crop_medium">';
             if (strlen($this->value) > 10) {
-                $out .= '<img src="' . $this->value . '">';
+                $out .= '<img src="' . $this->value . '"/>';
             }
             if ($this->hasDelate == true) {
                 $css = (strlen($this->value) < 10) ? ' style="display:none;" ' : '';

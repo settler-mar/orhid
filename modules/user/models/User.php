@@ -12,6 +12,7 @@ use \yii\db\ActiveRecord;
 class User extends ActiveRecord  implements IdentityInterface
 {
 
+    public $userDir;
     public $password;
 
     // Статусы пользователя
@@ -115,7 +116,11 @@ class User extends ActiveRecord  implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id]);
+        $user=static::findOne(['id' => $id]);
+        if($user){
+            $user->userDir = $user->getUserPath($id);
+        };
+        return $user;
     }
     /**
      * Поиск пользователя по Email
@@ -275,14 +280,6 @@ class User extends ActiveRecord  implements IdentityInterface
     public function afterSave($insert, $changedAttributes)
     {
         $this->saveImage();
-
-       /* if ($this->password && strlen($this->password)>3) {
-            $password=$this->setPassword($this->password);
-            $this::getDb()
-                ->createCommand()
-                ->update($this->tableName(), ['password' => $password], ['id' => $this->id])
-                ->execute();
-        }*/
     }
     /**
      * Действия, выполняющиеся после авторизации.

@@ -111,8 +111,9 @@ function init_file_prev(obj){
     var el=obj.parent();
     el.find('.clear_photo').click(function(){
         $el=$(this).parent().parent();
-        $el.find('img').remove()
-        $el.find('input').val('')
+        $el.find('img').remove();
+        $el.find('input').val('');
+        $el.find('.help-block').html('');
         $(this).hide();
     })
 }

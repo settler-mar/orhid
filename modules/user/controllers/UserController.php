@@ -130,7 +130,7 @@ class UserController extends Controller
             if ($forget->sendEmail()) { // Отправлено подтверждение по Email
                 Yii::$app->getSession()->setFlash('reset-success', 'Link to the activation of a new password sent to the Email.');
             }
-            //return $this->goHome();
+            return $this->goHome();
         }
 
         return $this->render('resetpaessword', [
@@ -167,16 +167,16 @@ class UserController extends Controller
      */
     public function actionProfile()
     {
-        /** @var \lowbase\user\models\forms\ProfileForm $model */
+
         $model = ProfileForm::findOne(Yii::$app->user->id);
         if ($model === null) {
             throw new NotFoundHttpException('The requested page could not be found.');
         }
 
         if($model->sex==0){
-                        $profile=ProfileMale::findOne(Yii::$app->user->id);
+             $profile=ProfileMale::findIdentity(Yii::$app->user->id);
         }else{
-            $profile=ProfileFemale::findOne(Yii::$app->user->id);
+            $profile=ProfileFemale::findIdentity(Yii::$app->user->id);
         }
         if ($profile === null) {
             // INSERT
@@ -184,18 +184,13 @@ class UserController extends Controller
                 'user_id' => Yii::$app->user->id
             ])->execute();
             if($model->sex==0){
-                $profile=ProfileMale::findOne(Yii::$app->user->id);
+                $profile=ProfileMale::findIdentity(Yii::$app->user->id);
             }else{
-                $profile=ProfileFemale::findOne(Yii::$app->user->id);
+                $profile=ProfileFemale::findIdentity(Yii::$app->user->id);
             }
-            //throw new NotFoundHttpException(Yii::t('user', 'The requested page could not be found.'));
         }
 
-        /*// Преобразуем дату в понятный формат
-        if ($model->birthday) {
-            $date = new \DateTime($model->birthday);
-            $model->birthday = $date->format('d.m.Y');
-        }*/
+        //return ;
 
         $post=Yii::$app->request->post();
         if(isset($post['ProfileForm'])){
@@ -205,20 +200,33 @@ class UserController extends Controller
             $post['ProfileForm']['updated_at'] = time();
         }
 
-        //$profile->addError('address', '1234');
-        if ($profile->load($post) && $profile->validate()) {
-            //var_dump($profile);
-            if ($profile->save()) {
-                Yii::$app->getSession()->setFlash('success', 'The profile updated.');
-                //return $this->redirect(['profile']);
+        $request = Yii::$app->request;
+        if($request->isPost) {
+            $to_save = false;
+            //Готовим профиль к сохранению
+            if ($profile->load($post) && $profile->validate()) {
+                $to_save = true;
             }
-        }
-        /*if ($model->load($post) && $model->validate() && $profile->validate() && $profile->load($post)) {
-            if ($model->save() && $model->save()) {
+
+            //Готовим пользователя к сохранению
+            if ($model->load($post) && $model->validate()) {
+                $to_save = true && $to_save;
+            } else {
+                $to_save = false;
+            }
+
+            //Если номально отвалидировало отправляем на сохранение
+            if($to_save && $profile->save() && $model->save()){
+                //При успешнос мохранении обновляем страницу и выводим сообщение
                 Yii::$app->getSession()->setFlash('success', 'The profile updated.');
                 return $this->redirect(['profile']);
             }
-        }*/
+        }
+
+        // Преобразуем дату в понятный формат
+        if ($profile->birthday) {
+            $profile->birthday = Date('M  j,Y',$profile->birthday);
+        }
 
         return $this->render('profile', [
             'model' => $model,
