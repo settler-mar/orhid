@@ -3,9 +3,10 @@
 namespace app\modules\user\models\forms;
 use Yii;
 use app\modules\user\models\User;
+use app\modules\user\models\forms\CreateForm;
 
 
-class RegistrationForm extends User
+class RegistrationForm extends CreateForm
 {
     public $password;   // Пароль
     public $captcha;    // Капча
@@ -13,44 +14,11 @@ class RegistrationForm extends User
     public function rules()
     {
         $rules = parent::rules();
-        $rules[] = [['username', 'password', 'email', 'captcha'], 'required'];
         $rules[] = ['captcha', 'captcha', 'captchaAction' => 'user/default/captcha']; // Проверка капчи
+        $rules[] = [['captcha'], 'required'];
         return $rules;
     }
-    /**
-     * Генерация ключа авторизации, токена подтверждения регистрации
-     * и хеширование пароля перед сохранением
-     * @param bool $insert
-     * @return bool
-     */
-    public function beforeSave($insert)
-    {
-        //var_dump($this);
 
-        //проверяем существовние пользователя
-        if($this->findByEmail($this->email)) {
-            $this->addError('email', 'Email already exists');
-        }
-
-        if($this->findByUsername($this->username)) {
-            $this->addError('username', 'Username already exists');
-        }
-
-        if ($this->hasErrors()) return false;
-
-        if (parent::beforeSave($insert)) {
-            $this->status = 2;
-            $this->created_at=date('Y-m-d H:i:s');
-            $this->updated_at = date('Y-m-d H:i:s');
-            //var_dump($this);
-            $this->setPassword($this->password);
-            //var_dump($this);
-            $this->generateAuthKey();
-            $this->generateEmailConfirmToken();
-            return true;
-        }
-        return false;
-    }
     /**
      * Отправка письма согласно шаблону "confirmEmail"
      * после регистрации
@@ -72,4 +40,12 @@ class RegistrationForm extends User
             ->send();
     }
 
+    public function beforeSave($insert)
+    {
+         if (parent::beforeSave($insert)) {
+            $this->status = 2;
+            return true;
+        }
+        return false;
+    }
 }

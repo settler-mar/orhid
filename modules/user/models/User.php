@@ -322,11 +322,13 @@ class User extends ActiveRecord  implements IdentityInterface
             $request = Yii::$app->request;
             $post = $request->post();
 
-            if(isset($post['RegistrationForm'])){
-                $cropParam=explode('-',$post['RegistrationForm']['photo']);
-            }
-            if(isset($post['ProfileForm'])){
-                $cropParam=explode('-',$post['ProfileForm']['photo']);
+            $class=$this::className();
+            $class=str_replace('\\','/',$class);
+            $class=explode('/',$class);
+            $class=$class[count($class)-1];
+            $cropParam=array();
+            if(isset($post[$class])){
+                $cropParam=explode('-',$post[$class]['photo']);
             }
             if(count($cropParam)!=4) {
                 $cropParam=array(0,0,100,100);

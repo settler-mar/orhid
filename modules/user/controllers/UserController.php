@@ -175,7 +175,7 @@ class UserController extends Controller
         }else{
             $profile=ProfileFemale::findIdentity(Yii::$app->user->id);
         }
-        if ($profile === null) {
+        if (!$profile) {
             // INSERT
             Yii::$app->db->createCommand()->insert('profile', [
                 'user_id' => Yii::$app->user->id

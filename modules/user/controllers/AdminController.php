@@ -6,6 +6,10 @@ use Yii;
 use app\modules\user\models\User;
 use app\modules\user\models\UserSearch;
 use app\modules\user\models\Profile;
+use app\modules\user\models\forms\CreateForm;
+use app\modules\user\models\forms\ProfileForm;
+use app\modules\user\models\profile\ProfileFemale;
+use app\modules\user\models\profile\ProfileMale;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -44,6 +48,23 @@ class AdminController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
+    public function actionCreate()
+    {
+        $model = new CreateForm();
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            //обработка поступивших данных
+            //Перекидываем на страницу редактированиия профиля
+            return $this->redirect(['update','id'=>$model->id]);
+        }
+
+
+        //выводим стндартную форму
+        return $this->render('@app/modules/user/views/default/registration.jade', [
+            'model' => $model,
+        ]);
+
+    }
     /**
      * Просмотр пользователя (карточки)
      * @param $id - ID пользователя
@@ -65,27 +86,74 @@ class AdminController extends Controller
      */
     public function actionUpdate($id)
     {
-        /** @var \lowbase\user\models\forms\ProfileForm $model */
         $model = ProfileForm::findOne($id);
         if ($model === null) {
-            throw new NotFoundHttpException(Yii::t('user', 'Запрошенная страница не найдена.'));
+            throw new NotFoundHttpException( 'User is not found');
         }
-        // Преобразуем дату в понятный формат
-        if ($model->birthday) {
-            $date = new \DateTime($model->birthday);
-            $model->birthday = $date->format('d.m.Y');
+
+        if($model->sex==0){
+            $profile=ProfileMale::findIdentity($id);
+        }else{
+            $profile=ProfileFemale::findIdentity($id);
         }
-        if ($model->load(Yii::$app->request->post())) {
-            // Загружаем изображение, если оно есть
-            $model->photo = UploadedFile::getInstance($model, 'photo');
-            if ($model->save()) {
-                Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Данные профиля обновлены.'));
-                return $this->redirect(['update', 'id' => $id]);
+
+
+        if (!$profile) {
+            // INSERT
+            Yii::$app->db->createCommand()->insert('profile', [
+                'user_id' => $id
+            ])->execute();
+            if($model->sex==0){
+                $profile=ProfileMale::findIdentity($id);
+            }else{
+                $profile=ProfileFemale::findIdentity($id);
             }
         }
-        return $this->render('@vendor/lowbase/yii2-user/views/user/update', [
-            'model' => $model
+
+        //return ;
+
+        $post=Yii::$app->request->post();
+        if(isset($post['ProfileForm'])){
+            //удаляем картинку до сохранения
+            $post['ProfileForm']['photo']=$model->photo;
+            //добавляем метку обновления
+            $post['ProfileForm']['updated_at'] = time();
+        }
+
+
+        $request = Yii::$app->request;
+        if($request->isPost) {
+            $to_save = false;
+            //Готовим профиль к сохранению
+            if ($profile->load($post) && $profile->validate()) {
+                $to_save = true;
+            }
+
+            //Готовим пользователя к сохранению
+            if ($model->load($post) && $model->validate()) {
+                $to_save = true && $to_save;
+            } else {
+                $to_save = false;
+            }
+
+            //Если номально отвалидировало отправляем на сохранение
+            if($to_save && $profile->save() && $model->save()){
+                //При успешнос мохранении обновляем страницу и выводим сообщение
+                Yii::$app->getSession()->setFlash('success', 'The profile updated.');
+                return $this->redirect(['update','id'=>$model->id]);
+            }
+        }
+
+        // Преобразуем дату в понятный формат
+        if ($profile->birthday) {
+            $profile->birthday = Date('M  j,Y',$profile->birthday);
+        }
+
+        return $this->render('@app/modules/user/views/user/profile', [
+            'model' => $model,
+            'profile' =>$profile
         ]);
+
     }
     /**
      * Удаление пользователя
