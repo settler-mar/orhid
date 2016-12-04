@@ -937,7 +937,7 @@ input {
     width: 270px;
     padding: 5px 8px 4px 8px;
     margin: 5px 6px 5px 0;
-; outline: none;
+    outline: none;
 }
 .control-label{width: 120px;display: inline-block;text-align: right;padding: 0 10px;font-weight: bold;}
 .range_input{width: 60px;text-align: center;border: 0;}
@@ -2563,3 +2563,7 @@ input {
     color: #f33;
     text-align: right;
 }
+
+table input{width:auto;}
+.asc:after{content: '\25B4';padding: 5px;}
+.desc:after{content: '\25BE';padding: 5px;}

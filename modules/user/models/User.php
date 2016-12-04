@@ -66,7 +66,7 @@ class User extends ActiveRecord  implements IdentityInterface
             ['username', 'match', 'pattern' => '/^[a-z]\w*$/i'],
             ['email', 'email'],
             ['password', 'string', 'min' => 6, 'max' => 61],
-            [['sex','city','country'], 'integer'],
+            [['sex','city','country','moderate','status'], 'integer'],
             ['photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert']],
             [['photo'], 'image',
                 'minHeight' => 500,
@@ -94,6 +94,7 @@ class User extends ActiveRecord  implements IdentityInterface
             'photo' => 'Photo',
             'phone' => 'Phone',
             'password_hash' => 'Хеш пароля',
+            'moderate' => 'Moderation',
         ];
     }
 

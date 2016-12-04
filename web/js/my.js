@@ -62,14 +62,17 @@ $('.us_on').click(function(){
       $this.find('input').val('')
     })
 
-    $('.ui-slider').slider({
-      slide: function( event, ui ) {
-        elements=$(this).parent().find('.range_value_block input')
-          elements[0].value=ui.values[0]
-          elements[1].value=ui.values[1]
-      }
-    });
 
+    var slider = $('.ui-slider')
+    if (slider.length>0) {
+        slider.slider({
+            slide: function (event, ui) {
+                elements = $(this).parent().find('.range_value_block input')
+                elements[0].value = ui.values[0]
+                elements[1].value = ui.values[1]
+            }
+        });
+    }
 });
 
 function init_file_prev(obj){
@@ -116,4 +119,22 @@ function init_file_prev(obj){
         $el.find('.help-block').html('');
         $(this).hide();
     })
+}
+
+function show_msg(text,type){
+    alert(text);
+}
+
+function parse_input_json(data){
+    if(data['status']!=0){
+        show_msg(data['msg'],'err');
+        return;
+    }
+    show_msg(data['msg'],'info');
+    if(data['href']=='#'){
+        location.reload()
+    }
+    if(data['href'].length>1){
+        location.href=data['href'];
+    }
 }

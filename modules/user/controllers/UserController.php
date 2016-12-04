@@ -28,7 +28,7 @@ class UserController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
+            /*'access' => [
                 'class' => AccessControl::className(),
                 'only' => ['login', 'registration', 'logout', 'confirm', 'reset', 'resetpassword', 'profile', 'remove', 'online', 'show',
                     'index', 'view', 'update', 'delete', 'rmv', 'multiactive', 'multiblock', 'multidelete'],
@@ -64,7 +64,7 @@ class UserController extends Controller
                         'roles' => ['userDelete'],
                     ],
                 ],
-            ],
+            ],*/
         ];
     }
     public function actions()
@@ -84,8 +84,7 @@ class UserController extends Controller
      * Деавторизация
      * @return \yii\web\Response
      */
-    public function actionLogout()
-    {
+    public function actionLogout(){
         Yii::$app->user->logout();
         return $this->goHome();
     }
@@ -97,8 +96,7 @@ class UserController extends Controller
      * @return \yii\web\Response
      * @throws BadRequestHttpException
      */
-    public function actionConfirm($token)
-    {
+    public function actionConfirm($token){
         try {
             $model = new EmailConfirm($token);
         } catch (InvalidParamException $e) {
@@ -146,8 +144,7 @@ class UserController extends Controller
      * @return \yii\web\Response
      * @throws BadRequestHttpException
      */
-    public function actionReset($token, $password)
-    {
+    public function actionReset($token, $password){
         try {
             $model = new ResetPassword($token, $password);
         } catch (InvalidParamException $e) {
@@ -234,4 +231,6 @@ class UserController extends Controller
         ]);
 
     }
+
+
 }
