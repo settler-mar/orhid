@@ -26,9 +26,9 @@ $config = [
                 app\modules\user\models\User::afterLogin($event->identity->id);
             }
         ],
-        'authClientCollection' => [
-            'class' => 'yii\authclient\Collection',
-            'clients' => [],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+            'cache' => 'yii\caching\FileCache',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -62,13 +62,6 @@ $config = [
                 'admin/rule/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/auth-rule/<action>',
 */
             ],
-        ],
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager',
-            'itemTable' => 'lb_auth_item',
-            'itemChildTable' => 'lb_auth_item_child',
-            'assignmentTable' => 'lb_auth_assignment',
-            'ruleTable' => 'lb_auth_rule'
         ],
         'errorHandler' => [
             'errorAction' => 'site/error',
@@ -116,6 +109,18 @@ $config = [
         ],
         'user' => [
             'class' => 'app\modules\user\Module',
+        ],
+        'rbac' =>  [
+            'class' => 'johnitvn\rbacplus\Module',
+            'userModelClassName'=>null,
+            'userModelIdField'=>'id',
+            'userModelLoginField'=>'username',
+            'userModelLoginFieldLabel'=>null,
+            'userModelExtraDataColumls'=>null,
+            'beforeCreateController'=>function($route){
+                return Yii::$app->user->can('rbac');
+            },
+            'beforeAction'=>null
         ]
     ],
 ];
@@ -130,7 +135,7 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
-        'allowedIPs' => ['127.0.0.1', '::1', '192.168.0.*', '192.168.1.*'],
+        //'allowedIPs' => ['127.0.0.1', '::1', '192.168.0.*', '192.168.1.*'],
         'generators' => [
             'jadecrud' => [
                 'class' => 'jacmoe\giijade\crud\Generator',

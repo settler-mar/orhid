@@ -1,0 +1,17 @@
+-$menuItems = []
+if (Yii::$app->user->can('userManager'))
+    -
+        $menuItems[] = ['label' => 'User control', 'url' => '/user/admin'];
+        $menuItems[] = ['label' => 'Create user', 'url' => '/user/admin/create'];
+if (Yii::$app->user->can('rbac'))
+    -
+        $rbac =[];
+        $rbac[]=['label' => 'Rule', 'url' => '/rbac/rule'];
+        $rbac[]=['label' => 'Permission', 'url' => '/rbac/permission'];
+        $rbac[]=['label' => 'Role', 'url' => '/rbac/role'];
+        $rbac[]=['label' => 'Assignment', 'url' => '/rbac/assignment'];
+        $menuItems[] = ['label' => 'Rbac', 'url' => '', 'child' => $rbac]
+
+if count($menuItems) > 0
+    .admin_top_menu
+        +navbar($menuItems)

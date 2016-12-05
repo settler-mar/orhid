@@ -42,6 +42,7 @@ INSTALLATION
 - composer install
 - import db/yii2orhid.sql to mysql datebase
 - php yii migrate
+- php yii migrate/up --migrationPath=@yii/rbac/migrations
 
 CONFIGURATION
 -------------
