@@ -53,13 +53,6 @@ class m161205_073631_add_first_admin_and_rools extends Migration
             ]
         ]);
 
-        //Предустановленные значения таблицы правил auth_rule
-        $this->insert('auth_rule', [
-            'name' => 'UserGroupRule',
-            'data' => 'O:22:"app\rbac\UserGroupRule":3:{s:4:"name";s:9:"userGroup";s:9:"createdAt";i:1480927207;s:9:"updatedAt";i:1480927207;}',
-            'created_at' => time(),
-            'updated_at' => time(),
-        ]);
 
 
         //Предустановленные значения таблицы ролей и допусков auth_item

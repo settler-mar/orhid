@@ -192,6 +192,12 @@ class UserController extends Controller
         $request = Yii::$app->request;
         if($request->isPost) {
             $to_save = false;
+
+            $post['ProfileForm']['moderate']=$model->moderate;
+            if(isset($post['moderate-button'])){
+                $post['ProfileForm']['moderate']=1;
+            }
+
             //Готовим профиль к сохранению
             if ($profile->load($post) && $profile->validate()) {
                 $to_save = true;

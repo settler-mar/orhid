@@ -37,31 +37,13 @@ $config = [
             'rules' => [
                 //получение города по стране
                 'city/get/<id:\d+>' => 'city/get',
-
                 //Взаимодействия с пользователем на сайте
                 '<action:(registration|logout|confirm|reset|profile|resetpassword)>' => 'user/user/<action>',
 
-
-                /*//закрываем все прямые ссылки на модуль авторизации
-                'lowbase-user/<alias:(user|auth|country|city|auth-rule)>/<dopalias>'=>'404',
-                //Взаимодействия с пользователем на сайте
-                '<action:(login|logout|signup|confirm|reset|profile|remove|online)>' => 'lowbase-user/user/<action>',
-                //Взаимодействия с пользователем в панели админстрирования
-                'admin/user/<action:(index|update|delete|view|rmv|multidelete|multiactive|multiblock)>' => 'lowbase-user/user/<action>',
-                //Авторизация через социальные сети
-                //'auth/<authclient:[\w\-]+>' => 'lowbase-user/auth/index',
-                //Просмотр пользователя
-                'user/<id:\d+>' => 'lowbase-user/user/show',
-                //Взаимодействия со странами в панели админстрирования
-                'admin/country/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/country/<action>',
-                //Взаимодействия с городами в панели администрирования
-                'admin/city/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/city/<action>',
-                //Работа с ролями и разделением прав доступа
-                'admin/role/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/auth-item/<action>',
-                //Работа с правилами контроля доступа
-                'admin/rule/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/auth-rule/<action>',
-*/
             ],
+        ],
+        'errorHandler'=>[
+            'errorAction' => 'site/error',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

@@ -8,6 +8,7 @@ use yii\web\IdentityInterface;
 use karpoff\icrop\CropImageUploadBehavior;
 use JBZoo\Image\Image;
 use \yii\db\ActiveRecord;
+use \yii\db\Query;
 
 class User extends ActiveRecord  implements IdentityInterface
 {
@@ -28,7 +29,7 @@ class User extends ActiveRecord  implements IdentityInterface
     /** @var string Default username regexp */
     public static $usernameRegexp = '/^[-a-zA-Z0-9_\.@]+$/';
     public $captcha;    // Капча
-
+    public $roles ;
     /**
      * @inheritdoc
      */
@@ -111,6 +112,27 @@ class User extends ActiveRecord  implements IdentityInterface
         return array(0 => 'Men', 1 => 'Female');
     }
 
+    public function isManager(){
+        return ($this->getRoleOfUser($this->id,'administrator')||$this->getRoleOfUser($this->id,'moderator'));
+    }
+
+    public function getRoleOfUser($id,$roleName)
+    {
+        if (!isset($this->roles) || !is_array($this->roles)) {
+            $roles = (new Query)
+                ->select('item_name')
+                ->from('auth_assignment')
+                ->where(['user_id' => $id])
+                ->all();
+            $this->roles=array();
+            if($roles){
+                foreach ($roles as $role){
+                    $this->roles[] = $role['item_name'];
+                }
+            }
+        }
+        return in_array($roleName,$this->roles);
+    }
     /**
      * Поиск пользователя по Id
      * @param int|string $id - ID
@@ -436,4 +458,6 @@ class User extends ActiveRecord  implements IdentityInterface
         if(file_exists($path))rmdir($path);
         return true;
     }
+
+
 }

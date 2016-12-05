@@ -119,6 +119,14 @@ class AdminController extends Controller
         $request = Yii::$app->request;
         if($request->isPost) {
             $to_save = false;
+
+            if(isset($post['moderate-button'])){
+                $post['ProfileForm']['moderate']=1;
+            }
+            if(isset($post['moderate-button-stop'])){
+                $post['ProfileForm']['moderate']=0;
+            }
+
             //Готовим профиль к сохранению
             if ($profile->load($post) && $profile->validate()) {
                 $to_save = true;
