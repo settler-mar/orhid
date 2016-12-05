@@ -39,8 +39,8 @@ $config = [
                 'city/get/<id:\d+>' => 'city/get',
 
                 //Взаимодействия с пользователем на сайте
-                '<action:(logout|confirm|reset|profile|resetpassword)>' => 'user/user/<action>',
-                '<action:(registration)>' => 'user/default/registration',
+                '<action:(registration|logout|confirm|reset|profile|resetpassword)>' => 'user/user/<action>',
+
 
                 /*//закрываем все прямые ссылки на модуль авторизации
                 'lowbase-user/<alias:(user|auth|country|city|auth-rule)>/<dopalias>'=>'404',
@@ -62,9 +62,6 @@ $config = [
                 'admin/rule/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/auth-rule/<action>',
 */
             ],
-        ],
-        'errorHandler' => [
-            'errorAction' => 'site/error',
         ],
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',

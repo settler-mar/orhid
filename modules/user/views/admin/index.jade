@@ -3,9 +3,7 @@
 -$view->title = 'Users'
 -$view->params['breadcrumbs'][] = $view->title
 .user-index
-  h1
-    !=Html::encode($view->title)
-    //!= $view->render('_search', ['model' => $searchModel])
+  //!= $view->render('_search', ['model' => $searchModel])
   -if ( Yii::$app->session->hasFlash('success')) {
     p.signup-success= Yii::$app -> session -> getFlash('success');
   - }

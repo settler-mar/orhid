@@ -27,6 +27,12 @@ class AdminController extends Controller
     }
 
     function beforeAction($action) {
+
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('userManager')) {
+            throw new \yii\web\ForbiddenHttpException('You are not allowed to perform this action.');
+            return false;
+        }
+
         $this->view->registerJsFile('/js/bootstrap.min.js');
         $this->view->registerJsFile('/js/admin.js');
         $this->view->registerCssFile('/css/bootstrap.min.css');
@@ -65,18 +71,7 @@ class AdminController extends Controller
         ]);
 
     }
-    /**
-     * Просмотр пользователя (карточки)
-     * @param $id - ID пользователя
-     * @return string
-     * @throws NotFoundHttpException
-     */
-    public function actionView($id)
-    {
-        return $this->render('@vendor/lowbase/yii2-user/views/user/view', [
-            'model' => $this->findModel($id),
-        ]);
-    }
+
     /**
      * Редактирование пользователя в режиме
      * администрирования (по аналогии с личным кабинетом)
@@ -172,88 +167,13 @@ class AdminController extends Controller
         $profile=Profile::findIdentity($id);
         if($profile)$profile->delete();
 
-        //чистим папку файла
-        $path=User::getUserPath($id);
-        $files = glob($path."*");
-        foreach ($files as $file) {
-            if (file_exists($file)) {
-                unlink($file);
-            }
-        }
-        if(file_exists($path))rmdir($path);
+        User::rmdir($id);
 
         //Удаляем запись в таблице пользователя
         $user=$this->findModel($id);
         if($user)$user->delete();
         Yii::$app->getSession()->setFlash('success', 'User deleted.');
         return $this->redirect(['index']);
-    }
-
-    /**
-     * Множественная активация пользователей
-     * Перевод в статус STATUS_ACTIVE
-     * @return bool
-     * @throws NotFoundHttpException
-     */
-    public function actionMultiactive()
-    {
-        $models = Yii::$app->request->post('keys');
-        if ($models) {
-            foreach ($models as $id) {
-                if ($id != Yii::$app->user->id) {
-                    /** @var \lowbase\user\models\User $model */
-                    $model = $this->findModel($id);
-                    $model->status = User::STATUS_ACTIVE;
-                    $model->save();
-                }
-            }
-            Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Пользователи активированы.'));
-        }
-        return true;
-    }
-    /**
-     * Множественная блокировка пользователей
-     * Перевод в статус STATUS_BLOCKED
-     * @return bool
-     * @throws NotFoundHttpException
-     */
-    public function actionMultiblock()
-    {
-        $models = Yii::$app->request->post('keys');
-        if ($models) {
-            foreach ($models as $id) {
-                if ($id != Yii::$app->user->id) {
-                    /** @var \lowbase\user\models\User $model */
-                    $model = $this->findModel($id);
-                    $model->status = User::STATUS_BLOCKED;
-                    $model->save();
-                }
-            }
-            Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Пользователи заблокированы.'));
-        }
-        return true;
-    }
-    /**
-     * Множественное удаление пользователей
-     * @return bool
-     * @throws NotFoundHttpException
-     */
-    public function actionMultidelete()
-    {
-        /** @var \lowbase\user\models\User $models */
-        $models = Yii::$app->request->post('keys');
-        if ($models) {
-            foreach ($models as $id) {
-                if ($id != Yii::$app->user->id) {
-                    /** @var \lowbase\user\models\User $user */
-                    $user = $this->findModel($id);
-                    $user->removeImage(); // Удаление аватарки с сервера
-                    $user->delete();
-                }
-            }
-            Yii::$app->getSession()->setFlash('success', Yii::t('user', 'Пользователи удалены.'));
-        }
-        return true;
     }
 
 

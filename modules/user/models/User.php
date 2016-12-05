@@ -60,13 +60,13 @@ class User extends ActiveRecord  implements IdentityInterface
     public function rules()
     {
         return [
-            [['last_name', 'first_name','phone'], 'required'],
-            [['email', 'last_name', 'first_name','password_hash'], 'string', 'max' => 100],
+            [['last_name', 'first_name', 'phone'], 'required'],
+            [['email', 'last_name', 'first_name', 'password_hash'], 'string', 'max' => 100],
             [['username'], 'string', 'max' => 25],
             ['username', 'match', 'pattern' => '/^[a-z]\w*$/i'],
             ['email', 'email'],
             ['password', 'string', 'min' => 6, 'max' => 61],
-            [['sex','city','country','moderate','status'], 'integer'],
+            [['sex', 'city', 'country', 'moderate', 'status'], 'integer'],
             ['photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert']],
             [['photo'], 'image',
                 'minHeight' => 500,
@@ -106,8 +106,9 @@ class User extends ActiveRecord  implements IdentityInterface
         return $this->hasOne(Profile::className(), ['user_id' => 'id']);
     }
 
-    public function getSexArray(){
-        return array( 0 => 'Men', 1 => 'Female');
+    public function getSexArray()
+    {
+        return array(0 => 'Men', 1 => 'Female');
     }
 
     /**
@@ -117,12 +118,13 @@ class User extends ActiveRecord  implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        $user=static::findOne(['id' => $id]);
-        if($user){
+        $user = static::findOne(['id' => $id]);
+        if ($user) {
             $user->userDir = $user->getUserPath($id);
         };
         return $user;
     }
+
     /**
      * Поиск пользователя по Email
      * @param $email - электронная почта
@@ -132,6 +134,7 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         return static::findOne(['email' => $email]);
     }
+
     /**
      * Поиск пользователя по Username
      * @param $username - электронная почта
@@ -141,6 +144,7 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         return static::findOne(['username' => $username]);
     }
+
     /**
      * Ключ авторизации
      * @return string
@@ -149,6 +153,7 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         return $this->auth_key;
     }
+
     /**
      * ID пользователя
      * @return int
@@ -157,6 +162,7 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         return $this->id;
     }
+
     /**
      * Проверка ключа авторизации
      * @param string $authKey - ключ авторизации
@@ -166,6 +172,7 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         return $this->authKey === $authKey;
     }
+
     /**
      * Поиск по токену доступа (не поддерживается)
      * @param mixed $token - токен
@@ -176,6 +183,7 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         throw new NotSupportedException(Yii::t('user', 'Поиск по токену не поддерживается.'));
     }
+
     /**
      * Проверка правильности пароля
      * @param $password - пароль
@@ -185,6 +193,7 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         return Yii::$app->security->validatePassword($password, $this->password_hash);
     }
+
     /**
      * Генераия Хеша пароля
      * @param $password - пароль
@@ -193,6 +202,7 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
+
     /**
      * Поиск по токену восстановления паролья
      * Работает и для неактивированных пользователей
@@ -208,6 +218,7 @@ class User extends ActiveRecord  implements IdentityInterface
             'password_reset_token' => $token
         ]);
     }
+
     /**
      * Генерация случайного авторизационного ключа
      * для пользователя
@@ -216,6 +227,7 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
+
     /**
      * Проверка токена восстановления пароля
      * согласно его давности, заданной константой EXPIRE
@@ -228,9 +240,10 @@ class User extends ActiveRecord  implements IdentityInterface
             return false;
         }
         $parts = explode('_', $token);
-        $timestamp = (int) end($parts);
+        $timestamp = (int)end($parts);
         return $timestamp + self::EXPIRE >= time();
     }
+
     /**
      * Генерация случайного токена
      * восстановления пароля
@@ -239,6 +252,7 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
+
     /**
      * Очищение токена восстановления пароля
      */
@@ -246,6 +260,7 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
     /**
      * Проверка токена подтверждения Email
      * @param $email_confirm_token - токен подтверждения электронной почты
@@ -255,6 +270,7 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         return static::findOne(['email_confirm_token' => $email_confirm_token, 'status' => self::STATUS_WAIT]);
     }
+
     /**
      * Генерация случайного токена
      * подтверждения электронной почты
@@ -263,6 +279,7 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         $this->email_confirm_token = Yii::$app->security->generateRandomString();
     }
+
     /**
      * Очищение токена подтверждения почты
      */
@@ -282,6 +299,7 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         $this->saveImage();
     }
+
     /**
      * Действия, выполняющиеся после авторизации.
      * Сохранение IP адреса и даты авторизации.
@@ -298,6 +316,7 @@ class User extends ActiveRecord  implements IdentityInterface
             'login_at' => date('Y-m-d H:i:s')
         ], ['id' => $id])->execute();
     }
+
     /**
      * Сохранение изображения (аватара)
      * пользвоателя
@@ -307,14 +326,14 @@ class User extends ActiveRecord  implements IdentityInterface
         $photo = \yii\web\UploadedFile::getInstance($this, 'photo');
 
         if ($photo) {
-            $path=$this->getUserPath($this->id);// Путь для сохранения аватаров
-            $oldImage=$this->photo;
+            $path = $this->getUserPath($this->id);// Путь для сохранения аватаров
+            $oldImage = $this->photo;
 
             $name = time() . '-' . $this->id; // Название файла
-            $exch = explode('.',$photo->name);
-            $exch=$exch[count($exch)-1];
+            $exch = explode('.', $photo->name);
+            $exch = $exch[count($exch) - 1];
             $name .= '.' . $exch;
-            $this->photo = $path . $name ;   // Путь файла и название
+            $this->photo = $path . $name;   // Путь файла и название
             if (!file_exists($path)) {
                 mkdir($path, 0777, true);   // Создаем директорию при отсутствии
             }
@@ -322,16 +341,16 @@ class User extends ActiveRecord  implements IdentityInterface
             $request = Yii::$app->request;
             $post = $request->post();
 
-            $class=$this::className();
-            $class=str_replace('\\','/',$class);
-            $class=explode('/',$class);
-            $class=$class[count($class)-1];
-            $cropParam=array();
-            if(isset($post[$class])){
-                $cropParam=explode('-',$post[$class]['photo']);
+            $class = $this::className();
+            $class = str_replace('\\', '/', $class);
+            $class = explode('/', $class);
+            $class = $class[count($class) - 1];
+            $cropParam = array();
+            if (isset($post[$class])) {
+                $cropParam = explode('-', $post[$class]['photo']);
             }
-            if(count($cropParam)!=4) {
-                $cropParam=array(0,0,100,100);
+            if (count($cropParam) != 4) {
+                $cropParam = array(0, 0, 100, 100);
             }
 
             $img = (new Image($photo->tempName));
@@ -339,17 +358,17 @@ class User extends ActiveRecord  implements IdentityInterface
             $imgHeight = $img->getHeight();
 
 
-            $cropParam[0]=(int)($cropParam[0]*$imgWidth/100);
-            $cropParam[1]=(int)($cropParam[1]*$imgHeight/100);
-            $cropParam[2]=(int)($cropParam[2]*$imgWidth/100);
-            $cropParam[3]=(int)($cropParam[3]*$imgHeight/100);
+            $cropParam[0] = (int)($cropParam[0] * $imgWidth / 100);
+            $cropParam[1] = (int)($cropParam[1] * $imgHeight / 100);
+            $cropParam[2] = (int)($cropParam[2] * $imgWidth / 100);
+            $cropParam[3] = (int)($cropParam[3] * $imgHeight / 100);
 
             $img->crop($cropParam[0], $cropParam[1], $cropParam[2], $cropParam[3])
                 ->fitToWidth(500)
                 ->saveAs($this->photo);
 
 
-            if($img) {
+            if ($img) {
                 $this->removeImage($oldImage);   // удаляем старое изображение
 
                 $this::getDb()
@@ -359,6 +378,7 @@ class User extends ActiveRecord  implements IdentityInterface
             }
         }
     }
+
     /**
      * Удаляем изображение при его наличии
      */
@@ -371,6 +391,7 @@ class User extends ActiveRecord  implements IdentityInterface
             }
         }
     }
+
     /**
      * Список всех пользователей
      * @param bool $show_id - показывать ID пользователя
@@ -384,7 +405,7 @@ class User extends ActiveRecord  implements IdentityInterface
             foreach ($model as $m) {
                 $name = ($m->last_name) ? $m->first_name . " " . $m->last_name : $m->first_name;
                 if ($show_id) {
-                    $name .= " (".$m->id.")";
+                    $name .= " (" . $m->id . ")";
                 }
                 $users[$m->id] = $name;
             }
@@ -398,8 +419,21 @@ class User extends ActiveRecord  implements IdentityInterface
      * @id - ID пользователя
      * @return путь(string)
      */
-    public function getUserPath($id){
-        $path = 'user_file/'.floor($id/100).'/'.($id % 100).'/';
+    public function getUserPath($id) {
+        $path = 'user_file/' . floor($id / 100) . '/' . ($id % 100) . '/';
         return $path;
+    }
+
+    public function rmdir($id) {
+        //чистим папку файла
+        $path = $this->getUserPath($id);
+        $files = glob($path."*");
+        foreach ($files as $file) {
+            if (file_exists($file)) {
+                unlink($file);
+            }
+        }
+        if(file_exists($path))rmdir($path);
+        return true;
     }
 }

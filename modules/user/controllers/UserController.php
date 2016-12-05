@@ -28,58 +28,24 @@ class UserController extends Controller
     public function behaviors()
     {
         return [
-            /*'access' => [
+            'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['login', 'registration', 'logout', 'confirm', 'reset', 'resetpassword', 'profile', 'remove', 'online', 'show',
-                    'index', 'view', 'update', 'delete', 'rmv', 'multiactive', 'multiblock', 'multidelete'],
+                'only' => ['registration', 'logout', 'confirm', 'reset', 'resetpassword', 'profile'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'registration', 'confirm', 'reset', 'resetpassword', 'show'],
+                        'actions' => ['registration', 'confirm', 'reset', 'resetpassword'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['login', 'registration', 'show', 'logout', 'profile', 'remove', 'online'],
+                        'actions' => ['logout', 'profile'],
                         'allow' => true,
                         'roles' => ['@'],
-                    ],
-                    [
-                        'actions' => ['index'],
-                        'allow' => true,
-                        'roles' => ['userManager'],
-                    ],
-                    [
-                        'actions' => ['view'],
-                        'allow' => true,
-                        'roles' => ['userView'],
-                    ],
-                    [
-                        'actions' => ['update', 'rmv', 'multiactive', 'multiblock'],
-                        'allow' => true,
-                        'roles' => ['userUpdate'],
-                    ],
-                    [
-                        'actions' => ['delete', 'multidelete'],
-                        'allow' => true,
-                        'roles' => ['userDelete'],
-                    ],
+                    ]
                 ],
-            ],*/
-        ];
-    }
-    public function actions()
-    {
-        return [
-            'error' => [
-                'class' => 'yii\web\ErrorAction',
-            ],
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-                'fixedVerifyCode' => YII_ENV_TEST ? 'tryrty4553454' : null,
             ],
         ];
     }
-
     /**
      * Деавторизация
      * @return \yii\web\Response
@@ -112,6 +78,32 @@ class UserController extends Controller
         return $this->redirect(['/']);
     }
 
+    /**
+     * Creates a new User model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return mixed
+     */
+    public function actionRegistration()
+    {
+        $model = new RegistrationForm();
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            //обработка поступивших данных
+            Yii::$app
+                ->getSession()
+                ->setFlash(
+                    'signup-success',
+                    'Link to the registration confirmation sent to the Email.'
+                );
+            //return $this->redirect(['view', 'id' => 'user']);
+        }
+
+
+        //выводим стндартную форму
+        return $this->render('registration.jade', [
+            'model' => $model,
+        ]);
+
+    }
     /**
      * Сброс пароля
      * @return string|\yii\web\Response
