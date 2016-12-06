@@ -37,12 +37,28 @@ REQUIREMENTS
 INSTALLATION
 ------------
 
-- git clone https://github.com/settler-mar/orhid orhid
-- cd orhid
-- composer install
+- clone from github
+```sh 
+git clone https://github.com/settler-mar/orhid orhid
+```
+- change dir
+```sh
+cd orhid
+```
+- install composer module
+```sh
+composer install
+```
+- make all config in @app/config
+- make migrate RBAC
+```sh
+php yii migrate/up --migrationPath=@yii/rbac/migrations
+```
+- make migrate site
+```sh
+php yii migrate
+```
 - import db/yii2orhid.sql to mysql datebase
-- php yii migrate
-- php yii migrate/up --migrationPath=@yii/rbac/migrations
 
 CONFIGURATION
 -------------

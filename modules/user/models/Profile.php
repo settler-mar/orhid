@@ -376,10 +376,13 @@ class Profile extends \yii\db\ActiveRecord
         return $data_array[$param];
     }
 
-    public function beforeSave($insert){
+    public function afterSave($insert, $changedAttributes){
         //Перед сохранением преобрахуем данные в правильный вид
 
-        //var_dump($this);
+    }
+
+    public function beforeSave($insert){
+        //После сохранения обрабатываем файловую информацтю
         //Создаем массив для обновления
         $fileToBd = [];
 
@@ -398,7 +401,6 @@ class Profile extends \yii\db\ActiveRecord
         }
 
         //Видео
-
         if($file=$this->saveImage('video')){
             $this->removeImage($this->video);
             $fileToBd['video']=$file;
@@ -428,29 +430,25 @@ class Profile extends \yii\db\ActiveRecord
         }
         $fileToBd['photos']=implode(',',$fileToBd['photos']);
 
-        //var_dump($this->passport_img_1);
-        //'passport_img_1','passport_img_2','passport_img_3'
+        //день рождения
+        $request = Yii::$app->request;
+        $post = $request->post();
 
-        //$this->addError('address', '1234');
-        //$className=explode('/',str_replace('\\','/',$this::className()));
-        //$className=$className[count($className)-1];
-        //var_dump($_FILES[$className]);
-        //$video = UploadedFile::getInstance($this, 'video');
-        //$video = \yii\web\UploadedFile::getInstance($this, 'video');
-        //$this->addError('video', $video->size);
-        //var_dump($video);
-        //return false;
+        $class = $this::className();
+        $class = str_replace('\\', '/', $class);
+        $class = explode('/', $class);
+        $class=$class[count($class)-1];
+        if(strlen($post[$class]['birthday'])>3) {
+            $birthday = (strtotime($post[$class]['birthday']));
+            $fileToBd['birthday'] = $birthday;
+        }
 
-        //['video','video_about']
+        var_dump($fileToBd);
         $this::getDb()
             ->createCommand()
             ->update($this->tableName(), $fileToBd, ['user_id' => $this->user_id])
             ->execute();
         return true;
-    }
-
-    public function afterSave($insert, $changedAttributes){
-        //После сохранения обрабатываем файловую информацтю
     }
 
     /**

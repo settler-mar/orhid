@@ -66,7 +66,7 @@ class AdminController extends Controller
 
 
         //выводим стндартную форму
-        return $this->render('@app/modules/user/views/default/registration.jade', [
+        return $this->render('@app/modules/user/views/user/registration.jade', [
             'model' => $model,
         ]);
 
