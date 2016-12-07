@@ -37,3 +37,9 @@ params.php
 /vendor_/
 /web/user_file/
 /web/assets/*
+/web/index.php
+
+*.log
+*.tmp
+*.local
+Будет удалено web/assets/

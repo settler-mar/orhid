@@ -39,7 +39,10 @@ $config = [
                 'city/get/<id:\d+>' => 'city/get',
                 //Взаимодействия с пользователем на сайте
                 '<action:(registration|logout|confirm|reset|profile|resetpassword)>' => 'user/user/<action>',
-
+                //базовые страницы в основном контроллере
+                '<action:(top|onlinehelp)>' => 'site/<action>',
+                //Страница пользователя
+                '<action:(user)>/<id:\d+>' => 'site/user/',
             ],
         ],
         'errorHandler'=>[

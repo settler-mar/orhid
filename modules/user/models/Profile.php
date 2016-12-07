@@ -105,7 +105,7 @@ class Profile extends \yii\db\ActiveRecord
             'education' => 'Education',
             'religion' => 'Religion',
             'marital_status' => 'Marital Status',
-            'children_count' => 'Children Count',
+            'children_count' => 'Children',
             'lang_name' => 'Languages Spoken',
             'lang_proficiency' => 'Lang Proficiency',
             'smoking' => 'Smoking',
@@ -362,7 +362,7 @@ class Profile extends \yii\db\ActiveRecord
                 2=>'divorced',
                 3=>'widowed',
             ),
-            'children_count'=>array(0=>'No children',1,2,3,4,5,6,7,8),
+            'children_count'=>array(-1=>'Unknown',0=>'No children',1,2,3,4,5,6,7,8),
             'lang_proficiency'=>array(
                 0=>'Unknown',
                 1=>'basic',
@@ -374,6 +374,14 @@ class Profile extends \yii\db\ActiveRecord
         );
         if(!isset($data_array[$param])) return false;
         return $data_array[$param];
+    }
+
+    public function getSelectValue($param, $sel){
+        $list = Profile::getList($param);
+        if(!$list)return false;
+
+        if(is_array($sel))$sel=$sel[$param];
+        return $list[$sel];
     }
 
     public function afterSave($insert, $changedAttributes){
@@ -497,4 +505,9 @@ class Profile extends \yii\db\ActiveRecord
             }
         }
     }
+
+    /*public function getCard()
+    {
+        return $this->hasMany(User::className(), ['user_id' => 'id']);
+    }*/
 }

@@ -2,8 +2,12 @@
 
 namespace app\modules\user\models;
 
+use app\models\LbCity;
+use app\models\LbCountry;
+use johnitvn\rbacplus\models\AssignmentSearch;
 use Yii;
 use app\modules\user\models\User;
+use yii\rbac\Assignment;
 use yii\web\IdentityInterface;
 use karpoff\icrop\CropImageUploadBehavior;
 use JBZoo\Image\Image;
@@ -21,6 +25,7 @@ class User extends ActiveRecord  implements IdentityInterface
     const STATUS_ACTIVE = 1;    // активен
     const STATUS_WAIT = 2;      // ожидает подтверждения
 
+    const MAX_ONLINE_TIME = 10*60;//Время после последнего запроса которое считается что пользователь онлайн (в секундах)
 
     // Время действия токенов
     const EXPIRE = 3600;
@@ -104,6 +109,18 @@ class User extends ActiveRecord  implements IdentityInterface
     public function getProfile()
     {
         return $this->hasOne(Profile::className(), ['user_id' => 'id']);
+    }
+    public function getCity()
+    {
+        return $this->hasOne(LbCity::className(), ['id' => 'city']);
+    }
+    public function getCountry()
+    {
+        return $this->hasOne(LbCountry::className(), ['id' => 'city']);
+    }
+    public function getRole()
+    {
+        return $this->hasMany(AuthAssignment::className(), ['user_id' => 'id']);
     }
 
     public function getSexArray()
@@ -457,6 +474,4 @@ class User extends ActiveRecord  implements IdentityInterface
         if(file_exists($path))rmdir($path);
         return true;
     }
-
-
 }

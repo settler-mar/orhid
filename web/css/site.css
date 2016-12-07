@@ -40,6 +40,7 @@ p {
 
 a {
     cursor: pointer;
+    transition: all 0.3s;
 }
 
 a:hover {
@@ -1222,15 +1223,19 @@ input {
 
 .photo_us a {
     display: inline-block;
-    width: 28%;
     margin: 0 3% 3% 0;
 }
 
-.photo_us a img {
-    max-width: 200px;
-    max-height: 200px;
-    display: block;
-    width: 100%;
+.photo_people{
+    width: 10vw;
+    height: 10vw;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    transform: scale3d(1,1,2);
+}
+.photo_people:hover{
+    transform: scale3d(1.1,1.1,2);
 }
 
 .aboutme {
@@ -2569,11 +2574,6 @@ input {
 
 .jcrop-holder>img {
     filter: blur(3px);
-}
-
-.wrapper {
-    max-width: 1200px;
-    margin: auto
 }
 
 .ui-slider {

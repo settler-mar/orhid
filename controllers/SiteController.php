@@ -9,6 +9,9 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 
+use app\modules\user\models\Profile;
+use app\modules\user\models\User;
+
 class SiteController extends Controller
 {
     /**
@@ -102,7 +105,7 @@ class SiteController extends Controller
      *
      * @return string
      */
-    public function actionContact()
+    public function actionOnlinehelp()
     {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
@@ -123,5 +126,47 @@ class SiteController extends Controller
     public function actionAbout()
     {
         return $this->render('about');
+    }
+
+    /**
+     * Displays about page.
+     *
+     * @return string
+     */
+    public function actionTop()
+    {
+        $user=User::find()
+            ->joinWith(['profile','city','role']) //добавляем вывод из связвнных таблиц
+            ->where([
+                'auth_assignment.user_id'=>null, //убераем с выборки всех пользователей с ролями
+                'user.sex' => 1, //Только женщины
+                //,'moderate'=>1, //только прошедшие модерацию
+            ])
+
+            ->asArray()
+            ->all(); //выводим все что получилось
+
+        return $this->render('top',['user'=>$user]);
+    }
+
+
+     /**
+     * @return user page
+     */
+    public function actionUser($id)
+    {
+        //throw new \yii\web\NotFoundHttpException('Page');
+        $user=User::find()
+            ->joinWith(['profile','city','country','role']) //добавляем вывод из связвнных таблиц
+            ->where([
+                'auth_assignment.user_id'=>null, //убераем с выборки всех пользователей с ролями
+                'user.id' => $id
+            ])
+            ->asArray()
+            ->one(); //выводим все что получилось
+        if(!$user || ($user['sex']==0 && $user['moderate']!=1))
+            throw new \yii\web\NotFoundHttpException('User not found or blocked');
+
+        return $this->render('user',$user);
     }
 }

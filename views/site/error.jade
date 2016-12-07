@@ -1,9 +1,7 @@
 -
     use yii\helpers\Html;
-    $this->title = $name;
+    $view->title = $name;
 
 .site-error
-    .title_1
-        span= $this -> title
     .alert.alert-danger
         != nl2br(Html::encode($message))
