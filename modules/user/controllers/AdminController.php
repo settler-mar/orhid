@@ -35,7 +35,7 @@ class AdminController extends Controller
 
         $this->view->registerJsFile('/js/bootstrap.min.js');
         $this->view->registerJsFile('/js/admin.js');
-        $this->view->registerCssFile('/css/bootstrap.min.css');
+        $this->view->registerCssFile('/css/admin.css');
         return true;
     }
     /**

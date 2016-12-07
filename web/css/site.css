@@ -809,8 +809,6 @@ img {
 .content {
     padding: 40px 0 50px 0;
     background: #fff url(../img/bg_3.jpg) no-repeat center -60px;
-    height: 100%;
-    margin-bottom: 160px;
 }
 
 .content .anketa_all {
@@ -2576,6 +2574,11 @@ input {
     filter: blur(3px);
 }
 
+.wrapper {
+    max-width: 1200px;
+    margin: auto
+}
+
 .ui-slider {
     width: 200px;
     display: inline-block;
@@ -2610,14 +2613,4 @@ table input {
     padding: 5px;
 }
 
-.admin_top_menu{
-    width: 100%;
-    height: 50px;
-}
 
-.admin_top_menu li{ display: inline-block;}
-.admin_top_menu li li{ display: block;}
-.admin_top_menu a{padding: 15px 25px;display: block;background: #994d53; color:#ffffff;}
-.admin_top_menu a:hover{background: #4f272a;}
-.admin_top_menu ul ul {display: none;position: absolute;z-index: 9;}
-.admin_top_menu li:hover ul{ display: block;}
