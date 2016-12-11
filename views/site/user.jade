@@ -110,3 +110,11 @@
                 a.photo_people(href= $photo style= 'background-image:url('.$photo.');')
             -}
     -}
+    - if( strlen($profile['video_about']) > 0){
+        object#videoplayer6381(type='application/x-shockwave-flash', data='/player/uppod.swf', width='320', height='240')
+            param(name='bgcolor', value='#ffffff')
+            param(name='allowFullScreen', value='true')
+            param(name='allowScriptAccess', value='always')
+            param(name='movie', value='/player/uppod.swf')
+            param(name='flashvars', value="comment=test&st=/player/video209-1292.txt&file=/".$profile['video_about'])
+    -}
