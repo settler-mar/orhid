@@ -74,10 +74,7 @@ class Profile extends \yii\db\ActiveRecord
                 'maxSize' => 1024*1024*6,
                 'skipOnEmpty' => true
             ],
-            /*[['video','video_about'], 'file',
-                'maxSize' => 1,//1024*1024*6,
-                'skipOnEmpty' => true
-            ],*/
+            [['video','video_about'],'validateVideo','params'=>['maxSize'=>1024*1024*150]],
             [['occupation', 'lang_name', 'address', 'about', 'ideal_relationship', 'passport_img_1', 'passport_img_2', 'passport_img_3', 'photos', 'video'], 'string', 'max' => 255],
         ];
     }
@@ -89,6 +86,14 @@ class Profile extends \yii\db\ActiveRecord
         }
     }
 
+	public function validateVideo($attribute, $params){
+		$file = \yii\web\UploadedFile::getInstance($this, $attribute);
+        if ($file) {
+			if($file->size>$params['maxSize']){
+				$this->addError($attribute, 'Max video size '.((int)($params['maxSize']/(1024*1024))).' Mb ');
+			}
+		}
+	}
     /**
      * @inheritdoc
      */
@@ -118,9 +123,9 @@ class Profile extends \yii\db\ActiveRecord
             'address' => 'Address',
             'about' => 'More about me',
             'ideal_relationship' => 'Ideal Relationship',
-            'passport_img_1' => 'Passport: 1-й разворот',
-            'passport_img_2' => 'Passport: семейное положение',
-            'passport_img_3' => 'Passport: прописка',
+            'passport_img_1' => '1-й разворот',
+            'passport_img_2' => 'Семейное положение',
+            'passport_img_3' => 'Прописка',
             'photos' => 'Personal photo',
             'photo1' => 'Personal photo',
             'photo2' => 'Personal photo',
@@ -381,6 +386,7 @@ class Profile extends \yii\db\ActiveRecord
         if(!$list)return false;
 
         if(is_array($sel))$sel=$sel[$param];
+        if($sel==null)return false;
         return $list[$sel];
     }
 
@@ -393,6 +399,16 @@ class Profile extends \yii\db\ActiveRecord
         //После сохранения обрабатываем файловую информацтю
         //Создаем массив для обновления
         $fileToBd = [];
+
+        //Видео
+        if($file=$this->saveVideo('video')){
+            $this->removeImage($this->video);
+            $fileToBd['video']=$file;
+        }
+        if($file=$this->saveVideo('video_about')){
+            $this->removeImage($this->video_about);
+            $fileToBd['video_about']=$file;
+        }
 
         //Страницы паспорта
         if($file=$this->saveImage('passport_img_1')){
@@ -408,15 +424,6 @@ class Profile extends \yii\db\ActiveRecord
             $fileToBd['passport_img_3']=$file;
         }
 
-        //Видео
-        if($file=$this->saveImage('video')){
-            $this->removeImage($this->video);
-            $fileToBd['video']=$file;
-        }
-        if($file=$this->saveImage('video_about')){
-            $this->removeImage($this->video_about);
-            $fileToBd['video_about']=$file;
-        }
 
         $photos=explode(',',$this->photos);
         $fileToBd['photos']=array();
@@ -486,6 +493,31 @@ class Profile extends \yii\db\ActiveRecord
 
 
             if($img) {
+                return $outFile;
+            }else{
+                return false;
+            }
+        }
+    }
+
+    public function saveVideo($name)
+    {
+        $file = \yii\web\UploadedFile::getInstance($this, $name);
+
+        if ($file) {
+
+            $path=Yii::$app->user->identity->userDir;// Путь для сохранения файлов
+
+            $name = rand ( 100000000000 , 999999999999 ); // Название файла
+            $exch = explode('.',$file->name);
+            $exch=$exch[count($exch)-1];
+            $name .= '.' . $exch;
+            $outFile = $path . $name ;   // Путь файла и название
+            if (!file_exists($path)) {
+                mkdir($path, 0777, true);   // Создаем директорию при отсутствии
+            }
+
+            if($file->saveAs($outFile)) {
                 return $outFile;
             }else{
                 return false;

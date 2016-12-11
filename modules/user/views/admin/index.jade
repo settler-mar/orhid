@@ -35,7 +35,7 @@
         'filter'=>false,
         'enableSorting'=>false,
         'value' => function ($model, $key, $index, $column) {
-          return '<img src="'.$model->photo.'" style="height: 100px;" \>';
+          return '<img src="'.$model->photo.'" style="height: 60px;" \>';
         },
       ],
       'username',
@@ -95,7 +95,7 @@
         'buttons'=>[
           'update' => function ($url, $model) {
             return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-              'title' => 'Create',
+              'title' => 'Update', 'class'=>'table_buttom',
             ]);
           },
           'view' => function ($url, $model) {

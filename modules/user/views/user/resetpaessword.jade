@@ -13,7 +13,7 @@
         p.signup-success= Yii::$app->session->getFlash('reset-success');
     - } else {
     -
-        $form = ActiveForm::begin(['id' => 'pass-form','fieldConfig' => ['template' => "{input}\n{hint}\n{error}"]]);
+        $form = ActiveForm::begin(['id' => 'pass-form','fieldConfig' => ['template' => "{label}{input}{error}"]]);
 
     != $form->field($forget, 'email')->textInput(['maxlength' => true, 'placeholder' => $forget->getAttributeLabel('email')]);
     != $form->field($forget, 'password')->passwordInput(['maxlength' => true, 'placeholder' => $forget->getAttributeLabel('password')]);

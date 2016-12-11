@@ -52,7 +52,7 @@ class User extends ActiveRecord  implements IdentityInterface
                 'scenarios' => ['insert', 'update'],
                 'path' => '@webroot',
                 'url' => '@web',
-                'ratio' => 0.9,
+                'ratio' => 230/285,
                 /*'crop_field' => 'photo_crop',
                 'cropped_field' => 'photo_cropped',*/
             ],
