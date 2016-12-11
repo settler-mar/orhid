@@ -30,8 +30,6 @@
 
         != PortfolioLine::Widget(['portfolio'=>$profile,'params'=>'height']);
 
-        != PortfolioLine::Widget(['portfolio'=>$profile,'params'=>'height']);
-
 
         p
             span City
@@ -64,9 +62,6 @@
         != PortfolioLine::Widget(['portfolio'=>$profile,'params'=>'smoking']);
 
         != PortfolioLine::Widget(['portfolio'=>$profile,'params'=>'marital_status']);
-
-        != PortfolioLine::Widget(['portfolio'=>$profile,'params'=>'marital_status']);
-
 
         -if( strlen($profile['occupation']) > 0){
             p
@@ -110,6 +105,7 @@
                 a.photo_people(href= $photo style= 'background-image:url('.$photo.');')
             -}
     -}
+
     - if( strlen($profile['video_about']) > 0){
         object#videoplayer6381(type='application/x-shockwave-flash', data='/player/uppod.swf', width='320', height='240')
             param(name='bgcolor', value='#ffffff')

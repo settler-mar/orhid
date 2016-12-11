@@ -211,7 +211,7 @@
           | Video about me:
         != $form->field($profile, 'video_about')->widget(FileInput::classname(),['type'=>'video']);
   -}
-
+  .clear
   .form-group
     -
       $submitOption = [
@@ -244,7 +244,7 @@
         != Html::submitButton('<i class="glyphicon glyphicon-user"></i>Send to moderation', $submitOption );
       - };
     -}
-
+.clear
 -ActiveForm::end();
 
 

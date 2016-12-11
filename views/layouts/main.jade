@@ -22,6 +22,10 @@ html(lang=Yii::$app->language xmlns="http://www.w3.org/1999/xhtml")
     head
         include ../base/_head
         - $view->head()
+        if (!Yii::$app->user->can('userManager'))
+          link(href='/css/media.css', rel='stylesheet')
+
+
         // END HEAD
     body(class=$this->params['body-class'])
         - $view->beginBody()

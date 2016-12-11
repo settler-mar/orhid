@@ -51,6 +51,7 @@ class ZodiacalSign extends Widget{
         $day = date('j',$this->date);
         $signsstart = array(1=>21, 2=>20, 3=>20, 4=>20, 5=>20, 6=>20, 7=>21, 8=>22, 9=>23, 10=>23, 11=>23, 12=>23);
         $index=$day < $signsstart[$month + 1] ? $month - 1 :$month % 12;
+        $index=$index % 12;
         return '<span class="zodiac_icon">'.$this->zodiacArray[$index]['unicode'].'</span>'.$this->zodiacArray[$index]['name'];
     }
 
