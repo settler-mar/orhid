@@ -116,6 +116,9 @@ $config = [
         ],
         'user' => [
             'class' => 'app\modules\user\Module',
+        ],
+        'slider' => [
+            'class' => 'app\modules\slider\Module',
         ]
     ],
 ];

@@ -1,0 +1,14 @@
+-use yii\helpers\Html
+-use yii\widgets\ActiveForm
+.slider-images-form
+
+  -$form = ActiveForm::begin();
+
+  !=$form->field($model, 'address')->fileInput(['options' =>['enctype' => 'multipart/form-data']])
+  !=$form->field($model, 'text')->textInput(['maxlength' => true])
+  !=$form->field($model, 'gender')->dropDownList(['M' => 'Men','W' => 'Woman'])
+
+  .form-group
+    !=Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])
+
+  -ActiveForm::end()
