@@ -15,10 +15,12 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/fonts.css',
+        'js/fancybox/jquery.fancybox.css',
         'css/site.css',
         'css/admin.css',
     ];
     public $js = [
+        'js/fancybox/jquery.fancybox.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

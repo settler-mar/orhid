@@ -75,6 +75,14 @@ $('.us_on').click(function(){
             }
         });
     }
+    file_img=$('[type=file]+div img');
+    for(i=0;i<file_img.length;i++){
+        $(file_img[i]).wrap($('<a/>', {
+            'href': $(file_img[i]).attr('src'),
+            'class':'fancy'
+        }));
+    }
+    $('a.photo_people,a.fancy').fancybox();
 });
 
 function init_file_prev(obj){
@@ -120,7 +128,7 @@ function init_file_prev(obj){
         $el.find('input').val('');
         $el.find('.help-block').html('');
         $(this).hide();
-    })
+    });
 }
 
 function show_msg(text,type){
