@@ -956,11 +956,12 @@ input {
 }
 
 .control-label {
-    width: 120px;
+    min-width: 120px;
     display: inline-block;
     text-align: right;
     padding: 0 10px;
     font-weight: bold;
+    white-space: nowrap;
 }
 
 .range_input {
@@ -1809,7 +1810,7 @@ overflow:hidden; position:relative;}
 }
 
 .crop-image-upload-container img {
-    max-width: 400px; 
+    max-width: 400px;
 }
 
 .jcrop-holder>img {
@@ -1876,3 +1877,11 @@ padding:8px 18px; border:none; color:#fff;}
 .table-striped  .form-control  {padding:0px 8px;margin-bottom:0px !important;margin-top:0 !important;}
 .form-group {position:relative;}
 .form-group .help-block {position:absolute !important; left:140px; text-align:left; bottom:-14px;}
+table [name="UserSearch[id]"]{
+    width:50px;
+    margin: 0;
+}
+table [name="UserSearch[username]"]{
+    width:100px;
+    margin: 0;
+}
