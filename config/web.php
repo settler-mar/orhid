@@ -83,6 +83,7 @@ $config = [
                 ],
             ],
         ],
+
     ],
     'params' => $params,
     'modules' => [
