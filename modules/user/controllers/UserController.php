@@ -149,6 +149,14 @@ class UserController extends Controller
         return $this->redirect(['/']);
     }
 
+    public function actionOnline(){
+        if(Yii::$app->user->isGuest)return;
+
+        User::getDb()->createCommand()->update(User::tableName(), [
+            'last_online'=> time(),
+        ], ['id' => Yii::$app->user->id])->execute();
+        return 'is online';
+    }
     /**
      * Профиль пользователя (личный кабинет)
      * @return string|\yii\web\Response

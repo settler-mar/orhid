@@ -140,3 +140,8 @@ function parse_input_json(data){
         location.href=data['href'];
     }
 }
+
+function onlineTrace() {
+    $.get('/online');
+    setTimeout(onlineTrace, 60000)
+}

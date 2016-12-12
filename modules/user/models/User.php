@@ -373,7 +373,8 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         self::getDb()->createCommand()->update(self::tableName(), [
             'ip' => $_SERVER["REMOTE_ADDR"],
-            'login_at' => date('Y-m-d H:i:s')
+            'login_at' => date('Y-m-d H:i:s'),
+            'last_online'=> time(),
         ], ['id' => $id])->execute();
     }
 
