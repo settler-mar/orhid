@@ -27,8 +27,10 @@ class CreateForm extends User
         //var_dump($this);
 
         //проверяем существовние пользователя
-        if($this->findByEmail($this->email)) {
-            $this->addError('email', 'Email already exists');
+        if(Yii::$app->user->isGuest) {
+            if ($this->findByEmail($this->email)) {
+                $this->addError('email', 'Email already exists');
+            }
         }
 
         if($this->findByUsername($this->username)) {

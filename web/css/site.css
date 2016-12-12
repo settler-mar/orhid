@@ -287,6 +287,7 @@ img {
 
 .top_soc a {
     margin-left: 6px;
+    text-decoration: none;
 }
 
 .top_soc a:hover {
@@ -487,7 +488,7 @@ img {
     margin-right: 10px;
 }
 
-.my_img img {
+.my_img {
     -moz-border-radius: 50%;
     -webkit-border-radius: 50%;
     -khtml-border-radius: 50%;
@@ -498,6 +499,12 @@ img {
     float: left;
     display: block;
     margin-top: -2px;
+    overflow: hidden;
+}
+
+.my_img img {
+    width: 44px;
+    float: left;
 }
 
 .top_us span {
@@ -956,11 +963,12 @@ input {
 }
 
 .control-label {
-    width: 120px;
+    min-width: 120px;
     display: inline-block;
     text-align: right;
     padding: 0 10px;
     font-weight: bold;
+    white-space: nowrap;
 }
 
 .range_input {
@@ -1876,11 +1884,6 @@ table input {
 .table-striped  .form-control  {padding:0px 8px;margin-bottom:0px !important;margin-top:0 !important;}
 .form-group {position:relative;}
 .form-group .help-block {position:absolute !important; left:140px; text-align:left; bottom:-14px;}
-.flag{
-    padding-left: 19px;
-    background-position: 0 50%;
-    background-repeat: no-repeat;
-}
 table [name="UserSearch[id]"]{
     width:50px;
     margin: 0;
@@ -1888,4 +1891,9 @@ table [name="UserSearch[id]"]{
 table [name="UserSearch[username]"]{
     width:100px;
     margin: 0;
+}
+.flag{
+    padding-left: 20px;
+    background-position: 0 50%;
+    background-repeat: no-repeat;
 }

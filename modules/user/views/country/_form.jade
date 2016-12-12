@@ -1,0 +1,17 @@
+-use yii\helpers\Html
+-use yii\widgets\ActiveForm
+.country-form
+
+  -$form = ActiveForm::begin();
+
+  !=$form->field($model, 'name_ru')->textInput(['maxlength' => true])
+  !=$form->field($model, 'name')->textInput(['maxlength' => true])
+  !=$form->field($model, 'code')->textInput(['maxlength' => true])
+  !=$form->field($model, 'currency_code')->textInput(['maxlength' => true])
+  !=$form->field($model, 'currency')->textInput(['maxlength' => true])
+  !=$form->field($model, 'iso')->textInput(['maxlength' => true])
+  !=$form->field($model, 'timezone')->textInput(['maxlength' => true])
+  .form-group
+    !=Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])
+
+  -ActiveForm::end()
