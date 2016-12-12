@@ -35,10 +35,13 @@ $config = [
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
+                //закрываем пямой доступ к /user/user
+                'user/user/<action>'=>'404',
+                'user/user/<action>/<action2>'=>'404',
                 //получение города по стране
                 'city/get/<id:\d+>' => 'city/get',
                 //Взаимодействия с пользователем на сайте
-                '<action:(registration|logout|confirm|reset|profile|resetpassword)>' => 'user/user/<action>',
+                '<action:(online|registration|logout|confirm|reset|profile|resetpassword)>' => 'user/user/<action>',
                 //базовые страницы в основном контроллере
                 '<action:(top|onlinehelp)>' => 'site/<action>',
                 //Страница пользователя
@@ -83,6 +86,7 @@ $config = [
                 ],
             ],
         ],
+
     ],
     'params' => $params,
     'modules' => [

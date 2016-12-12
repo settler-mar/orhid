@@ -11,15 +11,16 @@ use app\modules\user\models\User;
  * UserSearch represents the model behind the search form about `app\modules\user\models\User`.
  */
 class UserSearch extends User
-{
+{   public $fullName;
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'city', 'country', 'sex', 'status', 'role', 'created_at', 'updated_at','moderate'], 'integer'],
-            [['username', 'email', 'first_name', 'last_name', 'password', 'password_reset_token', 'auth_key'], 'safe'],
+            [['id', 'city', 'sex','status', 'role', 'created_at', 'updated_at','moderate'], 'integer'],
+            [['username', 'email', 'first_name','fullName', 'last_name', 'password', 'password_reset_token', 'auth_key'], 'safe'],
         ];
     }
 
@@ -46,6 +47,16 @@ class UserSearch extends User
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+        $sort=$dataProvider->getSort();
+        $sort->attributes['fullName']=[
+            'asc' => ['first_name' => SORT_ASC, 'last_name' => SORT_ASC],
+            'desc' => ['first_name' => SORT_DESC, 'last_name' => SORT_DESC],
+            'label' => 'Full Name',
+            'default' => SORT_ASC
+        ];
+        unset($sort->attributes['country']);
+        unset($sort->attributes['ip']);
+        $dataProvider->setSort($sort);
 
         $this->load($params);
 
@@ -56,24 +67,26 @@ class UserSearch extends User
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
+            'user.id' => $this->id,
             'city' => $this->city,
             'country' => $this->country,
             'sex' => $this->sex,
             'status' => $this->status,
-            'role' => $this->role,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'moderate' => $this->moderate,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'first_name', $this->first_name])
-            ->andFilterWhere(['like', 'last_name', $this->last_name])
-            ->andFilterWhere(['like', 'password', $this->password])
-            ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
-            ->andFilterWhere(['like', 'auth_key', $this->auth_key]);
+            ->andFilterWhere(['like', 'last_name', $this->last_name]);
+
+        $query->joinWith(['country']);
+
+        // фильтр по имени
+        if(strlen($this->fullName)>0) {
+            $query->andWhere('first_name LIKE "%' . $this->fullName . '%" ' .
+                'OR last_name LIKE "%' . $this->fullName . '%"'
+            );
+        }
 
         return $dataProvider;
     }

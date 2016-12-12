@@ -287,6 +287,7 @@ img {
 
 .top_soc a {
     margin-left: 6px;
+    text-decoration: none;
 }
 
 .top_soc a:hover {
@@ -431,8 +432,8 @@ img {
 .uzer_hed .form-group input {width:120px; padding:9px 8px; margin:0; }
 .uzer_hed .btn {padding:9px 18px 10px 18px; background:#aa3b3e; cursor:pointer; color:#f6e6d9;}
 .uzer_hed .help-block {position:absolute !important;width:130%;left:8px !important;
-bottom:-21px !important;
-background:#f0ddce; z-index:2;}
+    bottom:-21px !important;
+    background:#f0ddce; z-index:2;}
 .uzer_hed .field-loginform-rememberme {position:absolute; top:42px; left:8px; }
 .uzer_hed #loginform-rememberme {float:left; width:16px; height:16px; margin-right:4px;}
 .uzer_hed .btn:hover {background:#aa3b3e !important;}
@@ -487,7 +488,7 @@ background:#f0ddce; z-index:2;}
     margin-right: 10px;
 }
 
-.my_img img {
+.my_img {
     -moz-border-radius: 50%;
     -webkit-border-radius: 50%;
     -khtml-border-radius: 50%;
@@ -498,6 +499,12 @@ background:#f0ddce; z-index:2;}
     float: left;
     display: block;
     margin-top: -2px;
+    overflow: hidden;
+}
+
+.my_img img {
+    width: 44px;
+    float: left;
 }
 
 .top_us span {
@@ -989,14 +996,14 @@ input {
 }
 
 .field-profilefemale-address, .field-profilefemale-about, .field-profilefemale-ideal_relationship {width:100% !important;
- vertical-align:top !important;}
+    vertical-align:top !important;}
 .field-profilefemale-address textarea, .field-profilefemale-about textarea, .field-profilefemale-ideal_relationship textarea
 {width:70% !important; }
 .field-profilefemale-address .control-label, .field-profilefemale-about .control-label, .field-profilefemale-ideal_relationship .control-label
 {float:left;}
 
 .field-profilemale-address, .field-profilemale-about, .field-profilemale-ideal_relationship {width:100% !important;
- vertical-align:top !important;}
+    vertical-align:top !important;}
 .field-profilemale-address textarea, .field-profilemale-about textarea, .field-profilemale-ideal_relationship textarea
 {width:70% !important; }
 .field-profilemale-address .control-label, .field-profilemale-about .control-label, .field-profilemale-ideal_relationship .control-label
@@ -1038,7 +1045,7 @@ input {
 }
 
 .form_block_3 .form-group {display:inline-block; width:240px; background:none !important; vertical-align:top;
-overflow:hidden; position:relative;}
+    overflow:hidden; position:relative;}
 .form_block_3 .form-group img {width:100%;}
 .form_block_3 .input_file input {width:220px;}
 .form_block_3 .clear_photo {position:absolute; font-size:28px; top:2px; right:0;}
@@ -1859,12 +1866,12 @@ table input {
 
 .ui-slider {height:6px !important; margin-top:14px;}
 .ui-slider-handle {height:14px !important; width:14px !important; top:-5px !important; background:#ac3b3f !important;
-outline:none !important; border:1px solid #ac3b3f !important;}
+    outline:none !important; border:1px solid #ac3b3f !important;}
 .ui-slider-handle:hover {border:1px solid #ac3b3f !important;}
 .ui-slider-range {background:#7e9511 !important;}
 
 .btn-lg {border-radius:0; display:inline-block;  font-size:14px; float:none; margin:0 -8px 8px 8px;
-padding:8px 18px; border:none; color:#fff;}
+    padding:8px 18px; border:none; color:#fff;}
 .btn-lg:hover {background:#596a05 !important; border:none;}
 .sub_form_moderate {background:#ac3b3f;}
 .sub_form_moderate:hover {background:#ac3b3f !important; color:#fff;}
@@ -1885,3 +1892,11 @@ table [name="UserSearch[username]"]{
     width:100px;
     margin: 0;
 }
+<<<<<<< HEAD
+=======
+.flag{
+    padding-left: 20px;
+    background-position: 0 50%;
+    background-repeat: no-repeat;
+}
+>>>>>>> origin/master

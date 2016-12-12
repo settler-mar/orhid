@@ -458,7 +458,7 @@ class Profile extends \yii\db\ActiveRecord
             $fileToBd['birthday'] = $birthday;
         }
 
-        var_dump($fileToBd);
+        //var_dump($fileToBd);
         $this::getDb()
             ->createCommand()
             ->update($this->tableName(), $fileToBd, ['user_id' => $this->user_id])

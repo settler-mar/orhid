@@ -31,10 +31,12 @@
 .form-group {margin-bottom:0; padding:10px 0 2px 0;}
 .form-group:nth-child(2n) {background:#f3e9e0;}
 .form-group input {display:inline-block;}
-.form-group .form-control {display:inline-block; width:50%;}
+.form-group .form-control {display:inline-block;width:50%;}
 .control-label {margin-bottom:10px;}
 .form-group .chosen-single {width:200px;}
 .sub_form_reg {background:#7E9511; border-radius:0; padding:8px 30px}
 .sub_form_reg i {margin-right:8px;}
 .form-group .help-block {position:relative; left:140px; text-align:left;}
 .form-group .chosen-container {width:200px !important; }
+.form-control  {/* padding:10px 8px !important; */margin-bottom:12px;line-height: 1.42857143;}
+td .form-control  {padding: 0px 5px !important;}

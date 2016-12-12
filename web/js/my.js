@@ -38,17 +38,19 @@ $('.us_on').click(function(){
     var chosen_option={disable_search_threshold: 15}
      $("select.icon-select").chosenImage(chosen_option);
     $("select").not('.incon-select').chosen(chosen_option);
-    $('[name="RegistrationForm[country]"]').on('change',function(event) {
-        $('[name="RegistrationForm[city]"]').html('').trigger("chosen:updated");
+    $('[name*=country]').on('change',function(event) {
+        $('[name*=city]').html('').trigger("chosen:updated");
         $.post('/city/get/'+this.value,function(data){
-            city_list=$('[name="RegistrationForm[city]"]')
+            city_list=$('[name*=city]');
+            city_obj=[];
             for(i=0;i<data.length;i++){
                 var opt=$('<option/>',{
                     value:data[i]['id'],
                     text:data[i]['city']+'('+data[i]['state']+')',
-                })
-                city_list.append(opt)
+                });
+                city_obj.push(opt)
             }
+            city_list.append(city_obj);
             city_list.trigger("chosen:updated");
         },'json')
     });
@@ -137,4 +139,9 @@ function parse_input_json(data){
     if(data['href'].length>1){
         location.href=data['href'];
     }
+}
+
+function onlineTrace() {
+    $.get('/online');
+    setTimeout(onlineTrace, 60000)
 }

@@ -100,6 +100,8 @@ class User extends ActiveRecord  implements IdentityInterface
             'phone' => 'Phone',
             'password_hash' => 'Хеш пароля',
             'moderate' => 'Moderation',
+            'ip' => 'Last IP',
+            'fullName' => 'Full Name',
         ];
     }
 
@@ -116,11 +118,19 @@ class User extends ActiveRecord  implements IdentityInterface
     }
     public function getCountry()
     {
-        return $this->hasOne(LbCountry::className(), ['id' => 'city']);
+        return $this->hasOne(LbCountry::className(), ['id' => 'country']);
+    }
+    public function getCountry_()
+    {
+        return $this->hasOne(LbCountry::className(), ['id' => 'country']);
     }
     public function getRole()
     {
         return $this->hasMany(AuthAssignment::className(), ['user_id' => 'id']);
+    }
+    /* Геттер для полного имени человека */
+    public function getFullName() {
+        return $this->last_name . ' ' . $this->first_name;
     }
 
     public function getSexArray()
@@ -326,7 +336,19 @@ class User extends ActiveRecord  implements IdentityInterface
         $this->email_confirm_token = null;
     }
 
+    public function beforeSave($insert)
+    {
+        $oldValue = $this->getOldAttributes();
+        //проверяем существовние пользователя
+        if ($oldValue['email'] != $this->email){
+            if ($this->findByEmail($this->email)) {
+                $this->addError('email', 'Email already exists');
+                return false;
+            }
+        }
 
+        return true;
+    }
     /**
      * @param bool $insert
      * @param array $changedAttributes
@@ -351,7 +373,8 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         self::getDb()->createCommand()->update(self::tableName(), [
             'ip' => $_SERVER["REMOTE_ADDR"],
-            'login_at' => date('Y-m-d H:i:s')
+            'login_at' => date('Y-m-d H:i:s'),
+            'last_online'=> time(),
         ], ['id' => $id])->execute();
     }
 

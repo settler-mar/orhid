@@ -15,12 +15,10 @@
 -use app\components\fileImageInput\FileInput
 
 -$view->title = 'Profile';
--if ($model -> sex == 1){
-  -if ($model -> moderate == 0){
-    -$view->title.= ' (Not moderate)';
-  -}else if($model -> moderate == 2){
-      -$view->title.= ' (Awaiting moderation)';
-  -}
+-if ($model -> moderate == 0){
+  -$view->title.= ' (Not moderate)';
+-}else if($model -> moderate == 2){
+    -$view->title.= ' (Awaiting moderation)';
 -}
 -$view->params['breadcrumbs'][] = $view->title;
 
@@ -43,9 +41,13 @@
 
     != $form->field($model, 'last_name')->textInput(['placeholder' => 'Last name']);
 
-    .form-group
-      label.control-label Email
-      span= $model -> email
+    -if (Yii::$app->user->can('userManager')){
+      != $form->field($model, 'email')->textInput();
+    -}else{
+      .form-group
+        label.control-label Email
+        span= $model -> email
+    -}
 
     != $form->field($model, 'phone')-> widget(\yii\widgets\MaskedInput::className(), ['mask' => '+999-99-999-9999']);
 

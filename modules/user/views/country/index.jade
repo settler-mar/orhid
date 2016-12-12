@@ -1,0 +1,71 @@
+-use yii\helpers\Html
+-use yii\grid\GridView
+-$view->title = 'Countries'
+-$view->params['breadcrumbs'][] = $view->title
+.country-index
+  //-!= $view->render('_search', ['model' => $searchModel]) ?>
+
+  //p
+    !=Html::a('Create Country', ['create'], ['class' => 'btn btn-success'])
+div
+  .btn-group
+    a.btn.btn-primary.dropdown-toggle(data-toggle='dropdown', href='#')
+      | Set status
+      span.caret
+    ul.dropdown-menu(atribute='in_white')
+      li(state='1')
+        a In white list
+      li(state='0')
+        a In black list
+
+  -
+    $columns = [
+    ['class' => 'yii\grid\CheckboxColumn'],
+    ['class' => 'yii\grid\SerialColumn'],
+    'id',
+    [
+      'format' => 'raw',
+      'attribute'=>'flag',
+        //'filter'=>LbCountry::find()->all(),
+      'value' => function ($model, $key, $index, $column) {
+      $flag='<span class="flag"
+      style="background-image: url(/img/flags/16/'.$model->iso.'.png);"
+      ></span>';
+      return $flag;
+      }
+    ],
+    //'flag',
+    'name_ru',
+    'name',
+    //'code',
+    //'currency_code',
+    //'currency',
+    //'iso',
+    'timezone',
+    [
+      'attribute'=>'in_white',
+      'filter'=>array(''=>'All',0=>"Black",1=>"White"),
+      'value' => function ($model, $key, $index, $column) {
+        return $model->in_white==1?'white':'black';
+      },
+    ], [
+      'class' => 'yii\grid\ActionColumn',
+      'template'=>'{delete}',
+      'buttons'=>[
+      'update' => function ($url, $model) {
+        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+        'title' => 'Update', 'class'=>'table_buttom',
+      ]);
+      },
+      'view' => function ($url, $model) {
+      return Html::a('<span class="glyphicon glyphicon-log-in"></span>', $url, [
+      'title' => 'Enter',
+      ]);
+      },
+      ],
+      //'updateOptions' => ['label'=>\Yii::t('app', 'Edit')],
+      ],
+    ]
+
+  !=GridView::widget(['dataProvider' => $dataProvider, 'filterModel' => $searchModel, 'columns' => $columns ])
+

@@ -27,7 +27,7 @@ class CreateForm extends User
         //var_dump($this);
 
         //проверяем существовние пользователя
-        if($this->findByEmail($this->email)) {
+        if ($this->findByEmail($this->email)) {
             $this->addError('email', 'Email already exists');
         }
 
