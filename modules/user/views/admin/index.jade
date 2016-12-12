@@ -1,5 +1,6 @@
 -use yii\helpers\Html
 -use yii\grid\GridView
+-use app\models\LbCountry;
 -$view->title = 'Users'
 -$view->params['breadcrumbs'][] = $view->title
 .user-index
@@ -41,11 +42,38 @@
       'username',
       'email',
       //'phone',
-      'first_name',
-      'last_name',
+      'fullName',
+      //'first_name',
+      //'last_name',
       //'city',
-      //'country',
       [
+        'format' => 'raw',
+        'attribute'=>'ip',
+        'value' => function ($model, $key, $index, $column) {
+          $geo = new \jisoft\sypexgeo\Sypexgeo();
+          $out='';
+          if(strlen($model->ip)>6 && $geo->get($model->ip)) {
+              $out='<span class="flag"
+              style="background-image: url(/img/flags/16/'.$geo->country['iso'].'.png);"
+              title="'.$geo->country['name_en'].'"
+              ></span>';
+          }
+          return $out.$model->ip;
+        }
+      ],
+      //'ip',
+      [
+        'format' => 'raw',
+        'attribute'=>'country',
+        //'filter'=>LbCountry::find()->all(),
+        'value' => function ($model, $key, $index, $column) {
+          $flag='<span class="flag"
+                    style="background-image: url(/img/flags/16/'.$model->country_->iso.'.png);"
+                >'.
+                $model->country_->name.'</span>';
+          return $flag;
+        },
+      ],[
         'attribute'=>'sex',
         'filter'=>array(''=>'All',0=>"Men",1=>"Female"),
         'value' => function ($model, $key, $index, $column) {
@@ -76,11 +104,7 @@
         'attribute'=>'moderate',
         'filter'=>array(''=>'All',0=>"NOT",1=>"YES",2=>'Wait'),
         'value' => function ($model, $key, $index, $column) {
-          if($model->sex==1){
             return $model->moderate==1?'YES':($model->moderate==2?'Wait':'NOT');
-          }else{
-            return '-';
-          }
         },
       ],
       //'role',

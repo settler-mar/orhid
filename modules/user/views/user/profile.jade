@@ -15,12 +15,10 @@
 -use app\components\fileImageInput\FileInput
 
 -$view->title = 'Profile';
--if ($model -> sex == 1){
-  -if ($model -> moderate == 0){
-    -$view->title.= ' (Not moderate)';
-  -}else if($model -> moderate == 2){
-      -$view->title.= ' (Awaiting moderation)';
-  -}
+-if ($model -> moderate == 0){
+  -$view->title.= ' (Not moderate)';
+-}else if($model -> moderate == 2){
+    -$view->title.= ' (Awaiting moderation)';
 -}
 -$view->params['breadcrumbs'][] = $view->title;
 

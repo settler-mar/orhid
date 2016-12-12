@@ -100,6 +100,8 @@ class User extends ActiveRecord  implements IdentityInterface
             'phone' => 'Phone',
             'password_hash' => 'Хеш пароля',
             'moderate' => 'Moderation',
+            'ip' => 'Last IP',
+            'fullName' => 'Full Name',
         ];
     }
 
@@ -116,11 +118,19 @@ class User extends ActiveRecord  implements IdentityInterface
     }
     public function getCountry()
     {
-        return $this->hasOne(LbCountry::className(), ['id' => 'city']);
+        return $this->hasOne(LbCountry::className(), ['id' => 'country']);
+    }
+    public function getCountry_()
+    {
+        return $this->hasOne(LbCountry::className(), ['id' => 'country']);
     }
     public function getRole()
     {
         return $this->hasMany(AuthAssignment::className(), ['user_id' => 'id']);
+    }
+    /* Геттер для полного имени человека */
+    public function getFullName() {
+        return $this->last_name . ' ' . $this->first_name;
     }
 
     public function getSexArray()
