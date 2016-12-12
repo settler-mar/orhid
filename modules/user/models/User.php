@@ -340,12 +340,12 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         $oldValue = $this->getOldAttributes();
         //проверяем существовние пользователя
-        if ($oldValue['email'] != $this->email){
-            if ($this->findByEmail($this->email)) {
-                $this->addError('email', 'Email already exists');
-                return false;
-            }
+        if ($oldValue && isset($oldValue['email']) && $oldValue['email'] != $this->email){
+        if ($this->findByEmail($this->email)) {
+            $this->addError('email', 'Email already exists');
+            return false;
         }
+    }
 
         return true;
     }

@@ -1811,7 +1811,7 @@ overflow:hidden; position:relative;}
 }
 
 .crop-image-upload-container img {
-    max-width: 400px; 
+    max-width: 400px;
 }
 
 .jcrop-holder>img {
@@ -1886,17 +1886,8 @@ table [name="UserSearch[username]"]{
     width:100px;
     margin: 0;
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
 .flag{
     padding-left: 20px;
     background-position: 0 50%;
     background-repeat: no-repeat;
-<<<<<<< HEAD
 }
-
-=======
-}
->>>>>>> origin/master
