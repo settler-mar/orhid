@@ -336,7 +336,19 @@ class User extends ActiveRecord  implements IdentityInterface
         $this->email_confirm_token = null;
     }
 
+    public function beforeSave($insert)
+    {
+        $oldValue = $this->getOldAttributes();
+        //проверяем существовние пользователя
+        if ($oldValue['email'] != $this->email){
+            if ($this->findByEmail($this->email)) {
+                $this->addError('email', 'Email already exists');
+                return false;
+            }
+        }
 
+        return true;
+    }
     /**
      * @param bool $insert
      * @param array $changedAttributes

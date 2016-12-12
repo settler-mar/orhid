@@ -62,7 +62,7 @@ class AdminController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             //обработка поступивших данных
             //Перекидываем на страницу редактированиия профиля
-            return $this->redirect(['update','id'=>$model->id]);
+            return $this->redirect('/user/admin/update?id='.$model->id);
         }
 
 
@@ -82,7 +82,7 @@ class AdminController extends Controller
      */
     public function actionUpdate($id)
     {
-        $model = ProfileForm::findOne($id);
+        $model = ProfileForm::findOne(['id'=>$id]);
         if ($model === null) {
             throw new NotFoundHttpException( 'User is not found');
         }
@@ -224,7 +224,7 @@ class AdminController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = User::findOne($id)) !== null) {
+        if (($model = User::findOne(['id'=>$id])) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('User not found.');

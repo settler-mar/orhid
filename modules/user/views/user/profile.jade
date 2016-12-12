@@ -41,9 +41,13 @@
 
     != $form->field($model, 'last_name')->textInput(['placeholder' => 'Last name']);
 
-    .form-group
-      label.control-label Email
-      span= $model -> email
+    -if (Yii::$app->user->can('userManager')){
+      != $form->field($model, 'email')->textInput();
+    -}else{
+      .form-group
+        label.control-label Email
+        span= $model -> email
+    -}
 
     != $form->field($model, 'phone')-> widget(\yii\widgets\MaskedInput::className(), ['mask' => '+999-99-999-9999']);
 

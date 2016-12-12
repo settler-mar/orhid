@@ -48,7 +48,8 @@
       //'city',
       [
         'format' => 'raw',
-        'attribute'=>'ip',
+        'attribute'=>'Last ip / Country',
+
         'value' => function ($model, $key, $index, $column) {
           $geo = new \jisoft\sypexgeo\Sypexgeo();
           $out='';
@@ -58,21 +59,12 @@
               title="'.$geo->country['name_en'].'"
               ></span>';
           }
-          return $out.$model->ip;
+          $county='<span class="flag"
+            style="background-image: url(/img/flags/16/'.$model->country_->iso.'.png);"
+            >'.$model->country_->name.'</span>';
+
+          return $out.$model->ip.'<br>'.$county;
         }
-      ],
-      //'ip',
-      [
-        'format' => 'raw',
-        'attribute'=>'country',
-        //'filter'=>LbCountry::find()->all(),
-        'value' => function ($model, $key, $index, $column) {
-          $flag='<span class="flag"
-                    style="background-image: url(/img/flags/16/'.$model->country_->iso.'.png);"
-                >'.
-                $model->country_->name.'</span>';
-          return $flag;
-        },
       ],[
         'attribute'=>'sex',
         'filter'=>array(''=>'All',0=>"Men",1=>"Female"),
@@ -118,7 +110,7 @@
         'template'=>'{create}{update}{delete}',
         'buttons'=>[
           'update' => function ($url, $model) {
-            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
+            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', '/user/admin/update?id='.$model->id, [
               'title' => 'Update', 'class'=>'table_buttom',
             ]);
           },

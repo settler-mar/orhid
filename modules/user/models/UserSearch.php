@@ -55,6 +55,7 @@ class UserSearch extends User
             'default' => SORT_ASC
         ];
         unset($sort->attributes['country']);
+        unset($sort->attributes['ip']);
         $dataProvider->setSort($sort);
 
         $this->load($params);
@@ -71,19 +72,12 @@ class UserSearch extends User
             'country' => $this->country,
             'sex' => $this->sex,
             'status' => $this->status,
-            'role' => $this->role,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'moderate' => $this->moderate,
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'email', $this->email])
             ->andFilterWhere(['like', 'first_name', $this->first_name])
-            ->andFilterWhere(['like', 'last_name', $this->last_name])
-            ->andFilterWhere(['like', 'password', $this->password])
-            ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
-            ->andFilterWhere(['like', 'auth_key', $this->auth_key]);
+            ->andFilterWhere(['like', 'last_name', $this->last_name]);
 
         $query->joinWith(['country']);
 

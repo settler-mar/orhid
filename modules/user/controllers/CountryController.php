@@ -8,6 +8,7 @@ use app\modules\user\models\CountrySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * CountryController implements the CRUD actions for Country model.
@@ -75,5 +76,34 @@ class CountryController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionAjax_multi_set(){
+        $allover = array('in_white');
+        $res=array('status'=>0,'href'=>'');
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $atribute=Yii::$app->request->post('atribute');
+        if(!in_array($atribute,$allover)){
+            $res['status']=200;
+            $res['msg']='Error data';
+            return $res;
+        }
+        $keys = Yii::$app->request->post('keys');
+        if ($keys) {
+            //$user=User::find()->where('ID IN('.implode(',', $keys).')')->all();
+            Country::getDb()
+                ->createCommand()
+                ->update(
+                    Country::tableName(),
+                    [ $atribute => (int)Yii::$app->request->post('value')],
+                    'ID IN('.implode(',', $keys).')'
+                )->execute();
+            //$user->$atribute=(int)Yii::$app->request->post('value');
+            //$user->save();
+            $res['msg']='Successful saving data';
+            $res['href']='#';
+            Yii::$app->getSession()->setFlash('success', 'Successful saving data');
+        }
+        return $res;
     }
 }
