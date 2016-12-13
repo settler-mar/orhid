@@ -1,0 +1,25 @@
+-use yii\helpers\Html
+-use yii\grid\GridView
+-$view->title = 'Slider Images'
+-$view->params['breadcrumbs'][] = $view->title
+.slider-images-index
+  h1
+    !=Html::encode($view->title)
+  //-!= $view->render('_search', ['model' => $searchModel]) ?>
+
+  p
+    !=Html::a('Create Slider Images', ['create'], ['class' => 'btn btn-success'])
+
+
+  -
+    $columns = [
+    ['class' => 'yii\grid\SerialColumn'],
+    'image_id',
+    'address',
+    'text',
+    'gender',
+    ['class' => 'yii\grid\ActionColumn'],
+    ]
+
+  !=GridView::widget(['dataProvider' => $dataProvider, 'filterModel' => $searchModel, 'columns' => $columns ])
+
