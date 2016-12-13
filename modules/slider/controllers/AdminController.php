@@ -26,6 +26,20 @@ class AdminController extends Controller
         ];
     }
 
+    function beforeAction($action) {
+
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('userManager')) {
+            throw new \yii\web\ForbiddenHttpException('You are not allowed to perform this action.');
+            return false;
+        }
+
+        $this->view->registerJsFile('/js/bootstrap.min.js');
+        $this->view->registerJsFile('/js/admin.js');
+        $this->view->registerCssFile('/css/bootstrap.min.css');
+        $this->view->registerCssFile('/css/admin.css',['depends'=>['app\assets\AppAsset']]);
+        return true;
+    }
+
     /**
      * Lists all SliderImages models.
      * @return mixed
@@ -131,10 +145,4 @@ class AdminController extends Controller
         }
     }
 
-    function beforeAction($action) {
-        $this->view->registerJsFile('/js/bootstrap.min.js');
-        $this->view->registerJsFile('/js/admin.js');
-        $this->view->registerCssFile('/css/bootstrap.min.css');
-        return true;
-    }
 }

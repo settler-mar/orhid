@@ -75,6 +75,7 @@ class User extends ActiveRecord  implements IdentityInterface
             ['photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert']],
             [['photo'], 'image',
                 'minHeight' => 500,
+                'maxSize'=>3*1024*1024,
                 'skipOnEmpty' => true
             ],
         ];
