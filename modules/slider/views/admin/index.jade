@@ -1,25 +1,30 @@
 -use yii\helpers\Html
 -use yii\grid\GridView
+-use yii\helpers\Url
 -$view->title = 'Slider Images'
 -$view->params['breadcrumbs'][] = $view->title
 .slider-images-index
-  h1
-    !=Html::encode($view->title)
-  //-!= $view->render('_search', ['model' => $searchModel]) ?>
-
   p
-    !=Html::a('Create Slider Images', ['create'], ['class' => 'btn btn-success'])
-
-
+    !=Html::a('Create Slider Image', ['create'], ['class' => 'btn btn-success'])
   -
     $columns = [
     ['class' => 'yii\grid\SerialColumn'],
-    'image_id',
-    'address',
-    'text',
-    'gender',
-    ['class' => 'yii\grid\ActionColumn'],
+    ['header' => 'Slide',
+    'format' => 'raw',
+    'value' => function($data){return Html::img($data->address,['style' => 'width:300px;']);},
+    ],//'address:image',
+    ['header' =>'Text','attribute'=>'text'],
+    [
+    'header' =>'Gender',
+    'attribute'=>'gender',
+     'filter' => array('' => 'All', 'W' => 'Women', 'M' => 'Men'),
+    ],
+    ['class' => 'yii\grid\ActionColumn',
+    'header'=>'Action',
+    'headerOptions' => ['width' => '80'],
+    'template' => '{update} {delete}',
+    ],
     ]
 
-  !=GridView::widget(['dataProvider' => $dataProvider, 'filterModel' => $searchModel, 'columns' => $columns ])
+  !=GridView::widget(['dataProvider' => $dataProvider, 'filterModel' => $searchModel, 'columns' => $columns])
 
