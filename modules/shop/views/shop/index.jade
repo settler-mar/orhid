@@ -1,0 +1,27 @@
+-use yii\helpers\Html
+-use yii\grid\GridView
+-$view->title = 'Shop items'
+-$view->params['breadcrumbs'][] = $view->title
+.shop-store-index
+  //-!= $view->render('_search', ['model' => $searchModel]) ?>
+
+  p
+    !=Html::a('Create Shop Store', ['create'], ['class' => 'btn btn-success'])
+
+
+  -
+    $columns = [
+    ['class' => 'yii\grid\SerialColumn'],
+    'id',
+    'title',
+    'description:ntext',
+    'picture',
+    'price',
+    //'comment',
+    'active',
+    //'created_at',
+    ['class' => 'yii\grid\ActionColumn'],
+    ]
+
+  !=GridView::widget(['dataProvider' => $dataProvider, 'filterModel' => $searchModel, 'columns' => $columns ])
+

@@ -96,6 +96,9 @@ $config = [
         'user' => [
             'class' => 'app\modules\user\Module',
         ],
+        'shop' => [
+            'class' => 'app\modules\shop\Module',
+        ],
         'rbac' =>  [
             'class' => 'johnitvn\rbacplus\Module',
             'userModelClassName'=>null,
