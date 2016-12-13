@@ -94,7 +94,8 @@ function init_file_prev(obj){
                 baze_img
                     .css('background','none')
                     .append(img)
-                reader.onload = (function(aImg) {
+                    show_msg("baze_img",4)
+                    reader.onload = (function(aImg) {
                     return function(e) {
                         aImg.src = e.target.result;
                         aImg.longdesc= e.target.result
@@ -121,20 +122,30 @@ function init_file_prev(obj){
     })
 }
 
+map = [0,0,0,0,0,0,0,0];
 function show_msg(text,type){
-    alert(text);
+    flag = 0;
+    for (i=0;i<8;i++){      // searching free space
+        if (flag==0) {  // still don't find
+            if (map[i] == 0) {
+                flag = 1;
+                indexAttr = i;
+                map[i] = 1;
+            }  // find
+        }
+    }
+    $('body').append('<div class="notification'+type+' animated bounceInLeft" indexAttr="'+indexAttr+'"  style="top:'+indexAttr*100+'px"><p>'+text+'</p><a href="">Close</a></div>>');
+    $('.notification'+type).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
+        function(){
+            $(this).removeClass('animated bounceInLeft');
+            $(this).addClass('animated bounceOut');
+            $(this).css('-animation-delay', '5s');
+            $(this).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',function(){
+                $(this).removeClass('animated bounceOut');
+                map[$(this).attr('indexAttr')] = 0;
+                $(this).remove();
+            })
+    });
 }
+show_msg("Mes1",1);
 
-function parse_input_json(data){
-    if(data['status']!=0){
-        show_msg(data['msg'],'err');
-        return;
-    }
-    show_msg(data['msg'],'info');
-    if(data['href']=='#'){
-        location.reload()
-    }
-    if(data['href'].length>1){
-        location.href=data['href'];
-    }
-}

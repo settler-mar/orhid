@@ -1713,6 +1713,15 @@ input {
     cursor: pointer;
 }
 
+.notification1,.notification2,.notification3,.notification4{
+    position: fixed;
+    display: block;
+    height: 100px;
+    width:300px;
+    right:0;
+    background: green;
+}
+
 /*------------MEDIA-----------*/
 @media (max-width: 1200px) {
     .top_slogan {
