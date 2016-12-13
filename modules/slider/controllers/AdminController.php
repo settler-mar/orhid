@@ -61,7 +61,6 @@ class AdminController extends Controller
     public function actionCreate()
     {
         $model = new SliderImages();
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             //return $this->redirect(['view', 'id' => $model->image_id]);
             return $this->redirect(['index']);
@@ -82,23 +81,16 @@ class AdminController extends Controller
     {
         $model = $this->findModel($id);
         $old_address = $this->findModel($id)->address;
-        if ($model->load(Yii::$app->request->post())){   // after update
-            if ($model->address == '') {               // update only text fields
-                $model->address = $old_address;
-                $model->save();
-                return $this->redirect(['index']);
-            }
-            else{    // update picture field
-                if ($old_address!=null) {
-                    if (file_exists($old_address)) {
-                        unlink($old_address);
-                    }
-                }
-                $model->text = $model->text.' '.$old_address.'777';
-                if ($model->save()) {
-                    return $this->redirect(['index']);
+        if ($model->load(Yii::$app->request->post())){
+            $model->address = $old_address;
+            if ($model->save()){
+                if ($model->image!=null){
+                  if (file_exists($old_address)) {
+                    unlink($old_address);
+                  }
                 }
             }
+            return $this->redirect(['index']);
         }
         else {                                              // begin update
             return $this->render('update', [

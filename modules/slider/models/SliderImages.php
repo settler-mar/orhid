@@ -34,7 +34,7 @@ class SliderImages extends \yii\db\ActiveRecord
             [[ 'gender'], 'required'],
             [['text'], 'string', 'max' => 256],
             [['gender'], 'string', 'max' => 10],
-            [['address'], 'file','extensions' => 'jpg','skipOnEmpty' => true ],
+            [['address'], 'file','extensions' => ['jpg','jepg'],'skipOnEmpty' => true ],
         ];
     }
 
@@ -53,6 +53,7 @@ class SliderImages extends \yii\db\ActiveRecord
 
     public function beforeSave($insert)
     {
+           // print_r('beforeSave $this->address='.$this->address.' $this->text='.$this->text.' $this->gender='.$this->gender.' |');
             $this->string = substr(uniqid('img'),0,12);
             $this->image = UploadedFile::getInstance($this, 'address');
             if ($this->image!=null) {
@@ -60,7 +61,6 @@ class SliderImages extends \yii\db\ActiveRecord
                 $this->image->saveAs($this->filename);
                 $this->address = '' . $this->filename;
             }
-            //else return false;
         return parent::beforeSave($insert);
     }
 }
