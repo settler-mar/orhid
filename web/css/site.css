@@ -1712,13 +1712,19 @@ input {
     margin: 0 auto;
     cursor: pointer;
 }
-
-.notification1,.notification2,.notification3,.notification4{
+.notification_container{
     position: fixed;
     display: block;
-    height: 100px;
     width:300px;
     right:0;
+
+    overflow:hidden;
+}
+.notification_item{
+    display: none;
+    height:100px;
+    border: 1px solid black;
+    margin: 5px;
     background: green;
 }
 

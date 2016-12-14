@@ -122,30 +122,27 @@ function init_file_prev(obj){
     })
 }
 
-map = [0,0,0,0,0,0,0,0];
+var notificationIndex=0;
 function show_msg(text,type){
-    flag = 0;
-    for (i=0;i<8;i++){      // searching free space
-        if (flag==0) {  // still don't find
-            if (map[i] == 0) {
-                flag = 1;
-                indexAttr = i;
-                map[i] = 1;
-            }  // find
-        }
+    console.log($('.notification_container').length);
+    if (!($(".notification_container").length)) {
+        $('body').append('<ul class="notification_container"></ul>');
     }
-    $('body').append('<div class="notification'+type+' animated bounceInLeft" indexAttr="'+indexAttr+'"  style="top:'+indexAttr*100+'px"><p>'+text+'</p><a href="">Close</a></div>>');
-    $('.notification'+type).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',
-        function(){
-            $(this).removeClass('animated bounceInLeft');
-            $(this).addClass('animated bounceOut');
-            $(this).css('-animation-delay', '5s');
-            $(this).one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend',function(){
-                $(this).removeClass('animated bounceOut');
-                map[$(this).attr('indexAttr')] = 0;
-                $(this).remove();
-            })
-    });
+    notificationIndex++;
+    $('.notification_container').append('<li class="notification_item indexLi'+notificationIndex+'"><p>Message №'+notificationIndex+'</p><a>Close</a></li>');
+    $('.indexLi'+notificationIndex).slideDown(100).
+                                    delay('5000').
+                                    slideUp("slow",function(){
+                                                               $(this).remove();
+                                                                //if ($('.notification_container').size()==0) {
+                                                                //$('.notification_container').remove();
+                                                             });//remove
+    $('.indexLi'+notificationIndex).on("click",'a',(function(){
+                                                               $(this).parent().remove();
+                                                               //if ($('.notification_container').size()==0) {
+                                                                 //  $('.notification_container').remove();
+                                                               }));
 }
-show_msg("Mes1",1);
+setInterval("show_msg('Mes1',1);",2000);
+
 
