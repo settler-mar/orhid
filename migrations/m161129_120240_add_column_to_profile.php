@@ -4,6 +4,8 @@ use yii\db\Migration;
 
 class m161129_120240_add_column_to_profile extends Migration
 {
+    public $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+
     public function up()
     {
         $this->addColumn('user', 'phone', $this->string());

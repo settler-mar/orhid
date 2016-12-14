@@ -26,6 +26,20 @@ class ShopController extends Controller
         ];
     }
 
+    function beforeAction($action) {
+
+        if (Yii::$app->user->isGuest || !Yii::$app->user->can('userManager')) {
+            throw new \yii\web\ForbiddenHttpException('You are not allowed to perform this action.');
+            return false;
+        }
+
+        $this->view->registerJsFile('/js/bootstrap.min.js');
+        $this->view->registerJsFile('/js/admin.js');
+        $this->view->registerCssFile('/css/bootstrap.min.css');
+        $this->view->registerCssFile('/css/admin.css',['depends'=>['app\assets\AppAsset']]);
+        return true;
+    }
+
     /**
      * Lists all ShopStore models.
      * @return mixed
@@ -81,13 +95,19 @@ class ShopController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+        $post=Yii::$app->request->post();
+        if(isset($post['ShopStore'])) {
+            //удаляем картинку до сохранения
+            $post['ShopStore']['picture'] = $model->picture;
         }
+
+        if ($model->load($post) && $model->save()) {
+            return $this->redirect(['index']);
+        }
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+
     }
 
     /**
@@ -99,7 +119,6 @@ class ShopController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
 

@@ -6,21 +6,38 @@
   //-!= $view->render('_search', ['model' => $searchModel]) ?>
 
   p
-    !=Html::a('Create Shop Store', ['create'], ['class' => 'btn btn-success'])
+    !=Html::a('Create Shop item', ['create'], ['class' => 'btn btn-success'])
 
 
   -
     $columns = [
-    ['class' => 'yii\grid\SerialColumn'],
-    'id',
-    'title',
-    'description:ntext',
-    'picture',
-    'price',
-    //'comment',
-    'active',
-    //'created_at',
-    ['class' => 'yii\grid\ActionColumn'],
+      ['class' => 'yii\grid\SerialColumn'],
+      'id',
+      'title',
+      'description:ntext',
+      [
+        'format' => 'raw',
+        'attribute'=>'picture',
+        'filter'=>false,
+        'enableSorting'=>false,
+        'value' => function ($model, $key, $index, $column) {
+        return '<img src="'.$model->picture.'" style="height: 60px;" \>';
+        },
+      ],
+      'price',
+      //'comment',
+      [
+        'attribute'=>'active',
+        'filter'=>array(''=>'All',0=>"Hidden",1=>"Active"),
+        'value' => function ($model, $key, $index, $column) {
+          return $model->active==1?'Active':'Hidden';
+        },
+      ],
+      //'created_at',
+      [
+        'class' => 'yii\grid\ActionColumn',
+        'template'=>'{create}{update}{delete}'
+      ],
     ]
 
   !=GridView::widget(['dataProvider' => $dataProvider, 'filterModel' => $searchModel, 'columns' => $columns ])

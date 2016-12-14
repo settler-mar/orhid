@@ -4,6 +4,8 @@ use yii\db\Migration;
 
 class m161213_132827_crate_shop_table extends Migration
 {
+    public $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+
     public function up()
     {
         $this->createTable('shop_store', [
@@ -14,7 +16,8 @@ class m161213_132827_crate_shop_table extends Migration
             'price' => $this->float()->notNull(),
             'comment' => $this->string(255),
             'active' => $this->boolean()->defaultValue(true),
-            'created_at' => $this->datetime()->notNull(),
+            'created_at' => $this->integer()->notNull(),
+            'update_at' => $this->integer(),
         ]);
     }
 

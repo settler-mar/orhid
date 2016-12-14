@@ -46,3 +46,4 @@ params.php
 *.tmp
 *.local
 Будет удалено web/assets/
+/web/img/shop_item/
