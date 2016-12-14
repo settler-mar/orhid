@@ -86,7 +86,6 @@ $config = [
                 ],
             ],
         ],
-
     ],
     'params' => $params,
     'modules' => [
@@ -110,6 +109,9 @@ $config = [
                 return Yii::$app->user->can('rbac');
             },
             'beforeAction'=>null
+        ],
+        'slider' => [
+            'class' => 'app\modules\slider\Module',
         ]
     ],
 ];

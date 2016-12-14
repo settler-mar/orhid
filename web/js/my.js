@@ -65,16 +65,33 @@ $('.us_on').click(function(){
     })
 
 
-    var slider = $('.ui-slider')
+    var slider = $('#headerimgs img');
     if (slider.length>0) {
-        slider.slider({
-            slide: function (event, ui) {
-                elements = $(this).parent().find('.range_value_block input')
-                elements[0].value = ui.values[0]
-                elements[1].value = ui.values[1]
-            }
-        });
+        slide_pic=[];
+        for(i=0;slider.length>i;i++){
+            img=$(slider[i]).attr('src');
+            slide=$('<div/>',{
+                'class':'slide'+(i==0?' active':''),
+                'style':'background-image: url('+img+');'
+            });
+            slide_pic.push(slide)
+        }
+        slider.remove();
+        $('#headerimgs').append(slide_pic);
+        setInterval(function() {
+            sl=$('#headerimgs .active')
+                .removeClass('active');
+            index=sl.index();
+            index++;
+            slides=$('#headerimgs .slide');
+            if(index>=slides.length){
+                index=0
+            };
+            slides.eq(index).addClass('active')
+        },5000)
     }
+
+
     file_img=$('[type=file]+div img');
     for(i=0;i<file_img.length;i++){
         $(file_img[i]).wrap($('<a/>', {
@@ -82,7 +99,7 @@ $('.us_on').click(function(){
             'class':'fancy'
         }));
     }
-    $('a.photo_people,a.fancy').fancybox();
+    $('a.photo_people,a.fancy,.one_img a').fancybox();
 });
 
 function init_file_prev(obj){

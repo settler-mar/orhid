@@ -1,9 +1,11 @@
 - $view->params['hide_title']=true;
+-
+    use app\modules\slider\SliderWidget;
+
 .top_slyde
     // SLYDER
     div(id=headerimgs)
-        .headerimg(id=headerimg1)
-        .headerimg(id=headerimg2)
+        !=SliderWidget::widget()
     // SLYDER END
     .top_star
         .into

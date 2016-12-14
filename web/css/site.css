@@ -5,7 +5,8 @@
 }
 
 html, body {
-    margin: 0; min-width:1240px;
+    margin: 0;
+    min-width: 1240px;
     padding: 0;
 }
 
@@ -148,10 +149,11 @@ img {
 }
 
 .top_slyde {
-    background: url(../img/slyde_1.jpg) no-repeat top center;
-    width: 100%;
-    height: 670px;
+    width: 100vw;
+    height: 100vh;
     position: relative;
+    overflow: hidden;
+    display: block;
 }
 
 /*---------------SLYDER-------------*/
@@ -265,6 +267,7 @@ img {
 .top_menu ul li {
     float: left;
     margin-right: 30px;
+    list-style: none;
 }
 
 .top_menu ul li a {
@@ -428,15 +431,43 @@ img {
     width: 380px;
 }
 
-.uzer_hed .form-group {display:inline-block !important;  width:130px; padding:0; margin-right:10px; position:relative;}
-.uzer_hed .form-group input {width:120px; padding:9px 8px; margin:0; }
-.uzer_hed .btn {padding:9px 18px 10px 18px; background:#aa3b3e; cursor:pointer; color:#f6e6d9;}
-.uzer_hed .help-block {position:absolute !important;width:130%;left:8px !important;
-bottom:-21px !important;
-background:#f0ddce; z-index:2;}
-.uzer_hed .field-loginform-rememberme {position:absolute; top:42px; left:8px; }
-.uzer_hed #loginform-rememberme {float:left; width:16px; height:16px; margin-right:4px;}
-.uzer_hed .btn:hover {background:#aa3b3e !important;}
+.uzer_hed .form-group {
+    display: inline-block !important;
+    width: 130px;
+    padding: 0;
+    margin-right: 10px;
+    position: relative;
+}
+
+.uzer_hed .form-group input {
+    width: 120px;
+    padding: 9px 8px;
+    margin: 0;
+}
+
+.uzer_hed .btn {
+    padding: 9px 18px 10px 18px;
+    background: #aa3b3e;
+    cursor: pointer;
+    color: #f6e6d9;
+}
+
+.uzer_hed .field-loginform-rememberme {
+    position: absolute;
+    top: 42px;
+    left: 8px;
+}
+
+.uzer_hed #loginform-rememberme {
+    float: left;
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+}
+
+.uzer_hed .btn:hover {
+    background: #aa3b3e !important;
+}
 
 .top_mes {
     position: relative;
@@ -925,9 +956,6 @@ background:#f0ddce; z-index:2;}
     font-weight: 600;
 }
 
-
-
-
 .prof tr th span {
     display: inline-block;
     margin-left: 5px;
@@ -989,20 +1017,31 @@ input {
     color: #ac3b3f;
 }
 
-.field-profilefemale-address, .field-profilefemale-about, .field-profilefemale-ideal_relationship {width:100% !important;
- vertical-align:top !important;}
-.field-profilefemale-address textarea, .field-profilefemale-about textarea, .field-profilefemale-ideal_relationship textarea
-{width:70% !important; }
-.field-profilefemale-address .control-label, .field-profilefemale-about .control-label, .field-profilefemale-ideal_relationship .control-label
-{float:left;}
+.field-profilefemale-address, .field-profilefemale-about, .field-profilefemale-ideal_relationship {
+    width: 100% !important;
+    vertical-align: top !important;
+}
 
-.field-profilemale-address, .field-profilemale-about, .field-profilemale-ideal_relationship {width:100% !important;
- vertical-align:top !important;}
-.field-profilemale-address textarea, .field-profilemale-about textarea, .field-profilemale-ideal_relationship textarea
-{width:70% !important; }
-.field-profilemale-address .control-label, .field-profilemale-about .control-label, .field-profilemale-ideal_relationship .control-label
-{float:left;}
+.field-profilefemale-address textarea, .field-profilefemale-about textarea, .field-profilefemale-ideal_relationship textarea {
+    width: 70% !important;
+}
 
+.field-profilefemale-address .control-label, .field-profilefemale-about .control-label, .field-profilefemale-ideal_relationship .control-label {
+    float: left;
+}
+
+.field-profilemale-address, .field-profilemale-about, .field-profilemale-ideal_relationship {
+    width: 100% !important;
+    vertical-align: top !important;
+}
+
+.field-profilemale-address textarea, .field-profilemale-about textarea, .field-profilemale-ideal_relationship textarea {
+    width: 70% !important;
+}
+
+.field-profilemale-address .control-label, .field-profilemale-about .control-label, .field-profilemale-ideal_relationship .control-label {
+    float: left;
+}
 
 .form_block_2 {
     margin: 16px 0;
@@ -1038,13 +1077,37 @@ input {
     overflow: hidden;
 }
 
-.form_block_3 .form-group {display:inline-block; width:240px; background:none !important; vertical-align:top;
-overflow:hidden; position:relative;}
-.form_block_3 .form-group img {width:100%;}
-.form_block_3 .input_file input {width:220px;}
-.form_block_3 .clear_photo {position:absolute; font-size:28px; top:2px; right:0;}
-.form_block_3 .field-profilefemale-video {width:320px;}
-.form_block_3 .field-profilefemale-video_about {width:320px;}
+.form_block_3 .form-group {
+    display: inline-block;
+    width: 240px;
+    background: none !important;
+    vertical-align: top;
+    overflow: hidden;
+    position: relative;
+}
+
+.form_block_3 .form-group img {
+    width: 100%;
+}
+
+.form_block_3 .input_file input {
+    width: 220px;
+}
+
+.form_block_3 .clear_photo {
+    position: absolute;
+    font-size: 28px;
+    top: 2px;
+    right: 0;
+}
+
+.form_block_3 .field-profilefemale-video {
+    width: 320px;
+}
+
+.form_block_3 .field-profilefemale-video_about {
+    width: 320px;
+}
 
 .form_block_3 p {
     font-weight: 400;
@@ -1140,12 +1203,6 @@ overflow:hidden; position:relative;}
 
 #profile_mini {
     display: none;
-
-
-
-
-
-
 }
 
 .profile {
@@ -1269,7 +1326,7 @@ overflow:hidden; position:relative;}
     margin: 0 2% 2% 0;
 }
 
-.photo_people{
+.photo_people {
     width: 7vw;
     height: 7vw;
     background-size: cover;
@@ -1277,10 +1334,10 @@ overflow:hidden; position:relative;}
     background-repeat: no-repeat;
     transform: scale3d(1,1,2);
 }
+
 /*.photo_people:hover{
     transform: scale3d(1.1,1.1,2);
 }*/
-
 .aboutme {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -1361,13 +1418,14 @@ overflow:hidden; position:relative;}
 }
 
 .foot_button {
-    background: #574338; width:auto; text-align:center;
+    background: #574338;
+    width: auto;
+    text-align: center;
     border: none;
     padding: 9px 20px;
     outline: none;
     color: #c7bbb5;
     text-transform: uppercase;
-
     font-weight: 300;
     font-family: 'Roboto Condensed', sans-serif;
     top: 1px;
@@ -1498,7 +1556,6 @@ overflow:hidden; position:relative;}
     float: left;
     margin-right: 18px;
 }
-
 
 .user_block > span {
     display: block;
@@ -1778,24 +1835,72 @@ overflow:hidden; position:relative;}
     cursor: pointer;
 }
 
+.user-form {
+    display: block;
+}
 
-.user-form {display:block; }
-.field-profileform-photo {margin-top:-10px;}
-.form-group {margin-bottom:0;padding:10px 0 2px 0;}
-.form-group:nth-child(2n) {background:#f3e9e0;}
-.form-group input {display:inline-block;border:1px solid #999;}
-.form-group .form-control {display:inline-block;width:50%;}
-.control-label {margin-bottom:10px;}
-.form-group .chosen-single {width:200px;}
-.sub_form_reg, .btn-primary {background:#7E9511; border-radius:0; padding:8px 30px; color:#fff; border:none;}
-.sub_form_reg i, .btn-primary i {margin-right:8px;}
-.form-group .help-block {position:relative; left:140px; text-align:left;}
-.form-group .chosen-container {width:200px !important; }
-.row {margin-left:10px; display:inline-block;}
+.field-profileform-photo {
+    margin-top: -10px;
+}
 
-.has-error input {border:1px solid rgba(207, 6, 6, 0.72);; box-shadow:0px 0px 4px rgba(207, 6, 6, 0.52);}
+.form-group {
+    margin-bottom: 0;
+    padding: 10px 0 2px 0;
+}
 
+.form-group:nth-child(2n) {
+    background: #f3e9e0;
+}
 
+.form-group input {
+    display: inline-block;
+    border: 1px solid #999;
+}
+
+.form-group .form-control {
+    display: inline-block;
+    width: 50%;
+}
+
+.control-label {
+    margin-bottom: 10px;
+}
+
+.form-group .chosen-single {
+    width: 200px;
+}
+
+.sub_form_reg, .btn-primary {
+    background: #7E9511;
+    border-radius: 0;
+    padding: 8px 30px;
+    color: #fff;
+    border: none;
+}
+
+.sub_form_reg i, .btn-primary i {
+    margin-right: 8px;
+}
+
+.form-group .help-block {
+    position: relative;
+    left: 140px;
+    text-align: left;
+}
+
+.form-group .chosen-container {
+    width: 200px !important;
+}
+
+.row {
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.has-error input {
+    border: 1px solid rgba(207, 6, 6, 0.72);
+; box-shadow: 0px 0px 4px rgba(207, 6, 6, 0.52);
+}
 
 .error>input,.error>textarea {
     border: 1px solid #f33;
@@ -1807,7 +1912,7 @@ overflow:hidden; position:relative;}
 .crop-image-upload-container {
     display: block !important;
     margin: auto;
-    text-align:right;
+    text-align: right;
 }
 
 .crop-image-upload-container img {
@@ -1852,42 +1957,146 @@ table input {
     padding: 5px;
 }
 
-
 .desc:after {
     content: '\25BE';
     padding: 5px;
 }
 
-.ui-slider {height:6px !important; margin-top:14px;}
-.ui-slider-handle {height:14px !important; width:14px !important; top:-5px !important; background:#ac3b3f !important;
-    outline:none !important; border:1px solid #ac3b3f !important;}
-.ui-slider-handle:hover {border:1px solid #ac3b3f !important;}
-.ui-slider-range {background:#7e9511 !important;}
+.ui-slider {
+    height: 6px !important;
+    margin-top: 14px;
+}
 
-.btn-lg {border-radius:0; display:inline-block;  font-size:14px; float:none; margin:0 -8px 8px 8px;
-    padding:8px 18px; border:none; color:#fff;}
-.btn-lg:hover {background:#596a05 !important; border:none;}
-.sub_form_moderate {background:#ac3b3f;}
-.sub_form_moderate:hover {background:#ac3b3f !important; color:#fff;}
-.sub_form_moderate i {margin-right:6px;}
+.ui-slider-handle {
+    height: 14px !important;
+    width: 14px !important;
+    top: -5px !important;
+    background: #ac3b3f !important;
+    outline: none !important;
+    border: 1px solid #ac3b3f !important;
+}
 
-.form-control  {/* padding:6px 8px !important; */margin-bottom:12px;}
-.field-profileform-photo {margin-bottom:20px !important;}
-.chosen-container-single {margin-bottom:10px;}
-.table-striped .chosen-container-single {margin-bottom:0px;}
-.table-striped  .form-control  {padding:0px 8px;margin-bottom:0px !important;margin-top:0 !important;}
-.form-group {position:relative;}
-.form-group .help-block {position:absolute !important; left:140px; text-align:left; bottom:-14px;}
-table [name="UserSearch[id]"]{
-    width:50px;
+.ui-slider-handle:hover {
+    border: 1px solid #ac3b3f !important;
+}
+
+.ui-slider-range {
+    background: #7e9511 !important;
+}
+
+.btn-lg {
+    border-radius: 0;
+    display: inline-block;
+    font-size: 14px;
+    float: none;
+    margin: 0 -8px 8px 8px;
+    padding: 8px 18px;
+    border: none;
+    color: #fff;
+}
+
+.btn-lg:hover {
+    background: #596a05 !important;
+    border: none;
+}
+
+.sub_form_moderate {
+    background: #ac3b3f;
+}
+
+.sub_form_moderate:hover {
+    background: #ac3b3f !important;
+    color: #fff;
+}
+
+.sub_form_moderate i {
+    margin-right: 6px;
+}
+
+.form-control {
+    /* padding:6px 8px !important; */
+    margin-bottom: 12px;
+}
+
+.field-profileform-photo {
+    margin-bottom: 20px !important;
+}
+
+.chosen-container-single {
+    margin-bottom: 10px;
+}
+
+.table-striped .chosen-container-single {
+    margin-bottom: 0px;
+}
+
+.table-striped .form-control {
+    padding: 0px 8px;
+    margin-bottom: 0px !important;
+    margin-top: 0 !important;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-group .help-block {
+    /* position: absolute !important; */
+    left: 140px;
+    text-align: left;
+    bottom: 7px;
+}
+.form-group [class*="crop"]+.help-block,
+.form-group .input_file+.help-block{
+    bottom: -2px;
+    left: 0;
+}
+
+table [name="UserSearch[id]"] {
+    width: 50px;
     margin: 0;
 }
-table [name="UserSearch[username]"]{
-    width:100px;
+
+table [name="UserSearch[username]"] {
+    width: 100px;
     margin: 0;
 }
-.flag{
+
+.flag {
     padding-left: 20px;
     background-position: 0 50%;
     background-repeat: no-repeat;
+}
+
+#headerimgs img {
+    width: 100%;
+}
+
+#headerimgs .slide {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-position: 50% 0%;
+    opacity: 0;
+    background-size: cover;
+    transition: 1s all;
+}
+
+#headerimgs .slide.active {
+    opacity: 1;
+}
+
+
+.uzer_hed .form-group .help-block {
+    position: absolute !important;
+    width: 100%;
+    left: 0px !important;
+    top: 41px !important;
+    background: #f0ddce;
+    z-index: 2;
+    text-align: center;
+    /* border: 1px solid; */
+    height: auto;
 }

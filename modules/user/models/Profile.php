@@ -71,7 +71,7 @@ class Profile extends \yii\db\ActiveRecord
             [['passport_img_1','passport_img_2','passport_img_3'], 'image',
                 'minHeight' => 800,
                 'minWidth' => 800,
-                'maxSize' => 1024*1024*6,
+                'maxSize' => 1024*1024*3,
                 'skipOnEmpty' => true
             ],
             [['video','video_about'],'validateVideo','params'=>['maxSize'=>1024*1024*150]],
