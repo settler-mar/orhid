@@ -452,15 +452,6 @@ img {
     color: #f6e6d9;
 }
 
-.uzer_hed .help-block {
-    position: absolute !important;
-    width: 130%;
-    left: 8px !important;
-    bottom: -21px !important;
-    background: #f0ddce;
-    z-index: 2;
-}
-
 .uzer_hed .field-loginform-rememberme {
     position: absolute;
     top: 42px;
@@ -2050,10 +2041,15 @@ table input {
 }
 
 .form-group .help-block {
-    position: absolute !important;
+    /* position: absolute !important; */
     left: 140px;
     text-align: left;
-    bottom: -14px;
+    bottom: 7px;
+}
+.form-group [class*="crop"]+.help-block,
+.form-group .input_file+.help-block{
+    bottom: -2px;
+    left: 0;
 }
 
 table [name="UserSearch[id]"] {
@@ -2090,4 +2086,17 @@ table [name="UserSearch[username]"] {
 
 #headerimgs .slide.active {
     opacity: 1;
+}
+
+
+.uzer_hed .form-group .help-block {
+    position: absolute !important;
+    width: 100%;
+    left: 0px !important;
+    top: 41px !important;
+    background: #f0ddce;
+    z-index: 2;
+    text-align: center;
+    /* border: 1px solid; */
+    height: auto;
 }
