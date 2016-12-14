@@ -6,6 +6,7 @@
 
 html, body {
     margin: 0;
+    min-width: 1240px;
     padding: 0;
 }
 
@@ -17,8 +18,8 @@ body {
     font-family: 'Roboto Condensed', sans-serif;
     min-height: 100vh;
     display: -webkit-flex;
-    display:-webkit-box;
-    display:-ms-flexbox;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -40,6 +41,8 @@ p {
 
 a {
     cursor: pointer;
+    transition: all 0.3s;
+    color: #ac3b3f;
 }
 
 a:hover {
@@ -146,10 +149,11 @@ img {
 }
 
 .top_slyde {
-    background: url(../img/slyde_1.jpg) no-repeat top center;
-    width: 100%;
-    height: 670px;
+    width: 100vw;
+    height: 100vh;
     position: relative;
+    overflow: hidden;
+    display: block;
 }
 
 /*---------------SLYDER-------------*/
@@ -263,6 +267,7 @@ img {
 .top_menu ul li {
     float: left;
     margin-right: 30px;
+    list-style: none;
 }
 
 .top_menu ul li a {
@@ -285,6 +290,7 @@ img {
 
 .top_soc a {
     margin-left: 6px;
+    text-decoration: none;
 }
 
 .top_soc a:hover {
@@ -312,10 +318,11 @@ img {
     margin-left: 16px;
 }
 
-.form-group{
-    width: 440px;
-    min-height: 30px;
+.form-group {
+    /* width: 440px; */
+    /* min-height: 30px; */
 }
+
 .reg {
 }
 
@@ -410,7 +417,7 @@ img {
 
 .reg_user_link a {
     display: inline-block;
-    margin-left: 14px;
+    margin-left: 8px;
     color: #aa3134;
 }
 
@@ -422,6 +429,44 @@ img {
     display: block;
     float: right;
     width: 380px;
+}
+
+.uzer_hed .form-group {
+    display: inline-block !important;
+    width: 130px;
+    padding: 0;
+    margin-right: 10px;
+    position: relative;
+}
+
+.uzer_hed .form-group input {
+    width: 120px;
+    padding: 9px 8px;
+    margin: 0;
+}
+
+.uzer_hed .btn {
+    padding: 9px 18px 10px 18px;
+    background: #aa3b3e;
+    cursor: pointer;
+    color: #f6e6d9;
+}
+
+.uzer_hed .field-loginform-rememberme {
+    position: absolute;
+    top: 42px;
+    left: 8px;
+}
+
+.uzer_hed #loginform-rememberme {
+    float: left;
+    width: 16px;
+    height: 16px;
+    margin-right: 4px;
+}
+
+.uzer_hed .btn:hover {
+    background: #aa3b3e !important;
 }
 
 .top_mes {
@@ -662,6 +707,7 @@ img {
     display: inline-block;
     margin: 0 .4em;
     flex: 0;
+    white-space: nowrap;
 }
 
 .title_1:before, .title_1:after {
@@ -806,8 +852,6 @@ img {
 .content {
     padding: 40px 0 50px 0;
     background: #fff url(../img/bg_3.jpg) no-repeat center -60px;
-    height: 100%;
-    margin-bottom: 160px;
 }
 
 .content .anketa_all {
@@ -939,8 +983,22 @@ input {
     margin: 5px 6px 5px 0;
     outline: none;
 }
-.control-label{width: 120px;display: inline-block;text-align: right;padding: 0 10px;font-weight: bold;}
-.range_input{width: 60px;text-align: center;border: 0;}
+
+.control-label {
+    min-width: 120px;
+    display: inline-block;
+    text-align: right;
+    padding: 0 10px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.range_input {
+    width: 60px;
+    text-align: center;
+    border: 0;
+}
+
 .tab_txt {
     display: block;
     margin: 8px 0;
@@ -957,6 +1015,32 @@ input {
     margin: 0px 0;
     font-size: 15px;
     color: #ac3b3f;
+}
+
+.field-profilefemale-address, .field-profilefemale-about, .field-profilefemale-ideal_relationship {
+    width: 100% !important;
+    vertical-align: top !important;
+}
+
+.field-profilefemale-address textarea, .field-profilefemale-about textarea, .field-profilefemale-ideal_relationship textarea {
+    width: 70% !important;
+}
+
+.field-profilefemale-address .control-label, .field-profilefemale-about .control-label, .field-profilefemale-ideal_relationship .control-label {
+    float: left;
+}
+
+.field-profilemale-address, .field-profilemale-about, .field-profilemale-ideal_relationship {
+    width: 100% !important;
+    vertical-align: top !important;
+}
+
+.field-profilemale-address textarea, .field-profilemale-about textarea, .field-profilemale-ideal_relationship textarea {
+    width: 70% !important;
+}
+
+.field-profilemale-address .control-label, .field-profilemale-about .control-label, .field-profilemale-ideal_relationship .control-label {
+    float: left;
 }
 
 .form_block_2 {
@@ -989,8 +1073,40 @@ input {
     display: block;
     width: 100%;
     margin-top: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     overflow: hidden;
+}
+
+.form_block_3 .form-group {
+    display: inline-block;
+    width: 240px;
+    background: none !important;
+    vertical-align: top;
+    overflow: hidden;
+    position: relative;
+}
+
+.form_block_3 .form-group img {
+    width: 100%;
+}
+
+.form_block_3 .input_file input {
+    width: 220px;
+}
+
+.form_block_3 .clear_photo {
+    position: absolute;
+    font-size: 28px;
+    top: 2px;
+    right: 0;
+}
+
+.form_block_3 .field-profilefemale-video {
+    width: 320px;
+}
+
+.form_block_3 .field-profilefemale-video_about {
+    width: 320px;
 }
 
 .form_block_3 p {
@@ -1202,22 +1318,26 @@ input {
 }
 
 .photo_us {
-    max-width: 470px;
+    /* max-width: 470px; */
 }
 
 .photo_us a {
     display: inline-block;
-    width: 28%;
-    margin: 0 3% 3% 0;
+    margin: 0 2% 2% 0;
 }
 
-.photo_us a img {
-    max-width: 200px;
-    max-height: 200px;
-    display: block;
-    width: 100%;
+.photo_people {
+    width: 7vw;
+    height: 7vw;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    transform: scale3d(1,1,2);
 }
 
+/*.photo_people:hover{
+    transform: scale3d(1.1,1.1,2);
+}*/
 .aboutme {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -1293,12 +1413,14 @@ input {
     padding: 8px 12px;
     outline: none;
     margin-right: 7px;
-    width: 250px;
+    width: 240px;
     color: #fff;
 }
 
 .foot_button {
     background: #574338;
+    width: auto;
+    text-align: center;
     border: none;
     padding: 9px 20px;
     outline: none;
@@ -1840,709 +1962,71 @@ input {
     .open_menu {
         display: block;
     }
-
-    .top_soc {
-        display: block;
-    }
-
-    .anketa a p {
-        font-size: 18px;
-    }
-
-    .anketa a p span {
-        font-size: 12px;
-    }
-
-    .video_glav {
-        width: 52%;
-        margin-bottom: 10px;
-    }
-
-    .video_glav iframe {
-        width: 100%;
-        min-height: 260px;
-    }
-
-    .right_cont {
-        background: none;
-        width: auto;
-        padding: 0px 24px 0 0;
-        margin-left: 0;
-    }
-
-    .news_letter {
-        display: none;
-    }
-
-    .top_people, .content_glav, .content {
-        padding: 20px 0
-    }
-
-    .title_1 {
-        font-size: 36px;
-        margin-bottom: 20px;
-    }
-
-    .prof {
-        max-width: 402px;
-    }
-
-    .prof tr th {
-        padding: 0px 10px 0 0px;
-    }
-
-    .prof select {
-        width: 190px;
-        margin: 5px 0px 5px 0;
-    }
-
-    .prof input {
-        width: 170px;
-        margin: 5px 0px 5px 0;
-    }
-
-    .form_block {
-        margin: 30px 0 0 420px;
-    }
-
-    .tab_ava img {
-        max-width: 300px;
-    }
-
-    .tab_ava {
-        float: right;
-        right: 10px;
-        position: relative;
-    }
-
-    .add_ava {
-        float: right;
-        right: 10px;
-        position: relative;
-    }
-
-    .one_left {
-        overflow: hidden;
-        width: 700px;
-        float: none;
-        margin-right: 0px;
-        margin-bottom: 20px;
-    }
-
-    .one_right {
-        display: block;
-        margin-left: 0px;
-        float: none;
-    }
-
-    .photo_us {
-        max-width: 100%;
-    }
-
-    .photo_us a {
-        display: inline-block;
-        width: 14.3%;
-        margin: 0 2% 2% 0;
-    }
-
-    .tovar a img {
-        max-height: 150px;
-    }
+.user-form {
+    display: block;
 }
 
-@media (max-width: 900px) {
-    .video_block {
-        float:none;
-        width: 100%;
-        margin-right: 0px;
-        margin-bottom: 20px;
-        display: none;
-    }
-
-    .vid_in {
-        max-width: 400px;
-    }
-
-    .vid_title {
-        display: none;
-    }
-
-    .chat_block {
-        width: 69%;
-        margin-right: 20px;
-    }
-
-    .user_all {
-        width: 100%;
-    }
-
-    .user_add {
-        text-align: left;
-    }
-
-    .user_chat {
-        width: 28%;
-    }
-
-    input {
-        -webkit-appearance: none;
-    }
+.field-profileform-photo {
+    margin-top: -10px;
 }
 
-@media (max-width: 800px) {
-    .anketa_all {
-        width:103%;
-    }
-
-    .anketa {
-        width: 30.0%;
-        margin-right: 2.6%;
-        margin-bottom: 20px;
-    }
-
-    .anketa a b {
-        font-size: 15px;
-    }
-
-    .anketa a p {
-        font-size: 22px;
-    }
-
-    .content .anketa {
-        width: 21.8%;
-        margin-right: 2.4%;
-        margin-bottom: 20px;
-    }
-
-    .form_block {
-        margin: 30px 0 0 410px;
-    }
-
-    .photo_us a {
-        display: inline-block;
-        width: 14.2%;
-        margin: 0 2% 2% 0;
-    }
-
-    .chat_block {
-        width: 68%;
-        margin-right: 10px;
-    }
-
-    .user_chat {
-        width: 30%;
-    }
+.form-group {
+    margin-bottom: 0;
+    padding: 10px 0 2px 0;
 }
 
-@media (max-width: 700px) {
-    .header {
-        background:url(../img/bg_top.jpg) no-repeat top center;
-        width: 100%;
-        height: 90px;
-        display: none;
-    }
-
-    .logo {
-        display: block;
-        position: relative;
-        margin: 0 auto;
-        top: 14px;
-        width: 123px;
-    }
-
-    .logo img {
-        width: 100%;
-    }
-
-    .top_star .into dl {
-        width: 100% !important;
-        float: left;
-        margin-right: 0;
-        overflow: hidden;
-    }
-
-    .top_star span {
-        background: url(../img/star.png) no-repeat 0 1px;
-        color: #FFF;
-        padding-left: 24px;
-        display: block;
-        max-width: 440px;
-        vertical-align: top;
-        margin-bottom: 10px;
-        font-size: 13px;
-        background-size: 14px;
-    }
-
-    .reg_hed, .uzer_hed {
-        display: none;
-    }
-
-    .top_soc {
-        display: none;
-    }
-
-    .uzer_hed_2 {
-        display: block;
-    }
-
-    .open_reg {
-        display: block;
-    }
-
-    .top_us_3 {
-        display: block;
-    }
-
-    #left_open {
-        top: 0px;
-    }
-
-    .video_glav {
-        float: none;
-        width: 98%;
-        margin-right: 0px;
-        margin-bottom: 20px;
-    }
-
-    .video_glav iframe {
-        width: 100%;
-        min-height: 260px;
-    }
-
-    .right_cont {
-        background: rgba(255, 255, 255, 0.6);
-        width: auto;
-        padding: 20px 24px;
-        margin-left: 0;
-    }
-
-    .foot_logo {
-        display: none;
-    }
-
-    .foot_soc {
-        float: none;
-        top: 0px;
-        text-align: center;
-    }
-
-    .foot_soc p {
-        line-height: 1.3;
-    }
-
-    .foot_soc span a img {
-        width: 28px;
-    }
-
-    .footer {
-        background: #210f09;
-        width: 100%;
-        height: 70px;
-        padding: 20px 0px;
-    }
-
-    .content_glav {
-        margin-bottom: 100px;
-    }
-
-    .content {
-        margin-bottom: 120px;
-    }
-
-    .prof {
-        float: none;
-    }
-
-    .form_block {
-        margin: 30px 0 0 0px;
-        float: none;
-        width: 100%;
-    }
-
-    .tab_ava {
-        float: left;
-        right: 0px;
-    }
-
-    .add_ava {
-        float: left;
-        right: 0px;
-    }
-
-    .one_left {
-        overflow: hidden;
-        width: 100%;
-        float: none;
-        margin-right: 0px;
-    }
-
-    .one_img {
-        float: left;
-        margin-right: 0px;
-        width: 60%;
-    }
-
-    .one_img img {
-        width: 100%;
-        max-width: 398px;
-    }
-
-    .profile {
-        padding: 0px;
-        margin-top: -2px;
-        margin-left: 64%;
-        float: none;
-    }
-
-    .profile p {
-        font-size: 14px;
-        line-height: 1.5;
-    }
-
-    .photo_us {
-        max-width: 1000px;
-        width: 105%;
-        display: block;
-    }
-
-    .photo_us a {
-        display: inline-block;
-        width: 29%;
-        margin: 0 3% 3% 0;
-    }
-
-    .mess_block {
-        width: 100%;
-        height: auto;
-        max-height: none;
-    }
-
-    .user_all {
-        height: auto;
-    }
-
-    .slogan_2 {
-        font-size: 40px;
-        top: -110px;
-        text-align: center;
-        left: 0px;
-    }
-
-    .slogan_2 b {
-        font-size: 20px;
-    }
+.form-group:nth-child(2n) {
+    background: #f3e9e0;
 }
 
-@media (max-width: 670px) {
-    .content .anketa {
-        width:30%;
-        margin-right: 2.4%;
-        margin-bottom: 20px;
-    }
-
-    .chat_block {
-        width: 100%;
-        margin-right: 0px;
-        display: none;
-        position: relative;
-    }
-
-    .user_chat {
-        width: 100%;
-        margin-top: 0;
-        position: relative;
-    }
-
-    .us_on {
-        width: 95%;
-        padding: 8px 8px;
-    }
-
-    .us_on img {
-        width: 50px;
-        height: 50px;
-        float: left;
-        margin-right: 10px
-    }
-
-    .us_on span {
-        margin-top: 15px;
-        display: inline-block;
-        font-size: 15px;
-        font-weight: 600;
-    }
-
-    .user_add {
-        margin-bottom: 14px;
-    }
-
-    .user_add span {
-        padding: 12px 0px;
-        font-size: 14px;
-    }
-
-    .us_on b {
-        top: 15px;
-        margin-right: 8px;
-        padding: 0px 0 0 0;
-        width: 17px;
-        height: 17px;
-    }
-
-    .users {
-        display: block;
-    }
-
-    .send_chat {
-        background: none;
-        display: none;
-        padding: 0px;
-        overflow: hidden;
-        width: 100%;
-        margin-bottom: 12px;
-    }
-
-    .send_top {
-        display: block;
-    }
-
-    .tovar {
-        width: 22%;
-        margin-right: 2%;
-        margin-bottom: 2%;
-    }
-
-    .tovar a {
-        height: 18vh;
-        width: 22vw;
-        max-height: 120px;
-    }
-
-    .tovar a img {
-        max-height: 160px;
-        max-width: 22vw;
-    }
-
-    .add_cart {
-        padding: 8px 22px;
-    }
-
-    .age_us {
-        width: 100%;
-        margin-top: -10px;
-        margin-bottom: 10px;
-    }
-
-    .age_us div {
-        font-size: 26px;
-        margin-right: 8px;
-    }
-
-    .age_us p br {
-        display: none;
-    }
-
-    .age_us p {
-        font-size: 20px;
-        margin-top: 3px;
-        display: inline-block;
-        margin-bottom: 0;
-    }
-
-    .age_us span {
-        display: none;
-    }
-
-    .name_us {
-        font-size: 24px;
-        display: inline-block;
-        line-height: 1.2;
-        margin: 0;
-        top: 0;
-        vertical-align: top;
-        color: #000;
-        margin-right: 14px;
-    }
-
-    .one_info {
-        padding-bottom: 20px;
-    }
-
-    .one_info p {
-        display: inline-block;
-        font-size: 17px;
-        vertical-align: top;
-        top: 4px;
-        margin: 0;
-        line-height: 1.5;
-    }
-
-    .one_info p span {
-        display: inline-block;
-        margin-right: 10px;
-    }
+.form-group input {
+    display: inline-block;
+    border: 1px solid #999;
 }
 
-@media (max-width: 500px) {
-    .users img {
-        width:40px;
-        height: 31px;
-    }
-
-    .users {
-        position: absolute;
-        right: -20px;
-        top: 33px;
-    }
-
-    .tovar {
-        width: 47%;
-        margin-right: 2%;
-        margin-bottom: 8%;
-    }
-
-    .tovar a {
-        height: 18vh;
-        width: 48vw;
-        max-height: 120px;
-    }
-
-    .tovar a img {
-        max-height: 160px;
-        max-width: 40vw;
-    }
-
-    .add_cart {
-        padding: 8px 30px;
-    }
+.form-group .form-control {
+    display: inline-block;
+    width: 50%;
 }
 
-@media (max-width: 450px) {
-    .anketa_all {
-        width:103%;
-    }
-
-    .anketa, .content .anketa {
-        width: 45.1%;
-        margin-right: 3.8%;
-        margin-bottom: 20px;
-    }
-
-    .anketa a b {
-        font-size: 15px;
-    }
-
-    .anketa a p {
-        font-size: 22px;
-    }
-
-    .one_img {
-        float: none;
-        width: 100%;
-        margin-bottom: 10px;
-    }
-
-    .profile {
-        padding: 0px;
-        margin-top: 20px;
-        margin-left: 0;
-        display: none;
-    }
-
-    .profile p {
-        font-size: 17px;
-    }
-
-    #profile_mini {
-        display: block;
-        margin-bottom: 20px;
-    }
-
-    .add_fav {
-        padding: 5px 10px;
-        margin-right: 6px;
-    }
-
-    .remove_fav {
-        padding: 5px 10px;
-    }
-
-    .remove_fav span {
-        float: left;
-        font-size: 24px;
-        line-height: 0.7;
-        margin-right: 8px
-    }
-
-    .user_block {
-        margin-bottom: 12px;
-    }
-
-    .user_block a {
-        font-size: 22px;
-    }
-
-    .user_block img {
-        width: 34px;
-        height: 34px;
-        float: left;
-        margin-right: 10px;
-    }
-
-    .user_block > span {
-        display: block;
-        margin-bottom: 10px;
-        margin-top: 6px;
-    }
-
-    .users img {
-        width: 40px;
-        height: 31px;
-    }
-
-    .users {
-        position: absolute;
-        right: -10px;
-        top: 3px;
-    }
+.control-label {
+    margin-bottom: 10px;
 }
 
-@media (max-width: 400px) {
-    .into {
-        padding:0 14px 0 14px;
-    }
-
-    .title_1 {
-        font-size: 30px;
-    }
-
-    .video_glav iframe {
-        min-height: 190px;
-    }
+.form-group .chosen-single {
+    width: 200px;
 }
 
-@media (max-width: 360px) {
-    .into {
-        padding:0 10px 0 10px;
-    }
+.sub_form_reg, .btn-primary {
+    background: #7E9511;
+    border-radius: 0;
+    padding: 8px 30px;
+    color: #fff;
+    border: none;
+}
 
-    .anketa, .content .anketa {
-        margin-bottom: 14px;
-    }
+.sub_form_reg i, .btn-primary i {
+    margin-right: 8px;
+}
 
-    .video_glav {
-        margin-bottom: 10px;
-    }
+.form-group .help-block {
+    position: relative;
+    left: 140px;
+    text-align: left;
+}
 
-    .tab_ava img {
-        max-width: 100%;
-    }
+.form-group .chosen-container {
+    width: 200px !important;
+}
 
-    .users {
-        position: absolute;
-        right: -10px;
-        top: 3px;
-    }
+.row {
+    margin-left: 10px;
+    display: inline-block;
+}
+
+.has-error input {
+    border: 1px solid rgba(207, 6, 6, 0.72);
+; box-shadow: 0px 0px 4px rgba(207, 6, 6, 0.52);
 }
 
 .error>input,.error>textarea {
@@ -2552,27 +2036,194 @@ input {
 .err_reg {
 }
 
-.crop-image-upload-container{
+.crop-image-upload-container {
     display: block !important;
     margin: auto;
+    text-align: right;
 }
-.crop-image-upload-container img{
-    max-width:400px;
+
+.crop-image-upload-container img {
+    max-width: 400px;
 }
-.jcrop-holder>img{
+
+.jcrop-holder>img {
     filter: blur(3px);
 }
 
-.wrapper {max-width:1200px;margin:auto}
-.ui-slider{width:200px;display: inline-block;}
-.range_block{width:210px;display:inline-block;}
-.form-left-block{float:left;}
-.help-block{
+.wrapper {
+    max-width: 1200px;
+    margin: auto
+}
+
+.ui-slider {
+    width: 200px;
+    display: inline-block;
+}
+
+.range_block {
+    width: 210px;
+    display: inline-block;
+}
+
+.form-left-block {
+    float: left;
+}
+
+.help-block {
     font-weight: normal;
     color: #f33;
     text-align: right;
 }
 
-table input{width:auto;}
-.asc:after{content: '\25B4';padding: 5px;}
-.desc:after{content: '\25BE';padding: 5px;}
+table input {
+    width: auto;
+}
+
+.asc:after {
+    content: '\25B4';
+    padding: 5px;
+}
+
+.desc:after {
+    content: '\25BE';
+    padding: 5px;
+}
+
+.ui-slider {
+    height: 6px !important;
+    margin-top: 14px;
+}
+
+.ui-slider-handle {
+    height: 14px !important;
+    width: 14px !important;
+    top: -5px !important;
+    background: #ac3b3f !important;
+    outline: none !important;
+    border: 1px solid #ac3b3f !important;
+}
+
+.ui-slider-handle:hover {
+    border: 1px solid #ac3b3f !important;
+}
+
+.ui-slider-range {
+    background: #7e9511 !important;
+}
+
+.btn-lg {
+    border-radius: 0;
+    display: inline-block;
+    font-size: 14px;
+    float: none;
+    margin: 0 -8px 8px 8px;
+    padding: 8px 18px;
+    border: none;
+    color: #fff;
+}
+
+.btn-lg:hover {
+    background: #596a05 !important;
+    border: none;
+}
+
+.sub_form_moderate {
+    background: #ac3b3f;
+}
+
+.sub_form_moderate:hover {
+    background: #ac3b3f !important;
+    color: #fff;
+}
+
+.sub_form_moderate i {
+    margin-right: 6px;
+}
+
+.form-control {
+    /* padding:6px 8px !important; */
+    margin-bottom: 12px;
+}
+
+.field-profileform-photo {
+    margin-bottom: 20px !important;
+}
+
+.chosen-container-single {
+    margin-bottom: 10px;
+}
+
+.table-striped .chosen-container-single {
+    margin-bottom: 0px;
+}
+
+.table-striped .form-control {
+    padding: 0px 8px;
+    margin-bottom: 0px !important;
+    margin-top: 0 !important;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-group .help-block {
+    /* position: absolute !important; */
+    left: 140px;
+    text-align: left;
+    bottom: 7px;
+}
+.form-group [class*="crop"]+.help-block,
+.form-group .input_file+.help-block{
+    bottom: -2px;
+    left: 0;
+}
+
+table [name="UserSearch[id]"] {
+    width: 50px;
+    margin: 0;
+}
+
+table [name="UserSearch[username]"] {
+    width: 100px;
+    margin: 0;
+}
+
+.flag {
+    padding-left: 20px;
+    background-position: 0 50%;
+    background-repeat: no-repeat;
+}
+
+#headerimgs img {
+    width: 100%;
+}
+
+#headerimgs .slide {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-position: 50% 0%;
+    opacity: 0;
+    background-size: cover;
+    transition: 1s all;
+}
+
+#headerimgs .slide.active {
+    opacity: 1;
+}
+
+
+.uzer_hed .form-group .help-block {
+    position: absolute !important;
+    width: 100%;
+    left: 0px !important;
+    top: 41px !important;
+    background: #f0ddce;
+    z-index: 2;
+    text-align: center;
+    /* border: 1px solid; */
+    height: auto;
+}

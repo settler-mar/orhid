@@ -1,4 +1,4 @@
-# phpstorm project files
+﻿# phpstorm project files
 .idea
 
 # netbeans project files
@@ -37,3 +37,12 @@ params.php
 /vendor_/
 /web/user_file/
 /web/assets/*
+# ignoring slider pictures
+/web/img/slider/
+
+/web/index.php
+
+*.log
+*.tmp
+*.local
+Будет удалено web/assets/

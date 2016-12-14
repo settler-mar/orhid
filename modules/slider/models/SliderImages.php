@@ -3,16 +3,20 @@
 namespace app\modules\slider\models;
 
 use Yii;
-
+use yii\web\UploadedFile;
 /**
  * This is the model class for table "slider_images".
  *
  * @property integer $image_id
  * @property string $address
  * @property string $text
+ * @property string $gender
  */
 class SliderImages extends \yii\db\ActiveRecord
 {
+    public $image;
+    public $filename;
+    public $string;
     /**
      * @inheritdoc
      */
@@ -27,10 +31,10 @@ class SliderImages extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['image_id', 'address', 'text'], 'required'],
-            [['image_id'], 'integer'],
-            [['address'], 'string', 'max' => 60],
+            [[ 'gender'], 'required'],
             [['text'], 'string', 'max' => 256],
+            [['gender'], 'string', 'max' => 10],
+            [['address'], 'file','extensions' => ['jpg','jepg'],'skipOnEmpty' => true ],
         ];
     }
 
@@ -41,8 +45,22 @@ class SliderImages extends \yii\db\ActiveRecord
     {
         return [
             'image_id' => 'Image ID',
-            'address' => 'Address',
+            'address' => 'Picture',
             'text' => 'Text',
+            'gender' => 'Gender',
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+           // print_r('beforeSave $this->address='.$this->address.' $this->text='.$this->text.' $this->gender='.$this->gender.' |');
+            $this->string = substr(uniqid('img'),0,12);
+            $this->image = UploadedFile::getInstance($this, 'address');
+            if ($this->image!=null) {
+                $this->filename = 'img/slider/' . $this->string . '.' . $this->image->extension;
+                $this->image->saveAs($this->filename);
+                $this->address = '' . $this->filename;
+            }
+        return parent::beforeSave($insert);
     }
 }

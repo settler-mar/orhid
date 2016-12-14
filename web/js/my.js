@@ -38,17 +38,19 @@ $('.us_on').click(function(){
     var chosen_option={disable_search_threshold: 15}
      $("select.icon-select").chosenImage(chosen_option);
     $("select").not('.incon-select').chosen(chosen_option);
-    $('[name="RegistrationForm[country]"]').on('change',function(event) {
-        $('[name="RegistrationForm[city]"]').html('').trigger("chosen:updated");
+    $('[name*=country]').on('change',function(event) {
+        $('[name*=city]').html('').trigger("chosen:updated");
         $.post('/city/get/'+this.value,function(data){
-            city_list=$('[name="RegistrationForm[city]"]')
+            city_list=$('[name*=city]');
+            city_obj=[];
             for(i=0;i<data.length;i++){
                 var opt=$('<option/>',{
                     value:data[i]['id'],
                     text:data[i]['city']+'('+data[i]['state']+')',
-                })
-                city_list.append(opt)
+                });
+                city_obj.push(opt)
             }
+            city_list.append(city_obj);
             city_list.trigger("chosen:updated");
         },'json')
     });
@@ -63,16 +65,41 @@ $('.us_on').click(function(){
     })
 
 
-    var slider = $('.ui-slider')
+    var slider = $('#headerimgs img');
     if (slider.length>0) {
-        slider.slider({
-            slide: function (event, ui) {
-                elements = $(this).parent().find('.range_value_block input')
-                elements[0].value = ui.values[0]
-                elements[1].value = ui.values[1]
-            }
-        });
+        slide_pic=[];
+        for(i=0;slider.length>i;i++){
+            img=$(slider[i]).attr('src');
+            slide=$('<div/>',{
+                'class':'slide'+(i==0?' active':''),
+                'style':'background-image: url('+img+');'
+            });
+            slide_pic.push(slide)
+        }
+        slider.remove();
+        $('#headerimgs').append(slide_pic);
+        setInterval(function() {
+            sl=$('#headerimgs .active')
+                .removeClass('active');
+            index=sl.index();
+            index++;
+            slides=$('#headerimgs .slide');
+            if(index>=slides.length){
+                index=0
+            };
+            slides.eq(index).addClass('active')
+        },5000)
     }
+
+
+    file_img=$('[type=file]+div img');
+    for(i=0;i<file_img.length;i++){
+        $(file_img[i]).wrap($('<a/>', {
+            'href': $(file_img[i]).attr('src'),
+            'class':'fancy'
+        }));
+    }
+    $('a.photo_people,a.fancy,.one_img a').fancybox();
 });
 
 function init_file_prev(obj){
@@ -94,8 +121,7 @@ function init_file_prev(obj){
                 baze_img
                     .css('background','none')
                     .append(img)
-                    show_msg("baze_img",4)
-                    reader.onload = (function(aImg) {
+                reader.onload = (function(aImg) {
                     return function(e) {
                         aImg.src = e.target.result;
                         aImg.longdesc= e.target.result
@@ -119,7 +145,7 @@ function init_file_prev(obj){
         $el.find('input').val('');
         $el.find('.help-block').html('');
         $(this).hide();
-    })
+    });
 }
 
 map = [0,0,0,0,0,0,0,0];
@@ -149,3 +175,7 @@ function show_msg(text,type){
 }
 show_msg("Mes1",1);
 
+function onlineTrace() {
+    $.get('/online');
+    setTimeout(onlineTrace, 60000)
+}

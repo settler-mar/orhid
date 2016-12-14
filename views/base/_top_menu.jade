@@ -1,0 +1,25 @@
+-
+    $menuItems = [
+        ['label' => 'Главная', 'url'=>'/'],
+        ['label' => 'Топ', 'url'=>'/top'],
+        ['label' => 'Магазин подарков', 'url'=>'/shop'],
+        ['label' => 'О нас', 'url'=>'/about'],
+        ['label' => 'Блог', 'url'=>'/blog'],
+        ['label' => 'Легенды орхид', 'url'=>'/legends'],
+        ['label' => 'Анкеты мужчин', 'url'=>'/mans'],
+        ['label' => 'Конкурсы', 'url'=>'/competitions'],
+        ['label' => 'Онлайн помощь', 'url'=>'/onlinehelp'],
+    ]
+
+
+.into
+    +navbar($menuItems)
+    .top_soc
+        a(href='#')
+            img(src='img/vk.png', alt='')
+        a(href='#')
+            img(src='img/ok.png', alt='')
+        a(href='#')
+            img(src='img/in.png', alt='')
+        a(href='#')
+            img(src='img/f.png', alt='')
