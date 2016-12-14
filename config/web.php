@@ -26,51 +26,29 @@ $config = [
                 app\modules\user\models\User::afterLogin($event->identity->id);
             }
         ],
-        'authClientCollection' => [
-            'class' => 'yii\authclient\Collection',
-            'clients' => [],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+            'cache' => 'yii\caching\FileCache',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'enableStrictParsing' => false,
             'rules' => [
+                //закрываем пямой доступ к /user/user
+                'user/user/<action>'=>'404',
+                'user/user/<action>/<action2>'=>'404',
                 //получение города по стране
                 'city/get/<id:\d+>' => 'city/get',
-
                 //Взаимодействия с пользователем на сайте
-                '<action:(logout|confirm|reset|profile|resetpassword)>' => 'user/user/<action>',
-                '<action:(registration)>' => 'user/default/registration',
-
-                /*//закрываем все прямые ссылки на модуль авторизации
-                'lowbase-user/<alias:(user|auth|country|city|auth-rule)>/<dopalias>'=>'404',
-                //Взаимодействия с пользователем на сайте
-                '<action:(login|logout|signup|confirm|reset|profile|remove|online)>' => 'lowbase-user/user/<action>',
-                //Взаимодействия с пользователем в панели админстрирования
-                'admin/user/<action:(index|update|delete|view|rmv|multidelete|multiactive|multiblock)>' => 'lowbase-user/user/<action>',
-                //Авторизация через социальные сети
-                //'auth/<authclient:[\w\-]+>' => 'lowbase-user/auth/index',
-                //Просмотр пользователя
-                'user/<id:\d+>' => 'lowbase-user/user/show',
-                //Взаимодействия со странами в панели админстрирования
-                'admin/country/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/country/<action>',
-                //Взаимодействия с городами в панели администрирования
-                'admin/city/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/city/<action>',
-                //Работа с ролями и разделением прав доступа
-                'admin/role/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/auth-item/<action>',
-                //Работа с правилами контроля доступа
-                'admin/rule/<action:(index|create|update|delete|view|multidelete)>' => 'lowbase-user/auth-rule/<action>',
-*/
+                '<action:(online|registration|logout|confirm|reset|profile|resetpassword)>' => 'user/user/<action>',
+                //базовые страницы в основном контроллере
+                '<action:(top|onlinehelp)>' => 'site/<action>',
+                //Страница пользователя
+                '<action:(user)>/<id:\d+>' => 'site/user/',
             ],
         ],
-        'authManager' => [
-            'class' => 'yii\rbac\DbManager',
-            'itemTable' => 'lb_auth_item',
-            'itemChildTable' => 'lb_auth_item_child',
-            'assignmentTable' => 'lb_auth_assignment',
-            'ruleTable' => 'lb_auth_rule'
-        ],
-        'errorHandler' => [
+        'errorHandler'=>[
             'errorAction' => 'site/error',
         ],
         'mailer' => [
@@ -116,6 +94,21 @@ $config = [
         ],
         'user' => [
             'class' => 'app\modules\user\Module',
+        ],
+        'rbac' =>  [
+            'class' => 'johnitvn\rbacplus\Module',
+            'userModelClassName'=>null,
+            'userModelIdField'=>'id',
+            'userModelLoginField'=>'username',
+            'userModelLoginFieldLabel'=>null,
+            'userModelExtraDataColumls'=>null,
+            'beforeCreateController'=>function($route){
+                return Yii::$app->user->can('rbac');
+            },
+            'beforeAction'=>null
+        ],
+        'slider' => [
+            'class' => 'app\modules\slider\Module',
         ]
     ],
 ];
@@ -130,7 +123,7 @@ if (YII_ENV_DEV) {
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
-        'allowedIPs' => ['127.0.0.1', '::1', '192.168.0.*', '192.168.1.*'],
+        'allowedIPs' => ['127.0.0.1', '::1', '192.168.0.*', '192.168.1.*','31.202.224.10'],
         'generators' => [
             'jadecrud' => [
                 'class' => 'jacmoe\giijade\crud\Generator',

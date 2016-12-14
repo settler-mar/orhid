@@ -5,20 +5,27 @@
 
     //use app\components\assets\AppAsset;
     use yii\helpers\Html;
-    //use yii\bootstrap\Nav;
-    //use yii\bootstrap\NavBar;
+    use yii\bootstrap\Nav;
+    use yii\bootstrap\NavBar;
     //use yii\widgets\Breadcrumbs;
 
 
     AppAsset::register($this);
 
 -$view->beginPage()
+
+include ../mixins/menu
+
 doctype transitional
 html(lang=Yii::$app->language xmlns="http://www.w3.org/1999/xhtml")
     // BEGIN HEAD
     head
         include ../base/_head
         - $view->head()
+        if (!Yii::$app->user->can('userManager'))
+          link(href='/css/media.css', rel='stylesheet')
+
+
         // END HEAD
     body(class=$this->params['body-class'])
         - $view->beginBody()
@@ -26,11 +33,14 @@ html(lang=Yii::$app->language xmlns="http://www.w3.org/1999/xhtml")
             include ../base/_header
         .main
             .top_menu
+                include ../base/_top_menu
+            include ../base/_admin_menu
             - if (!isset($view->params['hide_title'])||$view->params['hide_title']==false){
-                .wrapper
-                    .title_1
-                        span= $view->title
-                    != $content
+                .content
+                    .into
+                        .title_1
+                            span= $view->title
+                        != $content
             -}else{
                 != $content
             -}

@@ -13,7 +13,11 @@ $(document).ready(function() {
         for(i=0;i<els.length;i++){
             data['keys'].push(els[i].value)
         }
-        $.post("/user/admin/ajax_multi_set",data,function(response) {
+        url = location.pathname.replace('index','');
+        url += '/ajax_multi_set';
+        url = url.replace('//','/');
+
+        $.post(url,data,function(response) {
             parse_input_json(response)
         },'json');
     })

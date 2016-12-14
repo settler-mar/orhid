@@ -25,7 +25,8 @@
         "cyneek/yii2-routes": "^0.0.4",
         "karpoff/yii2-crop-image-upload": "^0.0.1",
         "jbzoo/image": "^3.0",
-        "yiisoft/yii2-jui": "^2.0"
+        "yiisoft/yii2-jui": "^2.0",
+        "johnitvn/yii2-rbac-plus": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

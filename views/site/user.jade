@@ -1,0 +1,116 @@
+-
+    use yii\helpers\Html;
+    use app\modules\user\models\User;
+    use app\modules\user\models\Profile;
+    use app\components\timePassed;
+    use app\components\portfolioLine;
+    use app\components\zodiacalSign;
+    use app\components\chineseZodiac;
+
+
+    $view->title = $first_name.' '.date('Y',$profile['birthday']);
+    $view->params['breadcrumbs'][] = $view->title;
+
+    $old=date('Y',time()-$profile['birthday'])-1970;
+    $online = (time()-$last_online<User::MAX_ONLINE_TIME)
+
+.one_left
+    .one_img
+        a(href= $photo)
+            img(src= $photo, alt= $first_name)
+    // one_img
+    .profile
+        p
+            span Age
+            != $old.' years old'
+
+        != PortfolioLine::Widget(['portfolio'=>$profile,'params'=>'children_count','not_show'=>-1]);
+
+        != PortfolioLine::Widget(['portfolio'=>$profile,'params'=>'weight']);
+
+        != PortfolioLine::Widget(['portfolio'=>$profile,'params'=>'height']);
+
+
+        p
+            span City
+            != $city['city']
+        p
+            span Country
+            != $country['name']
+
+        p
+            span Astrological sign
+            != ZodiacalSign::Widget(['date'=>$profile['birthday']])
+        p
+            span Chinise Zodiac
+            != ChineseZodiac::Widget(['date'=>$profile['birthday']])
+
+        != PortfolioLine::Widget(['portfolio'=>$profile,'params'=>'eyes']);
+
+        != PortfolioLine::Widget(['portfolio'=>$profile,'params'=>'heir']);
+
+        != PortfolioLine::Widget(['portfolio'=>$profile,'params'=>'smoking']);
+
+        -if( strlen($profile['lang_name'])>0){
+            p
+                span Languages Spoken
+                != $profile['lang_name']
+        -}
+
+        != PortfolioLine::Widget(['portfolio'=>$profile,'params'=>'religion']);
+
+        != PortfolioLine::Widget(['portfolio'=>$profile,'params'=>'smoking']);
+
+        != PortfolioLine::Widget(['portfolio'=>$profile,'params'=>'marital_status']);
+
+        -if( strlen($profile['occupation']) > 0){
+            p
+                span Occupation
+                != $profile['occupation']
+        -}
+
+        != PortfolioLine::Widget(['portfolio'=>$profile,'params'=>'education']);
+
+
+.one_right
+    .age_us
+        div= $old
+        p
+            != $city['city']
+            br
+            != $country['name']
+            span years old
+    .one_info
+        .name_us= $first_name
+        p
+            span.online_2= 'ID '.$id
+            if ($online)
+                span.online Now online
+            else
+                span.online_2
+                 != TimePassed::widget(['timeStart'=>$last_online])
+    // one_info
+    .chat_us
+        a(href='#') Live chat
+        a(href='#') Send message
+        a(href='#') Live video chat
+        a(href='#') Send a gift
+    #profile_mini.profile
+        | Нопия портфолио
+
+    - $photos = explode(',',$profile['photos']);
+    - if( strlen($profile['photos']) > 0){
+        .photo_us
+            -foreach ($photos as $photo){
+                a.photo_people(href= $photo style= 'background-image:url('.$photo.');')
+            -}
+    -}
+
+    - if( strlen($profile['video_about']) > 0){
+        object#videoplayer6381(type='application/x-shockwave-flash', data='/player/uppod.swf', width='320', height='240')
+            param(name='bgcolor', value='#ffffff')
+            param(name='allowFullScreen', value='true')
+            param(name='allowScriptAccess', value='always')
+            param(name='movie', value='/player/uppod.swf')
+            param(name='flashvars', value="comment=test&st=/player/video209-1292.txt&file=/".$profile['video_about'])
+    -}

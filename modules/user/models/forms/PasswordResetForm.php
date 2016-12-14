@@ -29,7 +29,7 @@ class PasswordResetForm extends Model
                 'targetClass' => 'app\modules\user\models\User',
                 'message' => 'User with Email is not registered.'
             ],  // Значение электронной почты должно присутствовать в базе данных
-            ['captcha', 'captcha', 'captchaAction' => 'user/user/captcha'], // Проверка капчи
+            ['captcha', 'captcha', 'captchaAction' => 'user/default/captcha'], // Проверка капчи
         ];
     }
     /**

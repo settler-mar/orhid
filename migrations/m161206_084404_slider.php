@@ -13,12 +13,13 @@ class m161206_084404_slider extends Migration
             'image_id'        => Schema::TYPE_INTEGER . ' PRIMARY KEY',
             'address'         => Schema::TYPE_STRING . '(60) NOT NULL',
             'text'         => Schema::TYPE_STRING . '(256) NOT NULL',
+            'gender'         => Schema::TYPE_STRING . '(10) NOT NULL',
         ], $this->tableOptions);
     }
 
     public function down()
     {
-        echo "m161206_084404_slider cannot be reverted.\n";
+        echo "m161206_084404_slider reverted.\n";
         $this->dropTable('{{%slider_images}}');
 
         return false;
