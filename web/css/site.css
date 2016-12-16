@@ -1835,21 +1835,96 @@ input {
     cursor: pointer;
 }
 .notification_container{
-    position: fixed;
-    display: block;
-    width:300px;
+    position:fixed;
+    top:0;
     right:0;
-
-    overflow:hidden;
+    padding:5px
 }
 .notification_item{
-    display: none;
-    height:100px;
-    border: 1px solid black;
-    margin: 5px;
-    background: green;
+    width:200px;
+    background:#999;
+    margin-bottom:5px;
+    position:relative;
+    list-style:none;
+    overflow:hidden;
+    animation: show_notifycation 0.2s  linear;
+    border-radius: 5px;
+}
+.notification_item-err
+{
+    background: -webkit-linear-gradient(left, orange ,transparent, red);
+    background: -o-linear-gradient(right, orange ,transparent, red);
+    background: -moz-linear-gradient(right, orange ,transparent, red);
+    background: linear-gradient(to right, orange ,transparent, red);
+}
+.notification_item-info
+{
+    background: -webkit-linear-gradient(left, orange ,transparent, blue);
+    background: -o-linear-gradient(right, orange ,transparent, blue);
+    background: -moz-linear-gradient(right, orange ,transparent, blue);
+    background: linear-gradient(to right, orange ,transparent, blue);
+}
+.notification_item-alert
+{
+    background: -webkit-linear-gradient(left, orange ,transparent, yellow);
+    background: -o-linear-gradient(right, orange ,transparent, yellow);
+    background: -moz-linear-gradient(right, orange ,transparent, yellow);
+    background: linear-gradient(to right, orange ,transparent, yellow);
+}
+.notification_item-success
+{
+    background: -webkit-linear-gradient(left, orange ,transparent, green);
+    background: -o-linear-gradient(right, orange ,transparent, green);
+    background: -moz-linear-gradient(right, orange ,transparent, green);
+    background: linear-gradient(to right, orange ,transparent, green);
 }
 
+.notification_close:before {
+    content: 'x';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    cursor: pointer;
+}
+.notification_content, .notification_title{
+    padding:5px;
+    margin:auto;
+}
+
+.notification_hide{
+    animation: hide_notifycation 0.5s  linear;
+    animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes show_notifycation {
+    from {
+        transform: translate3d(220px,0,0);
+        opacity: 0;
+    }
+
+    to {
+        transform: translate3d(0,0,0);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes hide_notifycation {
+    100%{
+        max-height: 0;
+        margin-bottom: 0;
+    }
+    80% {
+        max-height: 200px;
+        margin-bottom: 5px;
+        transform: translate3d(220px,0,0);
+        opacity: 0;
+    }
+
+    0% {
+        transform: translate3d(0,0,0);
+        opacity: 1;
+    }
+}
 /*------------MEDIA-----------*/
 @media (max-width: 1200px) {
     .top_slogan {

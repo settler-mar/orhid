@@ -148,28 +148,142 @@ function init_file_prev(obj){
     });
 }
 
-var notificationIndex=0;
-function show_msg(text,type){
-    console.log($('.notification_container').length);
-    if (!($(".notification_container").length)) {
-        $('body').append('<ul class="notification_container"></ul>');
-    }
-    notificationIndex++;
-    $('.notification_container').append('<li class="notification_item indexLi'+notificationIndex+'"><p>Message №'+notificationIndex+'</p><a>Close</a></li>');
-    $('.indexLi'+notificationIndex).slideDown(100).
-                                    delay('5000').
-                                    slideUp("slow",function(){
-                                                               $(this).remove();
-                                                                //if ($('.notification_container').size()==0) {
-                                                                //$('.notification_container').remove();
-                                                             });//remove
-    $('.indexLi'+notificationIndex).on("click",'a',(function(){
-                                                               $(this).parent().remove();
-                                                               //if ($('.notification_container').size()==0) {
-                                                                 //  $('.notification_container').remove();
-                                                               }));
+function show_msg(text,type,title){
+    popup.open({message:text,type:type,title:title})
 }
-setInterval("show_msg('Mes1',1);",2000);
+
+
+var popup = (function() {
+    var conteiner;
+    var mouseOver = 0;
+    var timerClearAll = null;
+    var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+
+    var _setUpListeners = function() {
+        $('body').on('click', '.notification_close', _closePopup);
+        $('body').on('mouseenter', '.notification_container', _timerstop);
+        $('body').on('mouseleave', '.notification_container', _timerstart);
+
+        //$('body').on('click', '.popup', _stopPropogation);
+    };
+
+    var _timerstop = function(event) {
+        //event.preventDefault();
+        if (timerClearAll!=null) {
+            clearTimeout(timerClearAll);
+            timerClearAll = null;
+        }
+        var allLi = document.getElementsByClassName("notification_item");
+        for (var i = 0; (element = allLi[i]) != null; i++) {
+            clearTimeout(element.getAttribute('data-timer'));
+        }
+        mouseOver = 1;
+        //document.getElementsByClassName.clearTimeout(($(this).data('timer')));
+        //$('.notification_item').clearTimeout(($(this).data('timer')));
+    }
+
+    var _timerstart = function(event) {
+        //event.preventDefault();
+        var liForRemove;
+        var idInterval;
+        $('.notification_item').addClass('forHide');
+        timerClearAll = setTimeout(function(){
+                                                idInterval = setInterval(
+                                                function() {
+                                                            liForRemove = $('.forHide').first();
+                                                            if (liForRemove.length != 0) {
+                                                                liForRemove.removeClass('forHide');
+                                                                liForRemove.addClass('notification_hide').on(animationEnd, function () {
+                                                                    $(this).remove();
+                                                                });
+                                                            }
+                                                            else{
+                                                                console.log(2);
+                                                                clearTimeout(idInterval);
+                                                            }
+                                                           }
+                                                           ,100)
+                                              }
+                            ,3000);
+        mouseOver = 0;
+    }
+
+    var _closePopup = function(event) {
+        //event.preventDefault();
+        var $this = $(this).parent();
+        $this.on(animationEnd, function() {
+            $(this).remove();
+        });
+        $this.addClass('notification_hide')
+    };
+
+    var open = function(data) {
+        if (!conteiner) {
+            conteiner = $('<ul/>', {
+                'class': 'notification_container'
+            });
+
+            $('body').append(conteiner);
+            _setUpListeners();
+        }
+
+        var li = $('<li/>', {
+            class: 'notification_item'
+        });
+
+        if (data.type){
+            li.addClass('notification_item-' + data.type);
+        }
+
+        li.append('<span class="notification_close"></span>');
+        li.on(animationEnd, function() {
+            if ( mouseOver == 0) {
+                li.attr('data-timer', timeout = setTimeout(function () {
+                    li.addClass('notification_hide');
+                    li.on(animationEnd, function () {
+                       $(this).remove();
+                    });
+                }, 5000));
+            }
+        });
+
+        content = $('<h3/>',{
+            class:"notification_title"
+        });
+        content.html(data.title);
+        li.append(content);
+
+        content = $('<div/>',{
+            class:"notification_content"
+        });
+        content.html(data.message);
+
+        li.append(content);
+
+
+
+        /*li.data( 'timeout', timeout );*/
+
+        conteiner.append(li)
+    };
+
+    return {
+        open: open
+    };
+}());
+indexmes=0;
+setInterval(function(){
+    var  i = Math.floor(1+Math.random()*(4));
+    console.log(i);
+    var type;
+    switch (i){
+        case 1: {type = 'err'; break;    }
+        case 2: {type = 'info'; break;    }
+        case 3: {type = 'success'; break;    }
+        case 4: {type = 'alert'; break;    }
+}
+    show_msg('text'+indexmes,type,'Title');indexmes++;
+},2000);
 
 
 function onlineTrace() {
