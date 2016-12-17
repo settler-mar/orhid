@@ -173,10 +173,9 @@ var popup = (function() {
             clearTimeout(timerClearAll);
             timerClearAll = null;
         }
-        var allLi = document.getElementsByClassName("notification_item");
-        for (var i = 0; (element = allLi[i]) != null; i++) {
-            clearTimeout(element.getAttribute('data-timer'));
-        }
+        conteiner.find('.notification_item').each(function(i){
+            clearTimeout($(this).attr('data-timer'));
+        });
         mouseOver = 1;
         //document.getElementsByClassName.clearTimeout(($(this).data('timer')));
         //$('.notification_item').clearTimeout(($(this).data('timer')));
@@ -188,23 +187,19 @@ var popup = (function() {
         var idInterval;
         $('.notification_item').addClass('forHide');
         timerClearAll = setTimeout(function(){
-                                                idInterval = setInterval(
-                                                function() {
-                                                            liForRemove = $('.forHide').first();
-                                                            if (liForRemove.length != 0) {
-                                                                liForRemove.removeClass('forHide');
-                                                                liForRemove.addClass('notification_hide').on(animationEnd, function () {
-                                                                    $(this).remove();
-                                                                });
-                                                            }
-                                                            else{
-                                                                console.log(2);
-                                                                clearTimeout(idInterval);
-                                                            }
-                                                           }
-                                                           ,100)
-                                              }
-                            ,3000);
+            idInterval = setInterval(function() {
+                liForRemove = $('.forHide').first();
+                if (liForRemove.length != 0) {
+                    liForRemove.removeClass('forHide');
+                    liForRemove.addClass('notification_hide').on(animationEnd, function () {
+                        $(this).remove();
+                    });
+                }
+                else{
+                    clearTimeout(idInterval);
+                }
+               },100)
+          },3000);
         mouseOver = 0;
     }
 
@@ -246,8 +241,13 @@ var popup = (function() {
                 }, 5000));
             }
         });
+        var img = $('<img />',
+            { class: 'notification_img',
+                src: 'img/notification_'+data.type+'.png',
+            })
+            .appendTo(li);
 
-        content = $('<h3/>',{
+        content = $('<p/>',{
             class:"notification_title"
         });
         content.html(data.title);
@@ -274,7 +274,6 @@ var popup = (function() {
 indexmes=0;
 setInterval(function(){
     var  i = Math.floor(1+Math.random()*(4));
-    console.log(i);
     var type;
     switch (i){
         case 1: {type = 'err'; break;    }
@@ -282,7 +281,7 @@ setInterval(function(){
         case 3: {type = 'success'; break;    }
         case 4: {type = 'alert'; break;    }
 }
-    show_msg('text'+indexmes,type,'Title');indexmes++;
+    show_msg('text vdfvgd gertdgedr gerger'+indexmes,type,'Title');indexmes++;
 },2000);
 
 

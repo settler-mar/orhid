@@ -1841,7 +1841,7 @@ input {
     padding:5px
 }
 .notification_item{
-    width:200px;
+    width:400px;
     background:#999;
     margin-bottom:5px;
     position:relative;
@@ -1852,31 +1852,25 @@ input {
 }
 .notification_item-err
 {
-    background: -webkit-linear-gradient(left, orange ,transparent, red);
-    background: -o-linear-gradient(right, orange ,transparent, red);
-    background: -moz-linear-gradient(right, orange ,transparent, red);
-    background: linear-gradient(to right, orange ,transparent, red);
+    background: rgba(220,150,150,0.9);
 }
 .notification_item-info
 {
-    background: -webkit-linear-gradient(left, orange ,transparent, blue);
-    background: -o-linear-gradient(right, orange ,transparent, blue);
-    background: -moz-linear-gradient(right, orange ,transparent, blue);
-    background: linear-gradient(to right, orange ,transparent, blue);
+    background: rgba(171,205,239,0.9);
 }
 .notification_item-alert
 {
-    background: -webkit-linear-gradient(left, orange ,transparent, yellow);
-    background: -o-linear-gradient(right, orange ,transparent, yellow);
-    background: -moz-linear-gradient(right, orange ,transparent, yellow);
-    background: linear-gradient(to right, orange ,transparent, yellow);
+    background: rgba(255,191,0,0.9);
 }
 .notification_item-success
 {
-    background: -webkit-linear-gradient(left, orange ,transparent, green);
-    background: -o-linear-gradient(right, orange ,transparent, green);
-    background: -moz-linear-gradient(right, orange ,transparent, green);
-    background: linear-gradient(to right, orange ,transparent, green);
+    background: rgba(186,219,173,0.9);
+}
+
+.notification_img{
+    height: 40px;
+    margin: 30px;
+    float: left;
 }
 
 .notification_close:before {
@@ -1885,15 +1879,24 @@ input {
     top: 2px;
     right: 2px;
     cursor: pointer;
+    font-family: Verdana, Arial;
+    font-weight: bold;
 }
 .notification_content, .notification_title{
     padding:5px;
-    margin:auto;
+    margin: 5px auto;
+    font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+    text-align: center;
+    font-size: 18px;
+}
+.notification_content{
+    font-size: 16px;
 }
 
 .notification_hide{
     animation: hide_notifycation 0.5s  linear;
     animation-fill-mode: forwards;
+    transform: translate3d(220px,0,0);
 }
 
 @-webkit-keyframes show_notifycation {
@@ -1913,7 +1916,7 @@ input {
         max-height: 0;
         margin-bottom: 0;
     }
-    80% {
+    50% {
         max-height: 200px;
         margin-bottom: 5px;
         transform: translate3d(220px,0,0);
