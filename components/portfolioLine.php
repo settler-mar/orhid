@@ -12,6 +12,8 @@ class PortfolioLine extends Widget{
 
     public function run(){
         if ($this->portfolio[$this->params]==$this->not_show) return '';
+        if (strlen($this->portfolio[$this->params])==0) return '';
+
         $out = '<p><span>';
         $attributes=Profile::attributeLabels();
         $out.= $attributes[$this->params];

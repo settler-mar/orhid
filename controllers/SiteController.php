@@ -143,7 +143,7 @@ class SiteController extends Controller
                 //,'moderate'=>1, //только прошедшие модерацию
             ])
 
-            ->asArray()
+            //->asArray()
             ->all(); //выводим все что получилось
 
         return $this->render('top',['user'=>$user]);
@@ -162,11 +162,11 @@ class SiteController extends Controller
                 'auth_assignment.user_id'=>null, //убераем с выборки всех пользователей с ролями
                 'user.id' => $id
             ])
-            ->asArray()
+            //->asArray()
             ->one(); //выводим все что получилось
         if(!$user || ($user['sex']==0 && $user['moderate']!=1))
             throw new \yii\web\NotFoundHttpException('User not found or blocked');
 
-        return $this->render('user',$user);
+        return $this->render('user',['model'=>$user]);
     }
 }

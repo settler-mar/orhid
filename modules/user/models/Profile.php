@@ -386,6 +386,8 @@ class Profile extends \yii\db\ActiveRecord
         if(!$list)return false;
 
         if(is_array($sel))$sel=$sel[$param];
+        if(is_object($sel))$sel=$sel[$param];
+        //var_dump($sel);
         if($sel==null)return false;
         return $list[$sel];
     }

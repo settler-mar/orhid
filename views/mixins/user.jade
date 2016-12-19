@@ -8,7 +8,7 @@ mixin userMiniCard(users,max_online_time)
             .anketa
                 a(href= '/user/'.$user['id'])
                     i
-                    img(src= $user['photo'], alt= $user['first_name'].' '.$user['city']['city'])
+                    img(src= $user->getPhoto(), alt= $user['first_name'].' '.$user['city']['city'])
                     div
                         b= $user['first_name']
                         p

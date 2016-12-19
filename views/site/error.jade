@@ -2,6 +2,10 @@
     use yii\helpers\Html;
     $view->title = $name;
 
+script(type='text/javascript').
+    $(document).ready(function() {
+        popup.open({message: '<?=Html::encode($message);?>', type: 'err'});
+    });
 .site-error
     .alert.alert-danger
         != nl2br(Html::encode($message))

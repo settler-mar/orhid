@@ -158,53 +158,44 @@ var popup = (function() {
     var mouseOver = 0;
     var timerClearAll = null;
     var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+    var time = 3000;
 
     var _setUpListeners = function() {
         $('body').on('click', '.notification_close', _closePopup);
-        $('body').on('mouseenter', '.notification_container', _timerstop);
-        $('body').on('mouseleave', '.notification_container', _timerstart);
-
-        //$('body').on('click', '.popup', _stopPropogation);
+        $('body').on('mouseenter', '.notification_container', _onEnter);
+        $('body').on('mouseleave', '.notification_container', _onLeave);
     };
 
-    var _timerstop = function(event) {
-        //event.preventDefault();
+    var _onEnter = function(event) {
+        if(event)event.preventDefault();
         if (timerClearAll!=null) {
             clearTimeout(timerClearAll);
             timerClearAll = null;
         }
         conteiner.find('.notification_item').each(function(i){
-            clearTimeout($(this).attr('data-timer'));
+            var option=$(this).data('option');
+            if(option.timer) {
+                clearTimeout(option.timer);
+            }
         });
         mouseOver = 1;
-        //document.getElementsByClassName.clearTimeout(($(this).data('timer')));
-        //$('.notification_item').clearTimeout(($(this).data('timer')));
-    }
+    };
 
-    var _timerstart = function(event) {
-        //event.preventDefault();
-        var liForRemove;
-        var idInterval;
-        $('.notification_item').addClass('forHide');
-        timerClearAll = setTimeout(function(){
-            idInterval = setInterval(function() {
-                liForRemove = $('.forHide').first();
-                if (liForRemove.length != 0) {
-                    liForRemove.removeClass('forHide');
-                    liForRemove.addClass('notification_hide').on(animationEnd, function () {
-                        $(this).remove();
-                    });
-                }
-                else{
-                    clearTimeout(idInterval);
-                }
-               },100)
-          },3000);
+    var _onLeave = function() {
+        conteiner.find('.notification_item').each(function(i){
+            $this=$(this);
+            var option=$this.data('option');
+            if(option.time>0) {
+                option.timer = setTimeout(_closePopup.bind(option.close), option.time - 1500 + 100 * i);
+                $this.data('option',option)
+            }
+        });
         mouseOver = 0;
-    }
+    };
 
     var _closePopup = function(event) {
-        //event.preventDefault();
+        if(event)event.preventDefault();
+
         var $this = $(this).parent();
         $this.on(animationEnd, function() {
             $(this).remove();
@@ -213,6 +204,7 @@ var popup = (function() {
     };
 
     var open = function(data) {
+        var option = {time : (data.time||data.time===0)?data.time:time};
         if (!conteiner) {
             conteiner = $('<ul/>', {
                 'class': 'notification_container'
@@ -230,62 +222,55 @@ var popup = (function() {
             li.addClass('notification_item-' + data.type);
         }
 
-        li.append('<span class="notification_close"></span>');
-        li.on(animationEnd, function() {
-            if ( mouseOver == 0) {
-                li.attr('data-timer', timeout = setTimeout(function () {
-                    li.addClass('notification_hide');
-                    li.on(animationEnd, function () {
-                       $(this).remove();
-                    });
-                }, 5000));
-            }
+        var close=$('<span/>',{
+            class:'notification_close'
         });
-        var img = $('<img />',
-            { class: 'notification_img',
-                src: 'img/notification_'+data.type+'.png',
-            })
-            .appendTo(li);
+        option.close=close;
+        li.append(close);
 
-        content = $('<p/>',{
-            class:"notification_title"
-        });
-        content.html(data.title);
-        li.append(content);
+        if(data.title && data.title.length>0) {
+            var title = $('<p/>', {
+                class: "notification_title"
+            });
+            title.html(data.title);
+            li.append(title);
+        }
 
-        content = $('<div/>',{
+        var content = $('<div/>',{
             class:"notification_content"
         });
         content.html(data.message);
 
         li.append(content);
 
+        conteiner.append(li);
 
-
-        /*li.data( 'timeout', timeout );*/
-
-        conteiner.append(li)
+        if(option.time>0){
+            option.timer=setTimeout(_closePopup.bind(close), option.time);
+        }
+        li.data('option',option)
     };
 
     return {
         open: open
     };
 }());
-indexmes=0;
-setInterval(function(){
-    var  i = Math.floor(1+Math.random()*(4));
-    var type;
-    switch (i){
-        case 1: {type = 'err'; break;    }
-        case 2: {type = 'info'; break;    }
-        case 3: {type = 'success'; break;    }
-        case 4: {type = 'alert'; break;    }
-}
-    show_msg('text vdfvgd gertdgedr gerger'+indexmes,type,'Title');indexmes++;
-},2000);
-
 
 function onlineTrace() {
     $.get('/online');
     setTimeout(onlineTrace, 60000)
+}
+
+function parse_input_json(data){
+    if(data['status']!=0){
+        show_msg(data['msg'],'err');
+        return;
+    }
+    show_msg(data['msg'],'info');
+    if(data['href']=='#'){
+        location.reload()
+    }
+    if(data['href'].length>1){
+        location.href=data['href'];
+    }
 }

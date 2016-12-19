@@ -6,7 +6,10 @@
 .user-index
   //!= $view->render('_search', ['model' => $searchModel])
   -if ( Yii::$app->session->hasFlash('success')) {
-    p.signup-success= Yii::$app -> session -> getFlash('success');
+    script(type='text/javascript').
+      $(document).ready(function () {
+        popup.open({message: '<?=Yii::$app->session->getFlash('success');?>', type: 'success'});
+      });
   - }
   div
     !=Html::a('Create User', ['create'], ['class' => 'btn btn-success'])
@@ -36,7 +39,7 @@
         'filter'=>false,
         'enableSorting'=>false,
         'value' => function ($model, $key, $index, $column) {
-          return '<img src="'.$model->photo.'" style="height: 60px;" \>';
+          return '<img src="'.$model->getPhoto().'" style="height: 60px;" \>';
         },
       ],
       'username',

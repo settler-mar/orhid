@@ -26,7 +26,10 @@
 -$sex = Yii::$app->user->identity->sex;
 .user-form
   -if ( Yii::$app->session->hasFlash('success')) {
-    p.signup-success= Yii::$app->session->getFlash('success');
+    script(type='text/javascript').
+      $(document).ready(function () {
+        popup.open({message: '<?=Yii::$app->session->getFlash('success');?>', type: 'success',time:10000});
+      });
   - }
   - $form = ActiveForm::begin(['id' => 'form-signup','fieldConfig' => ['template' =>$template_input ],'options' => ['enctype'=>'multipart/form-data']]);
 

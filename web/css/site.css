@@ -1834,218 +1834,7 @@ input {
     margin: 0 auto;
     cursor: pointer;
 }
-.notification_container{
-    position:fixed;
-    top:0;
-    right:0;
-    padding:5px
-}
-.notification_item{
-    width:400px;
-    background:#999;
-    margin-bottom:5px;
-    position:relative;
-    list-style:none;
-    overflow:hidden;
-    animation: show_notifycation 0.2s  linear;
-    border-radius: 5px;
-}
-.notification_item-err
-{
-    background: rgba(220,150,150,0.9);
-}
-.notification_item-info
-{
-    background: rgba(171,205,239,0.9);
-}
-.notification_item-alert
-{
-    background: rgba(255,191,0,0.9);
-}
-.notification_item-success
-{
-    background: rgba(186,219,173,0.9);
-}
 
-.notification_img{
-    height: 40px;
-    margin: 30px;
-    float: left;
-}
-
-.notification_close:before {
-    content: 'x';
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    cursor: pointer;
-    font-family: Verdana, Arial;
-    font-weight: bold;
-}
-.notification_content, .notification_title{
-    padding:5px;
-    margin: 5px auto;
-    font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
-    text-align: center;
-    font-size: 18px;
-}
-.notification_content{
-    font-size: 16px;
-}
-
-.notification_hide{
-    animation: hide_notifycation 0.5s  linear;
-    animation-fill-mode: forwards;
-    transform: translate3d(220px,0,0);
-}
-
-@-webkit-keyframes show_notifycation {
-    from {
-        transform: translate3d(220px,0,0);
-        opacity: 0;
-    }
-
-    to {
-        transform: translate3d(0,0,0);
-        opacity: 1;
-    }
-}
-
-@-webkit-keyframes hide_notifycation {
-    100%{
-        max-height: 0;
-        margin-bottom: 0;
-    }
-    50% {
-        max-height: 200px;
-        margin-bottom: 5px;
-        transform: translate3d(220px,0,0);
-        opacity: 0;
-    }
-
-    0% {
-        transform: translate3d(0,0,0);
-        opacity: 1;
-    }
-}
-/*------------MEDIA-----------*/
-@media (max-width: 1200px) {
-    .top_slogan {
-        margin-left:22%;
-        top: 34px;
-    }
-
-    .top_slogan p {
-        font-size: 28px;
-        line-height: 1.2;
-    }
-
-    .top_slogan span {
-        font-size: 18px;
-    }
-
-    .box {
-        padding: 10px 14px;
-        width: 110px;
-        margin-right: 2px;
-    }
-
-    .button {
-        padding: 11px 20px;
-    }
-
-    .top_soc {
-        display: none;
-    }
-
-    .chat_block {
-        width: 48%;
-        margin-right: 20px;
-    }
-
-    .user_chat {
-        width: 18%;
-    }
-
-    .user_add span {
-        font-size: 13px;
-    }
-}
-
-@media (max-width: 1100px) {
-    .top_star .into dl:first-child {
-        margin-right:5%;
-        width: 35%;
-    }
-
-    .top_menu ul li {
-        float: left;
-        margin-right: 26px;
-    }
-
-    .video_glav {
-        width: 44%;
-    }
-
-    .video_glav iframe {
-        width: 100%;
-        min-height: 330px;
-    }
-
-    .right_cont {
-        background: rgba(255, 255, 255, 0.6);
-        width: auto;
-        padding: 20px 24px;
-        margin-left: 47%;
-    }
-
-    .top_people, .content_glav, .content {
-        padding: 30px 0
-    }
-
-    .title_1 {
-        font-size: 36px;
-        margin-bottom: 30px;
-    }
-
-    .content .anketa {
-        width: 17.4%;
-        margin-right: 1.8%;
-        margin-bottom: 20px;
-    }
-
-    .video_block {
-        float: left;
-        width: 27%;
-        margin-right: 20px;
-    }
-
-    .chat_block {
-        width: 48%;
-        margin-right: 20px;
-    }
-
-    .user_all {
-        width: 100%;
-    }
-
-    .user_chat {
-        width: 20%;
-    }
-}
-
-@media (max-width: 1000px) {
-    .top_slogan {
-        display:none;
-    }
-
-    .top_menu ul {
-        display: none;
-    }
-
-    .open_menu {
-        display: block;
-    }
 .user-form {
     display: block;
 }
@@ -2257,8 +2046,8 @@ table input {
     text-align: left;
     bottom: 7px;
 }
-.form-group [class*="crop"]+.help-block,
-.form-group .input_file+.help-block{
+
+.form-group [class*="crop"]+.help-block, .form-group .input_file+.help-block {
     bottom: -2px;
     left: 0;
 }
@@ -2299,6 +2088,9 @@ table [name="UserSearch[username]"] {
     opacity: 1;
 }
 
+.help-block:empty {
+    display: none;
+}
 
 .uzer_hed .form-group .help-block {
     position: absolute !important;
@@ -2309,5 +2101,104 @@ table [name="UserSearch[username]"] {
     z-index: 2;
     text-align: center;
     /* border: 1px solid; */
-    height: auto;
+    height: 30px;
+    line-height: 1.2em;
+}
+
+.notification_container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 5px
+}
+
+.notification_item {
+    width: 310px;
+    background: #999;
+    margin-bottom: 5px;
+    position: relative;
+    list-style: none;
+    overflow: hidden;
+    animation: show_notifycation 0.2s linear;
+    border-radius: 2px;
+}
+
+.notification_item-err {
+    background: rgba(220,150,150,0.9);
+}
+
+.notification_item-info {
+    background: rgba(171,205,239,0.9);
+}
+
+.notification_item-alert {
+    background: rgba(255,191,0,0.9);
+}
+
+.notification_item-success {
+    background: rgba(186,219,173,0.9);
+}
+
+.notification_img {
+    height: 40px;
+    margin: 30px;
+    float: left;
+}
+
+.notification_close:before {
+    content: 'x';
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    cursor: pointer;
+    font-family: Verdana, Arial;
+    font-weight: bold;
+}
+
+.notification_content, .notification_title {
+    padding: 5px;
+    margin: 5px auto;
+    font-family: Arial,Helvetica Neue,Helvetica,sans-serif;
+    font-size: 18px;
+}
+
+.notification_content {
+    font-size: 16px;
+}
+
+.notification_hide {
+    animation: hide_notifycation 0.5s linear;
+    animation-fill-mode: forwards;
+    transform: translate3d(380px,0,0);
+}
+
+@-webkit-keyframes show_notifycation {
+    from {
+        transform: translate3d(220px,0,0);
+        opacity: 0;
+    }
+
+    to {
+        transform: translate3d(0,0,0);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes hide_notifycation {
+    100% {
+        max-height: 0;
+        margin-bottom: 0;
+    }
+
+    50% {
+        max-height: 200px;
+        margin-bottom: 5px;
+        transform: translate3d(220px,0,0);
+        opacity: 0;
+    }
+
+    0% {
+        transform: translate3d(0,0,0);
+        opacity: 1;
+    }
 }

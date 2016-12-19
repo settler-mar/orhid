@@ -8,16 +8,17 @@
     use app\components\chineseZodiac;
 
 
-    $view->title = $first_name.' '.date('Y',$profile['birthday']);
+    $view->title = $model->first_name.' '.date('Y',$model->profile['birthday']);
     $view->params['breadcrumbs'][] = $view->title;
 
-    $old=date('Y',time()-$profile['birthday'])-1970;
-    $online = (time()-$last_online<User::MAX_ONLINE_TIME)
+    $old=date('Y',time()-$model->profile['birthday'])-1970;
+    $online = (time()-($model->last_online)<User::MAX_ONLINE_TIME);
+    $profile=$model->profile;
 
 .one_left
     .one_img
-        a(href= $photo)
-            img(src= $photo, alt= $first_name)
+        a(href= $model->photo)
+            img(src= $model->getPhoto(), alt= $model->first_name)
     // one_img
     .profile
         p
@@ -33,17 +34,19 @@
 
         p
             span City
-            != $city['city']
+            != $model->city['city']
         p
             span Country
-            != $country['name']
+            != $model->country['name']
 
-        p
-            span Astrological sign
-            != ZodiacalSign::Widget(['date'=>$profile['birthday']])
-        p
-            span Chinise Zodiac
-            != ChineseZodiac::Widget(['date'=>$profile['birthday']])
+        -if($profile['birthday']!=0){
+            p
+                span Astrological sign
+                != ZodiacalSign::Widget(['date'=>$profile['birthday']])
+            p
+                span Chinise Zodiac
+                != ChineseZodiac::Widget(['date'=>$profile['birthday']])
+        -}
 
         != PortfolioLine::Widget(['portfolio'=>$profile,'params'=>'eyes']);
 
@@ -83,12 +86,12 @@
     .one_info
         .name_us= $first_name
         p
-            span.online_2= 'ID '.$id
+            span.online_2= 'ID '.$model->id
             if ($online)
                 span.online Now online
             else
                 span.online_2
-                 != TimePassed::widget(['timeStart'=>$last_online])
+                 != TimePassed::widget(['timeStart'=>$model->last_online])
     // one_info
     .chat_us
         a(href='#') Live chat

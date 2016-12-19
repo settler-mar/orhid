@@ -109,6 +109,10 @@ class User extends ActiveRecord  implements IdentityInterface
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getPhoto()
+    {
+        return (strlen($this->photo)>5?$this->photo:'/img/not-ava.jpg');
+    }
     public function getProfile()
     {
         return $this->hasOne(Profile::className(), ['user_id' => 'id']);

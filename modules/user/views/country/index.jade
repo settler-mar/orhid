@@ -20,7 +20,12 @@ div
 
   -
     $columns = [
-    ['class' => 'yii\grid\CheckboxColumn'],
+    [
+      'class' => 'yii\grid\CheckboxColumn',
+      'checkboxOptions' => function ($model, $key, $index, $column) {
+        return ['value' => $model->id];
+      }
+    ],
     ['class' => 'yii\grid\SerialColumn'],
     'id',
     [

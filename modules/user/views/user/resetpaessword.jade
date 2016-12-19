@@ -11,6 +11,10 @@
 .user-form
     -if ( Yii::$app->session->hasFlash('reset-success')) {
         p.signup-success= Yii::$app->session->getFlash('reset-success');
+        script(type='text/javascript').
+            $(document).ready(function () {
+                popup.open({message: '<?=Yii::$app->session->getFlash('reset-success');?>', type: 'success'});
+            });
     - } else {
     -
         $form = ActiveForm::begin(['id' => 'pass-form','fieldConfig' => ['template' => "{label}{input}{error}"]]);
