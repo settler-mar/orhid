@@ -66,6 +66,10 @@ class SiteController extends Controller
          return $this->render('index.jade');
     }
 
+    public function actionLegends()
+    {
+         return $this->render('legends.jade');
+    }
 
 
     /**

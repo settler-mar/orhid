@@ -42,8 +42,12 @@ $config = [
                 'city/get/<id:\d+>' => 'city/get',
                 //Взаимодействия с пользователем на сайте
                 '<action:(online|registration|logout|confirm|reset|profile|resetpassword)>' => 'user/user/<action>',
+
+                //закрываем прямой доступ к базовому контроллеру
+                'site/<action>'=>'404',
+                'site/<action>/<action2>'=>'404',
                 //базовые страницы в основном контроллере
-                '<action:(top|onlinehelp)>' => 'site/<action>',
+                '<action:(top|shop|about|blog|legends|mans|competitions|onlinehelp)>' => 'site/<action>',
                 //Страница пользователя
                 '<action:(user)>/<id:\d+>' => 'site/user/',
             ],
