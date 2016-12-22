@@ -8,6 +8,7 @@ use johnitvn\rbacplus\models\AuthItem;
 class m161205_073631_add_first_admin_and_rools extends Migration
 {
 
+    public $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
     //Администратор по умолчанию
     const ADMIN_FIRST_NAME = 'Имя';
     const ADMIN_LAST_NAME = 'Фамилия';

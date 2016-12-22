@@ -2075,6 +2075,9 @@ table input {
     text-align: left;
     bottom: 7px;
 }
+.help-block:empty{display:none;}
+.form-group [class*="crop"]+.help-block,
+.form-group .input_file+.help-block{
 
 .form-group [class*="crop"]+.help-block, .form-group .input_file+.help-block {
     bottom: -2px;

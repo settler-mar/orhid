@@ -1,0 +1,24 @@
+-use yii\helpers\Html
+-use yii\widgets\DetailView
+-$view->title = $model->title
+-$view->params['breadcrumbs'][] = ['label' => 'Shop Stores', 'url' => ['index']]
+-$view->params['breadcrumbs'][] = $view->title
+.shop-store-view
+  h1
+    !=Html::encode($view->title)
+  p
+    !=Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary'])
+    !=Html::a('Delete', ['delete', 'id' => $model->id], ['class' => 'btn btn-danger','data' => ['confirm' => 'Are you sure you want to delete this item?','method' => 'post',],])
+
+  -
+    $attributes = [
+    'id',
+    'title',
+    'description:ntext',
+    'picture',
+    'price',
+    'comment',
+    'active',
+    'created_at',
+    ]
+  !=DetailView::widget(['model' => $model,'attributes' => $attributes ])

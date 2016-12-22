@@ -4,6 +4,8 @@ use yii\db\Migration;
 
 class m161203_143343_add_moderation_colum_to_user extends Migration
 {
+    public $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+
     public function up()
     {
         $this->addColumn('user', 'moderate', $this->integer(1)->defaultValue(0));

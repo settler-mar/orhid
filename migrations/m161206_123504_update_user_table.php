@@ -4,6 +4,8 @@ use yii\db\Migration;
 
 class m161206_123504_update_user_table extends Migration
 {
+    public $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+
     public function up()
     {
         $this->dropColumn('user', 'role');

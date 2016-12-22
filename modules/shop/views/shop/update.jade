@@ -1,0 +1,7 @@
+-use yii\helpers\Html
+-$view->title = 'Update Shop Store: ' . ' ' . $model->title
+-$view->params['breadcrumbs'][] = ['label' => 'Shop Stores', 'url' => ['index']]
+-$view->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]]
+-$view->params['breadcrumbs'][] = 'Update';
+.shop-store-update
+  !=$view->render('_form', ['model' => $model,])
