@@ -121,6 +121,10 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         return $this->hasOne(LbCity::className(), ['id' => 'city']);
     }
+    public function getCity_()
+    {
+        return $this->hasOne(LbCity::className(), ['id' => 'city']);
+    }
     public function getCountry()
     {
         return $this->hasOne(LbCountry::className(), ['id' => 'country']);

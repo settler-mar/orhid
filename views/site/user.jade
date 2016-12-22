@@ -34,10 +34,10 @@
 
         p
             span City
-            != $model->city['city']
+            != $model->city_->city;
         p
             span Country
-            != $model->country['name']
+            != $model->country_->name
 
         -if($profile['birthday']!=0){
             p
