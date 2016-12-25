@@ -116,7 +116,16 @@ $config = [
         ],
         'user' => [
             'class' => 'app\modules\user\Module',
-        ]
+        ],
+        'staticPages' => [
+            'class' => 'app\modules\staticPages\Module',
+        ],
+        'orhidLegends' => [
+            'class' => 'app\modules\orhidLegends\Module',
+        ],
+        'orhidBlog' => [
+            'class' => 'app\modules\orhidBlog\Module',
+        ],
     ],
 ];
 
