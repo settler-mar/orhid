@@ -32,9 +32,11 @@ use dosamigos\tinymce\TinyMce;
             'filemanager_title' => 'Responsive Filemanager',
             'external_plugins' => [
                 //Иконка/кнопка загрузки файла в диалоге вставки изображения.
-                'filemanager' => 'plugins/responsivefilemanager/filemanager/plugin.min.js',
+                //'filemanager' => 'plugins/responsivefilemanager/filemanager/plugin.min.js',
+                'filemanager' => '/js/tinymce/plugins/responsivefilemanager/filemanager/plugin.min.js',
                 //Иконка/кнопка загрузки файла в панеле иснструментов.
-                'responsivefilemanager' => 'plugins/responsivefilemanager/tinymce/plugins/responsivefilemanager/plugin.min.js',
+                //'responsivefilemanager' => 'plugins/responsivefilemanager/tinymce/plugins/responsivefilemanager/plugin.min.js',
+                'responsivefilemanager' => '/js/tinymce/plugins/responsivefilemanager/tinymce/plugins/responsivefilemanager/plugin.min.js',
             ],
         ]
     ]);?>
