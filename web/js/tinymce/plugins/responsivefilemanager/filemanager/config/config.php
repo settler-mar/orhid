@@ -77,7 +77,7 @@ $config = array(
 	| with final /
 	|
 	*/
-	'current_path' => '../../../../../web/uploads/',
+	'current_path' => '../../../../../uploads/',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -88,7 +88,7 @@ $config = array(
 	| DO NOT put inside upload folder
 	|
 	*/
-	'thumbs_base_path' => '../../../../../web/uploads_thumbs/',
+	'thumbs_base_path' => '../../../../../uploads_thumbs/',
 
 
 	/*
@@ -201,13 +201,13 @@ $config = array(
 	//Show or not language selection feature in filemanager
 	'show_language_selection'				=> true,
 	//active or deactive the transliteration (mean convert all strange characters in A..Za..z0..9 characters)
-	'transliteration'						=> false,
+	'transliteration'						=> true,
 	//convert all spaces on files name and folders name with $replace_with variable
-	'convert_spaces'						=> false,
+	'convert_spaces'						=> true,
 	//convert all spaces on files name and folders name this value
 	'replace_with'							=> "_",
 	//convert to lowercase the files and folders name
-	'lower_case'							=> false,
+	'lower_case'							=> true,
 
 	//Add ?484899493349 (time value) to returned images to prevent cache
 	'add_time_to_img'                       => false,
@@ -224,7 +224,7 @@ $config = array(
 	// set maximum pixel width and/or maximum pixel height for all images
 	// If you set a maximum width or height, oversized images are converted to those limits. Images smaller than the limit(s) are unaffected
 	// if you don't need a limit set both to 0
-	'image_max_width'                         => 0,
+	'image_max_width'                         => 2000,
 	'image_max_height'                        => 0,
 	'image_max_mode'                          => 'auto',
 	/*

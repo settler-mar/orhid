@@ -26,7 +26,7 @@ use dosamigos\tinymce\TinyMce;
                 'save insertdatetime media table contextmenu template paste image'
             ],
             'toolbar' => 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-            'external_filemanager_path' => '/plugins/responsivefilemanager/filemanager/',
+            'external_filemanager_path' => '/js/tinymce/plugins/responsivefilemanager/filemanager/',
             'filemanager_title' => 'Responsive Filemanager',
             'external_plugins' => [
                 //Иконка/кнопка загрузки файла в диалоге вставки изображения.
