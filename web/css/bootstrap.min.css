@@ -3722,10 +3722,10 @@ select[multiple].input-group-sm>.form-control,select[multiple].input-group-sm>.i
     padding: 6px 12px;
     margin-left: -1px;
     line-height: 1.42857143;
-    color: #337ab7;
+    color: #ac3b3f;
     text-decoration: none;
     background-color: #fff;
-    border: 1px solid #ddd
+    border: 1px solid #f3e9e0;
 }
 
 .pagination>li:first-child>a,.pagination>li:first-child>span {
@@ -3741,24 +3741,24 @@ select[multiple].input-group-sm>.form-control,select[multiple].input-group-sm>.i
 
 .pagination>li>a:focus,.pagination>li>a:hover,.pagination>li>span:focus,.pagination>li>span:hover {
     z-index: 2;
-    color: #23527c;
-    background-color: #eee;
-    border-color: #ddd
+    color: #ac3b3f;
+    background-color: #f3e9e0;
+    border-color: #f3e9e0;
 }
 
 .pagination>.active>a,.pagination>.active>a:focus,.pagination>.active>a:hover,.pagination>.active>span,.pagination>.active>span:focus,.pagination>.active>span:hover {
     z-index: 3;
     color: #fff;
     cursor: default;
-    background-color: #337ab7;
-    border-color: #337ab7
+    background-color: #ac3b3f;
+    border-color: #ac3b3f;
 }
 
 .pagination>.disabled>a,.pagination>.disabled>a:focus,.pagination>.disabled>a:hover,.pagination>.disabled>span,.pagination>.disabled>span:focus,.pagination>.disabled>span:hover {
     color: #777;
     cursor: not-allowed;
     background-color: #fff;
-    border-color: #ddd
+    border-color: #f3e9e0;
 }
 
 .pagination-lg>li>a,.pagination-lg>li>span {

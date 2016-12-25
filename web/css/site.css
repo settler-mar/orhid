@@ -538,7 +538,7 @@ line-height:1.1;}
     margin-right: 10px;
 }
 
-.my_img img {
+.my_img {
     -moz-border-radius: 50%;
     -webkit-border-radius: 50%;
     -khtml-border-radius: 50%;
@@ -552,13 +552,7 @@ line-height:1.1;}
 }
 
 .my_img img {
-    -moz-border-radius: 50%;
-    -webkit-border-radius: 50%;
-    -khtml-border-radius: 50%;
-    border-radius: 50%;
     width: 44px;
-    height: 44px;
-
 }
 
 .top_us span {
@@ -1237,7 +1231,7 @@ input {
 .profile {
     padding: 0px;
     margin-top: -6px;
-    float: left;
+    /* float: left; */
     display: block;
     overflow: hidden;
 }
@@ -1901,8 +1895,8 @@ input {
 
 .sub_form_reg, .btn-primary {
     background: #7E9511;
-    border-radius: 0;
-    padding: 8px 30px;
+    border-radius: 4px;
+    padding: 7px 30px;
     color: #fff;
     border: none;
 }
