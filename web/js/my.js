@@ -274,3 +274,45 @@ function parse_input_json(data){
         location.href=data['href'];
     }
 }
+
+var userChat = (function() {
+
+    var my_id=false;
+    var user=false;
+
+    function _timer() {
+        this.interval = setTimeout(this.update, 1000);
+    }
+
+    function _update() {
+        post={
+            id:this.my_id,
+            user:this.user,
+            last_msg:this.last_msg
+        };
+        $.post('/chat/get',post,this.parce,'json')
+            .fail(this.timer)
+    }
+
+    function _parce(data) {
+        this.last_msg=data.time;
+        if(data.users){
+
+        }
+        this.timer()
+    }
+
+    function init(data){
+        this.my_id=data.my_id;
+        this.user=data.user;
+        this.last_msg=0;
+        this.update=_update.bind(this);
+        this.parce=_parce.bind(this);
+        this.timer=_timer.bind(this);
+        this.update()
+    }
+
+    return {
+        init: init
+    };
+})();

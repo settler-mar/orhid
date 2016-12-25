@@ -159,7 +159,6 @@ class SiteController extends Controller
      */
     public function actionUser($id)
     {
-        //throw new \yii\web\NotFoundHttpException('Page');
         $user=User::find()
             ->joinWith(['profile','city_','country_','role']) //добавляем вывод из связвнных таблиц
             ->where([
@@ -168,7 +167,7 @@ class SiteController extends Controller
             ])
             //->asArray()
             ->one(); //выводим все что получилось
-        if(!$user || ($user['sex']==0 && $user['moderate']!=1))
+        if(!$user || $user['moderate']!=1)
             throw new \yii\web\NotFoundHttpException('User not found or blocked');
 
 

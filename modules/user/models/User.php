@@ -4,6 +4,7 @@ namespace app\modules\user\models;
 
 use app\models\LbCity;
 use app\models\LbCountry;
+use app\modules\chat\models\Chat;
 use johnitvn\rbacplus\models\AssignmentSearch;
 use Yii;
 use app\modules\user\models\User;
@@ -137,6 +138,29 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         return $this->hasMany(AuthAssignment::className(), ['user_id' => 'id']);
     }
+
+    public function getChatMsgIn(){
+      //return  $this->hasMany(Chat::className(), ['user_to' => 'id']);
+      //return $this->hasMany(Chat::className(), ['user_to' => 'id'])->count();
+        //->viaTable('{{%Chat}} b', ['b.user_to'=>'id']);
+    }
+    public function getChatMsgOut(){
+      return  $this->hasMany(Chat::className(), ['user_from' => 'id']);
+    }
+    /*public function getMsgcnt(){
+        return $this->getMessage()->count();
+    }*/
+    public function getChatMessage(){
+      return Chat::find()
+        ->where(['user_to' => $this->id])
+        ->orWhere(['user_from' => $this->id]);
+    }
+
+    /*public function getMsgnew(){
+        return $this->getMessage()
+          ->where(['user_to'=>$this->id,'is_read'=>0])
+          ->count();
+    }*/
     /* Геттер для полного имени человека */
     public function getFullName() {
         return $this->last_name . ' ' . $this->first_name;

@@ -1,0 +1,65 @@
+-
+  use yii\helpers\Html;
+  use yii\grid\GridView;
+  use app\modules\user\models\User;
+  use app\modules\user\models\Profile;
+  use app\components\timePassed;
+
+  $view->title = 'Chat';
+  $view->params['breadcrumbs'][] = $view->title;
+  $view->params['hide_title']=true;
+
+  $old=date('Y',time()-$user->profile['birthday'])-1970;
+  $online = (time()-($user->last_online)<User::MAX_ONLINE_TIME);
+
+.content
+  .into
+    .chat_all
+      .video_block
+        .vid_in
+            img(src= $user->getPhoto(), alt=$user->first_name)
+        .vid_title
+          p= $user->username.'('.$user->first_name.')'
+          span= $old.' y.o. '.$user->city_->city.' / '.$user->country_->name
+          if ($online)
+            i.online Now online
+          else
+            i.online_2
+              != TimePassed::widget(['timeStart' => $user -> last_online])
+      .chat_block
+        .user_block
+          a(href= $user->getPhoto())
+            img(src= $user->getPhoto())
+          span
+            a(href= '/user/'.$user->id)= $user->username
+          .add_fav Add to favorites
+          .remove_fav
+            span ×
+            | Remove from general
+          .users
+            img(src='img/users.png')
+        // user_block
+        .send_chat.send_top
+          textarea.mess_1
+          input.send_1(type='submit', value='Отправить', name='')
+        .mess_block
+          .loading
+        .send_chat
+          textarea.mess_1
+          input.send_1(type='submit', value='Отправить', name='')
+      // chat_block
+      .user_chat
+        .user_add
+          span General
+            span.count_user (240)
+          span Favorites
+            span.count_user (28)
+        .user_all
+          .loading
+      // user_chat
+    // chat_all
+    .clear
+script(type='text/javascript').
+  $(document).ready(function() {
+    userChat.init({user:<?=$user->id;?>,my_id:<?=$my_id;?>});
+  });

@@ -38,6 +38,7 @@ $config = [
                 //закрываем пямой доступ к /user/user
                 'user/user/<action>'=>'404',
                 'user/user/<action>/<action2>'=>'404',
+                '/chat/default/<action>'=>'404',
                 //получение города по стране
                 'city/get/<id:\d+>' => 'city/get',
                 //Взаимодействия с пользователем на сайте
@@ -50,6 +51,10 @@ $config = [
                 '<action:(top|shop|about|blog|legends|mans|competitions|onlinehelp)>' => 'site/<action>',
                 //Страница пользователя
                 '<action:(user)>/<id:\d+>' => 'site/user/',
+
+                //страница сообщения
+                '<action:(chat)>/<id:\d+>' => 'chat/default/<action>',
+                'chat/<action:(get|send)>' => 'chat/default/<action>'
             ],
         ],
         'errorHandler'=>[
@@ -101,6 +106,9 @@ $config = [
         ],
         'shop' => [
             'class' => 'app\modules\shop\Module',
+        ],
+        'chat' => [
+            'class' => 'app\modules\chat\Module',
         ],
         'rbac' =>  [
             'class' => 'johnitvn\rbacplus\Module',

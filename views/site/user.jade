@@ -17,7 +17,7 @@
 
 .one_left
     .one_img
-        a(href= $model->photo)
+        a(href= $model->getPhoto())
             img(src= $model->getPhoto(), alt= $model->first_name)
     // one_img
     .profile
