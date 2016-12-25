@@ -65,7 +65,7 @@ class OrhidBlog extends \yii\db\ActiveRecord
         $this->string = substr(uniqid('img'),0,12);
         $this->imageTmp = UploadedFile::getInstance($this, 'image');
         if ($this->imageTmp!=null) {
-            $this->filename = 'img/orhidBlog/' . $this->string . '.' . $this->imageTmp->extension;
+            $this->filename = 'img/orhidblog/' . $this->string . '.' . $this->imageTmp->extension;
             $this->imageTmp->saveAs($this->filename);
             $this->image = '' . $this->filename;
         }

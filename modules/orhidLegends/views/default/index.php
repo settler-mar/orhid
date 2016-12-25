@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <div class="caption">
                         <h3> <?=$arr->title?></h3>
                         <p> <?=$arr->text?></p>
-                        <p><a href="orhidLegends/default/view?id=<?=$arr->id?>" class="btn btn-primary">Blog</a></p>
+                        <p><a href="orhidLegends/default/view?id=<?=$arr->id?>" class="btn btn-primary">Legend</a></p>
                     </div>
                 </div>
             </div>

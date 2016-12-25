@@ -29,6 +29,16 @@ class DefaultController extends Controller
         ];
     }
 
+    function beforeAction($action) {
+        //if (Yii::$app->user->isGuest || !Yii::$app->user->can('userManager')) {
+        //    throw new \yii\web\ForbiddenHttpException('You are not allowed to perform this action.');
+        //    return false;
+        //}
+        $this->view->registerJsFile('/js/bootstrap.min.js');
+        $this->view->registerCssFile('/css/bootstrap.min.css');
+        return true;
+    }
+
     /**
      * Lists all StaticPages models.
      * @return mixed
@@ -66,7 +76,7 @@ class DefaultController extends Controller
         $model = new StaticPages();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -85,7 +95,7 @@ class DefaultController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index']);
         } else {
             return $this->render('update', [
                 'model' => $model,
