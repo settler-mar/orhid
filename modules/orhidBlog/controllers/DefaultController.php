@@ -2,6 +2,7 @@
 
 namespace app\modules\orhidBlog\controllers;
 
+use app\modules\user\models\User;
 use Yii;
 use app\modules\orhidBlog\models\OrhidBlog;
 use app\modules\orhidBlog\models\OrhidBlogSearch;
@@ -21,20 +22,14 @@ class DefaultController extends Controller
     public function behaviors()
     {
         return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
-            'access' =>[
+            'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['create','update','delete'],
+                'only' => ['create', 'update', 'delete'],
                 'rules' => [
                     [
-                        'actions' =>  ['create','update','delete'],
+                        'actions' => ['create', 'update', 'delete'],
                         'allow' => true,
-                        //'roles' => ['@'],
+                        'roles' => ['userManager'],
                     ],
                 ],
             ],
@@ -57,6 +52,22 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
+        /*$auth = Yii::$app->authManager;
+        $createPost = $auth->createPermission('staticPagesAccess');
+        $createPost->description = 'Access to static pages table';
+        $auth->add($createPost);
+        $updatePost = $auth->createPermission('updateLegend');
+        $updatePost->description = 'Update legend';
+        $auth->add($updatePost);
+        $deletePost = $auth->createPermission('deleteLegend');
+        $deletePost->description = 'Delete legend';
+        $auth->add($deletePost);
+        $author = $auth->getRole('administrator');
+
+        $auth->addChild($author, $createPost);
+        $auth->addChild($author, $updatePost);
+        $auth->addChild($author, $deletePost);*/
+
         $searchModel = new OrhidBlogSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -90,9 +101,12 @@ class DefaultController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            if (Yii::$app->user->can('createBlog')) {
+                return $this->render('create', ['model' => $model,]);
+            }
+            else {
+                return $this->redirect(['index']);
+            }
         }
     }
 
@@ -118,9 +132,14 @@ class DefaultController extends Controller
             return $this->redirect(['index']);
         }
         else {                                              // begin update
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            if (Yii::$app->user->can('updateBlog')) {
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
+            else{
+                return $this->redirect(['index']);
+            }
         }
     }
 
@@ -132,8 +151,9 @@ class DefaultController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-
+        if (Yii::$app->user->can('deleteBlog')) {
+            $this->findModel($id)->delete();
+        }
         return $this->redirect(['index']);
     }
 

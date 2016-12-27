@@ -11,16 +11,20 @@
 .user-form
     -if ( Yii::$app->session->hasFlash('reset-success')) {
         p.signup-success= Yii::$app->session->getFlash('reset-success');
+        script(type='text/javascript').
+            $(document).ready(function () {
+                popup.open({message: '<?=Yii::$app->session->getFlash('reset-success');?>', type: 'success'});
+            });
     - } else {
     -
-        $form = ActiveForm::begin(['id' => 'pass-form','fieldConfig' => ['template' => "{input}\n{hint}\n{error}"]]);
+        $form = ActiveForm::begin(['id' => 'pass-form','fieldConfig' => ['template' => "{label}{input}{error}"]]);
 
     != $form->field($forget, 'email')->textInput(['maxlength' => true, 'placeholder' => $forget->getAttributeLabel('email')]);
     != $form->field($forget, 'password')->passwordInput(['maxlength' => true, 'placeholder' => $forget->getAttributeLabel('password')]);
 
     -
         $capchaOption=[
-            'captchaAction' => '/user/user/captcha',
+            'captchaAction' => '/user/default/captcha',
             'options' => [
                 'class' => 'form-control',
                 'placeholder' => 'Captcha'

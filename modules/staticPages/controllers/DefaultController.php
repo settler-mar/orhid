@@ -47,11 +47,17 @@ class DefaultController extends Controller
     {
         $searchModel = new StaticPagesSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if (!(Yii::$app->user->can('staticPagesAccess'))) {
+            $this->redirect(['/']);
+        }
+        else{
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+
     }
 
     /**
@@ -78,9 +84,12 @@ class DefaultController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            if (Yii::$app->user->can('staticPagesAccess')) {
+                return $this->render('create', ['model' => $model,]);
+            }
+            else {
+                return $this->redirect(['index']);
+            }
         }
     }
 
@@ -97,9 +106,14 @@ class DefaultController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            if (Yii::$app->user->can('staticPagesAccess')) {
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
+            else{
+                return $this->redirect(['index']);
+            }
         }
     }
 
@@ -111,7 +125,9 @@ class DefaultController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if (Yii::$app->user->can('staticPagesAccess')) {
+            $this->findModel($id)->delete();
+        }
 
         return $this->redirect(['index']);
     }

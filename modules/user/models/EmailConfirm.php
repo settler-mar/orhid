@@ -41,6 +41,13 @@ class EmailConfirm extends Model
     {
         $user = $this->_user;
         $user->status = User::STATUS_ACTIVE;
+
+        $geo = new \jisoft\sypexgeo\Sypexgeo();
+        $geo->get($_SERVER["REMOTE_ADDR"]);
+        if($geo && $user->country==$geo->country['id']) {
+            $user->moderate = 1;
+        }
+
         $user->removeEmailConfirmToken();   // Удаление токена подтверждения электронной почты
         return (($user->save())) ? $user->id : false;
     }

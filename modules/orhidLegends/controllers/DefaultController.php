@@ -34,7 +34,7 @@ class DefaultController extends Controller
                     [
                         'actions' =>  ['create','update','delete'],
                         'allow' => true,
-                       // 'roles' => ['?'],
+                        'roles' => ['@'],
                     ],
                 ],
             ],
@@ -90,9 +90,12 @@ class DefaultController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+                if (Yii::$app->user->can('createLegend')) {
+                    return $this->render('create', ['model' => $model,]);
+                }
+                else {
+                    return $this->redirect(['index']);
+                }
         }
     }
 
@@ -118,9 +121,14 @@ class DefaultController extends Controller
             return $this->redirect(['index']);
         }
         else {                                              // begin update
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            if (Yii::$app->user->can('updateLegend')) {
+                return $this->render('update', [
+                    'model' => $model,
+                ]);
+            }
+            else{
+                return $this->redirect(['index']);
+            }
         }
     }
 
@@ -132,7 +140,9 @@ class DefaultController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        if (Yii::$app->user->can('deleteLegend')) {
+            $this->findModel($id)->delete();
+        }
 
         return $this->redirect(['index']);
     }

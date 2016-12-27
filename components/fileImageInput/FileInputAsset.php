@@ -6,7 +6,7 @@ use yii\web\AssetBundle;
 
 class FileInputAsset extends AssetBundle
 {
-    public $sourcePath = __DIR__ . '/assets';
+    //public $sourcePath = __DIR__ . '/assets';
     /**
      * @inheritdoc
      */

@@ -20,7 +20,7 @@ class m161127_075653_add_new_field_to_user extends Migration
             'sex'                  => Schema::TYPE_INTEGER . ' NOT NULL',
             'status'               => Schema::TYPE_INTEGER . ' DEFAULT \'0\'',
             'role'                 => Schema::TYPE_INTEGER . ' DEFAULT \'0\'',
-            'password_hash'   password     => Schema::TYPE_STRING . '(60)',
+            'password_hash'        => Schema::TYPE_STRING . '(60)',
             'photo'                => Schema::TYPE_STRING . '(60)',
             'password_reset_token' => Schema::TYPE_STRING . '(60)',
             'email_confirm_token'  => Schema::TYPE_STRING . '(60)',

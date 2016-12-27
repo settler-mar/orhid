@@ -1,0 +1,19 @@
+//- Navbar mixin
+mixin userMiniCard(users,max_online_time)
+    .anketa_all
+        each $user in $users
+            -
+                $old=date('Y',time()-$user['profile']['birthday'])-1970;
+                $online = (time()-$user['last_online']<$max_online_time)
+            .anketa
+                a(href= '/user/'.$user['id'])
+                    i
+                    img(src= $user->getPhoto(), alt= $user['first_name'].' '.$user['city']['city'])
+                    div
+                        b= $user['first_name']
+                        p
+                            if ($user['profile']['birthday']!=0)
+                                != $old
+                            span= $user['city']['city']
+                        if ($online)
+                            i

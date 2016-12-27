@@ -1,0 +1,840 @@
+@charset "utf-8"; /* CSS Document */
+
+html, body {
+    margin: 0; min-width:320px;
+    padding: 0;
+}
+
+
+/*------------MEDIA-----------*/
+@media (max-width: 1200px) {
+    .legend_block {width:23.6%; margin-right:1%; margin-bottom:14px;}
+    .top_slogan {
+        margin-left:22%;
+        top: 34px;
+    }
+
+    .top_slogan p {
+        font-size: 28px;
+        line-height: 1.2;
+    }
+
+    .top_slogan span {
+        font-size: 18px;
+    }
+
+    .box {
+        padding: 10px 14px;
+        width: 110px;
+        margin-right: 2px;
+    }
+
+    .button {
+        padding: 11px 20px;
+    }
+
+    .top_soc {
+        display: none;
+    }
+
+    .chat_block {
+        width: 48%;
+        margin-right: 20px;
+    }
+
+    .user_chat {
+        width: 18%;
+    }
+
+    .user_add span {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .top_star .into dl:first-child {
+        margin-right:5%;
+        width: 35%;
+    }
+
+    .top_menu ul li {
+        float: left;
+        margin-right: 26px;
+    }
+
+    .video_glav {
+        width: 44%;
+    }
+
+    .video_glav iframe {
+        width: 100%;
+        min-height: 330px;
+    }
+
+    .right_cont {
+        background: rgba(255, 255, 255, 0.6);
+        width: auto;
+        padding: 20px 24px;
+        margin-left: 47%;
+    }
+
+    .top_people, .content_glav, .content {
+        padding: 30px 0
+    }
+
+    .title_1 {
+        font-size: 36px;
+        margin-bottom: 30px;
+    }
+
+    .content .anketa {
+        width: 17.4%;
+        margin-right: 1.8%;
+        margin-bottom: 20px;
+    }
+
+    .video_block {
+        float: left;
+        width: 27%;
+        margin-right: 20px;
+    }
+
+    .chat_block {
+        width: 48%;
+        margin-right: 20px;
+    }
+
+    .user_all {
+        width: 100%;
+    }
+
+    .user_chat {
+        width: 20%;
+    }
+}
+
+@media (max-width: 1000px) {
+    .legend_block {width:32.0%; margin-right:1%; margin-bottom:12px;}
+    .top_slogan {
+        display:none;
+    }
+
+    .top_menu ul {
+        display: none;
+    }
+
+    .open_menu {
+        display: block;
+    }
+
+    .top_soc {
+        display: block;
+    }
+
+    .anketa a p {
+        font-size: 18px;
+    }
+
+    .anketa a p span {
+        font-size: 12px;
+    }
+
+    .video_glav {
+        width: 52%;
+        margin-bottom: 10px;
+    }
+
+    .video_glav iframe {
+        width: 100%;
+        min-height: 260px;
+    }
+
+    .right_cont {
+        background: none;
+        width: auto;
+        padding: 0px 24px 0 0;
+        margin-left: 0;
+    }
+
+    .news_letter {
+        display: none;
+    }
+
+    .top_people, .content_glav, .content {
+        padding: 20px 0
+    }
+
+    .title_1 {
+        font-size: 36px;
+        margin-bottom: 20px;
+    }
+
+    .prof {
+        max-width: 402px;
+    }
+
+    .prof tr th {
+        padding: 0px 10px 0 0px;
+    }
+
+    .prof select {
+        width: 190px;
+        margin: 5px 0px 5px 0;
+    }
+
+    .prof input {
+        width: 170px;
+        margin: 5px 0px 5px 0;
+    }
+
+    .form_block {
+        margin: 30px 0 0 420px;
+    }
+
+    .tab_ava img {
+        max-width: 300px;
+    }
+
+    .tab_ava {
+        float: right;
+        right: 10px;
+        position: relative;
+    }
+
+    .add_ava {
+        float: right;
+        right: 10px;
+        position: relative;
+    }
+
+    .one_left {
+        overflow: hidden;
+        width: 700px;
+        float: none;
+        margin-right: 0px;
+        margin-bottom: 20px;
+    }
+
+    .one_right {
+        display: block;
+        margin-left: 0px;
+        float: none;
+    }
+
+    .photo_us {
+        max-width: 100%;
+    }
+
+   
+
+    .tovar a img {
+        max-height: 150px;
+    }
+}
+
+@media (max-width: 900px) {
+    .video_block {
+        float:none;
+        width: 100%;
+        margin-right: 0px;
+        margin-bottom: 20px;
+        display: none;
+    }
+
+    .vid_in {
+        max-width: 400px;
+    }
+
+    .vid_title {
+        display: none;
+    }
+
+    .chat_block {
+        width: 69%;
+        margin-right: 20px;
+    }
+
+    .user_all {
+        width: 100%;
+    }
+
+    .user_add {
+        text-align: left;
+    }
+
+    .user_chat {
+        width: 28%;
+    }
+
+    input {
+        /* -webkit-appearance: none; */
+    }
+}
+
+@media (max-width: 800px) {
+    .anketa_all {
+        width:103%;
+    }
+
+    .anketa {
+        width: 30.0%;
+        margin-right: 2.6%;
+        margin-bottom: 20px;
+    }
+
+    .anketa a b {
+        font-size: 15px;
+    }
+
+    .anketa a p {
+        font-size: 22px;
+    }
+
+    .content .anketa {
+        width: 21.8%;
+        margin-right: 2.4%;
+        margin-bottom: 20px;
+    }
+
+    .form_block {
+        margin: 30px 0 0 410px;
+    }
+
+    
+
+    .chat_block {
+        width: 68%;
+        margin-right: 10px;
+    }
+
+    .user_chat {
+        width: 30%;
+    }
+}
+
+@media (max-width: 700px) {
+    .legend_block {width:47.6%; margin-right:2%; margin-bottom:12px;}
+    .header {
+        background:url(../img/bg_top.jpg) no-repeat top center;
+        width: 100%;
+        height: 90px;
+        display: none;
+    }
+
+    .logo {
+        display: block;
+        position: relative;
+        margin: 0 auto;
+        top: 14px;
+        width: 123px;
+    }
+
+    .logo img {
+        width: 100%;
+    }
+
+    .top_star .into dl {
+        width: 100% !important;
+        float: left;
+        margin-right: 0;
+        overflow: hidden;
+    }
+
+    .top_star span {
+        background: url(../img/star.png) no-repeat 0 1px;
+        color: #FFF;
+        padding-left: 24px;
+        display: block;
+        max-width: 440px;
+        vertical-align: top;
+        margin-bottom: 10px;
+        font-size: 13px;
+        background-size: 14px;
+    }
+
+    .reg_hed, .uzer_hed {
+        display: none;
+    }
+
+    .top_soc {
+        display: none;
+    }
+
+    .uzer_hed_2 {
+        display: block;
+    }
+
+    .open_reg {
+        display: block;
+    }
+
+    .top_us_3 {
+        display: block;
+    }
+
+    #left_open {
+        top: 0px;
+    }
+
+    .video_glav {
+        float: none;
+        width: 98%;
+        margin-right: 0px;
+        margin-bottom: 20px;
+    }
+
+    .video_glav iframe {
+        width: 100%;
+        min-height: 260px;
+    }
+
+    .right_cont {
+        background: rgba(255, 255, 255, 0.6);
+        width: auto;
+        padding: 20px 24px;
+        margin-left: 0;
+    }
+
+    .foot_logo {
+        display: none;
+    }
+
+    .foot_soc {
+        float: none;
+        top: 0px;
+        text-align: center;
+    }
+
+    .foot_soc p {
+        line-height: 1.3;
+    }
+
+    .foot_soc span a img {
+        width: 28px;
+    }
+
+    .footer {
+        background: #210f09;
+        width: 100%;
+        height: 70px;
+        padding: 20px 0px;
+    }
+
+    .content_glav {
+        margin-bottom: 100px;
+    }
+
+    .content {
+        margin-bottom: 120px;
+    }
+
+    .prof {
+        float: none;
+    }
+
+    .form_block {
+        margin: 30px 0 0 0px;
+        float: none;
+        width: 100%;
+    }
+
+    .tab_ava {
+        float: left;
+        right: 0px;
+    }
+
+    .add_ava {
+        float: left;
+        right: 0px;
+    }
+
+    .one_left {
+        overflow: hidden;
+        width: 100%;
+        float: none;
+        margin-right: 0px;
+    }
+
+    .one_img {
+        float: left;
+        margin-right: 0px;
+        width: 60%;
+    }
+
+    .one_img img {
+        width: 100%;
+        max-width: 398px;
+    }
+
+    .profile {
+        padding: 0px;
+        margin-top: -2px;
+        margin-left: 64%;
+        float: none;
+    }
+
+    .profile p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .photo_us {
+        max-width: 1000px;
+        width: 105%;
+        display: block;
+    }
+
+    
+
+    .mess_block {
+        width: 100%;
+        height: auto;
+        max-height: none;
+    }
+
+    .user_all {
+        height: auto;
+
+    }
+
+    .slogan_2 {
+        font-size: 40px;
+        top: -110px;
+        text-align: center;
+        left: 0px;
+    }
+
+    .slogan_2 b {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 670px) {
+    .content .anketa {
+        width:30%;
+        margin-right: 2.4%;
+        margin-bottom: 20px;
+    }
+
+    .chat_block {
+        width: 100%;
+        margin-right: 0px;
+        display: none;
+        position: relative;
+    }
+
+    .user_chat {
+        width: 100%;
+        margin-top: 0;
+        position: relative;
+    }
+
+    .us_on {
+        width: 95%;
+        padding: 8px 8px;
+    }
+
+    .us_on img {
+        width: 50px;
+        height: 50px;
+        float: left;
+        margin-right: 10px
+    }
+
+    .us_on span {
+        margin-top: 15px;
+        display: inline-block;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .user_add {
+        margin-bottom: 14px;
+    }
+
+    .user_add span {
+        padding: 12px 0px;
+        font-size: 14px;
+    }
+
+    .us_on b {
+        top: 15px;
+        margin-right: 8px;
+        padding: 0px 0 0 0;
+        width: 17px;
+        height: 17px;
+    }
+
+    .users {
+        display: block;
+    }
+
+    .send_chat {
+        background: none;
+        display: none;
+        padding: 0px;
+        overflow: hidden;
+        width: 100%;
+        margin-bottom: 12px;
+    }
+
+    .send_top {
+        display: block;
+    }
+
+    .tovar {
+        width: 22%;
+        margin-right: 2%;
+        margin-bottom: 2%;
+    }
+
+    .tovar a {
+        height: 18vh;
+        width: 22vw;
+        max-height: 120px;
+    }
+
+    .tovar a img {
+        max-height: 160px;
+        max-width: 22vw;
+    }
+
+    .add_cart {
+        padding: 8px 22px;
+    }
+
+    .age_us {
+        width: 100%;
+        margin-top: -10px;
+        margin-bottom: 10px;
+    }
+
+    .age_us div {
+        font-size: 26px;
+        margin-right: 8px;
+    }
+
+    .age_us p br {
+        display: none;
+    }
+
+    .age_us p {
+        font-size: 20px;
+        margin-top: 3px;
+        display: inline-block;
+        margin-bottom: 0;
+    }
+
+    .age_us span {
+        display: none;
+    }
+
+    .name_us {
+        font-size: 24px;
+        display: inline-block;
+        line-height: 1.2;
+        margin: 0;
+        top: 0;
+        vertical-align: top;
+        color: #000;
+        margin-right: 14px;
+    }
+
+    .one_info {
+        padding-bottom: 20px;
+    }
+
+    .one_info p {
+        display: inline-block;
+        font-size: 17px;
+        vertical-align: top;
+        top: 4px;
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    .one_info p span {
+        display: inline-block;
+        margin-right: 10px;
+    }
+}
+
+@media (max-width: 500px) {
+    .users img {
+        width:40px;
+        height: 31px;
+    }
+
+    .users {
+        position: absolute;
+        right: -20px;
+        top: 33px;
+    }
+
+    .tovar {
+        width: 47%;
+        margin-right: 2%;
+        margin-bottom: 8%;
+    }
+
+    .tovar a {
+        height: 18vh;
+        width: 48vw;
+        max-height: 120px;
+    }
+
+    .tovar a img {
+        max-height: 160px;
+        max-width: 40vw;
+    }
+
+    .add_cart {
+        padding: 8px 30px;
+    }
+}
+
+@media (max-width: 450px) {
+    .legend_block {width:100%; margin-right:0; margin-bottom:12px;}
+.control-label {
+    width: 70px;
+    display: inline-block;
+    text-align: right;
+   
+}
+.form-group {width:100%; }
+.form-group .help-block {position:relative; left:80px; text-align:left; width:200px;}
+.my_select_box {width:180px;}
+    .anketa_all {
+        width:103%;
+    }
+
+    .anketa, .content .anketa {
+        width: 45.1%;
+        margin-right: 3.8%;
+        margin-bottom: 20px;
+    }
+
+    .anketa a b {
+        font-size: 15px;
+    }
+
+    .anketa a p {
+        font-size: 22px;
+    }
+
+    .one_img {
+        float: none;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .profile {
+        padding: 0px;
+        margin-top: 20px;
+        margin-left: 0;
+        display: none;
+    }
+
+    .profile p {
+        font-size: 17px;
+    }
+
+    #profile_mini {
+        display: block;
+        margin-bottom: 20px;
+    }
+
+    .add_fav {
+        padding: 5px 10px;
+        margin-right: 6px;
+    }
+
+    .remove_fav {
+        padding: 5px 10px;
+    }
+
+    .remove_fav span {
+        float: left;
+        font-size: 24px;
+        line-height: 0.7;
+        margin-right: 8px
+    }
+
+    .user_block {
+        margin-bottom: 12px;
+    }
+
+    .user_block a {
+        font-size: 22px;
+    }
+
+    .user_block img {
+        width: 34px;
+        height: 34px;
+        float: left;
+        margin-right: 10px;
+    }
+
+    .user_block > span {
+        display: block;
+        margin-bottom: 10px;
+        margin-top: 6px;
+    }
+
+    .users img {
+        width: 40px;
+        height: 31px;
+    }
+
+    .users {
+        position: absolute;
+        right: -10px;
+        top: 3px;
+    }
+}
+
+@media (max-width: 400px) {
+    .into {
+        padding:0 14px 0 14px;
+    }
+
+    .title_1 {
+        font-size: 30px;
+    }
+
+    .video_glav iframe {
+        min-height: 190px;
+    }
+}
+
+@media (max-width: 360px) {
+    .into {
+        padding:0 10px 0 10px;
+    }
+
+    .anketa, .content .anketa {
+        margin-bottom: 14px;
+    }
+
+    .video_glav {
+        margin-bottom: 10px;
+    }
+
+    .tab_ava img {
+        max-width: 100%;
+    }
+
+    .users {
+        position: absolute;
+        right: -10px;
+        top: 3px;
+    }
+}
+
+.form-control  {padding:10px 8px !important; margin-bottom:12px;}
+
+@media (max-width: 1400px) {.photo_people {width: 10vw; height: 10vw; }}
+@media (max-width: 1200px) {.photo_people {width: 9vw; height: 9vw; }}
+@media (max-width: 1100px) {.photo_people {width: 7.6vw; height: 7.6vw; }}
+@media (max-width: 1000px) {.photo_people {width: 13vw; height: 13vw; }.photo_us a {margin: 0 1% 1% 0;}}
+@media (max-width: 600px) {.photo_people {width: 30vw; height: 30vw; }}

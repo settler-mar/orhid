@@ -1,0 +1,9 @@
+-use yii\helpers\Html
+-$view->title = 'Update Slider Images: ' . ' ' . $model->image_id
+-$view->params['breadcrumbs'][] = ['label' => 'Slider Images', 'url' => ['index']]
+-$view->params['breadcrumbs'][] = ['label' => $model->image_id, 'url' => ['view', 'id' => $model->image_id]]
+-$view->params['breadcrumbs'][] = 'Update';
+.slider-images-update
+  h1
+    !=Html::encode($view->title)
+  !=$view->render('_form', ['model' => $model,])

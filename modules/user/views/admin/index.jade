@@ -1,13 +1,15 @@
 -use yii\helpers\Html
 -use yii\grid\GridView
+-use app\models\LbCountry;
 -$view->title = 'Users'
 -$view->params['breadcrumbs'][] = $view->title
 .user-index
-  h1
-    !=Html::encode($view->title)
-    //!= $view->render('_search', ['model' => $searchModel])
+  //!= $view->render('_search', ['model' => $searchModel])
   -if ( Yii::$app->session->hasFlash('success')) {
-    p.signup-success= Yii::$app -> session -> getFlash('success');
+    script(type='text/javascript').
+      $(document).ready(function () {
+        popup.open({message: '<?=Yii::$app->session->getFlash('success');?>', type: 'success'});
+      });
   - }
   div
     !=Html::a('Create User', ['create'], ['class' => 'btn btn-success'])
@@ -37,17 +39,36 @@
         'filter'=>false,
         'enableSorting'=>false,
         'value' => function ($model, $key, $index, $column) {
-          return '<img src="'.$model->photo.'" style="height: 100px;" \>';
+          return '<img src="'.$model->getPhoto().'" style="height: 60px;" \>';
         },
       ],
       'username',
-      'email:email',
+      'email',
       //'phone',
-      'first_name',
-      'last_name',
+      'fullName',
+      //'first_name',
+      //'last_name',
       //'city',
-      //'country',
       [
+        'format' => 'raw',
+        'attribute'=>'Last ip / Country',
+
+        'value' => function ($model, $key, $index, $column) {
+          $geo = new \jisoft\sypexgeo\Sypexgeo();
+          $out='';
+          if(strlen($model->ip)>6 && $geo->get($model->ip)) {
+              $out='<span class="flag"
+              style="background-image: url(/img/flags/16/'.$geo->country['iso'].'.png);"
+              title="'.$geo->country['name_en'].'"
+              ></span>';
+          }
+          $county='<span class="flag"
+            style="background-image: url(/img/flags/16/'.$model->country_->iso.'.png);"
+            >'.$model->country_->name.'</span>';
+
+          return $out.$model->ip.'<br>'.$county;
+        }
+      ],[
         'attribute'=>'sex',
         'filter'=>array(''=>'All',0=>"Men",1=>"Female"),
         'value' => function ($model, $key, $index, $column) {
@@ -78,11 +99,7 @@
         'attribute'=>'moderate',
         'filter'=>array(''=>'All',0=>"NOT",1=>"YES",2=>'Wait'),
         'value' => function ($model, $key, $index, $column) {
-          if($model->sex==1){
-            return $model->moderate==1?'YES':($model->status==2?'Wait':'NOT');
-          }else{
-            return '-';
-          }
+            return $model->moderate==1?'YES':($model->moderate==2?'Wait':'NOT');
         },
       ],
       //'role',
@@ -93,11 +110,11 @@
       //'updated_at',
       [
         'class' => 'yii\grid\ActionColumn',
-        'template'=>'{view}{create}{update}{delete}',
+        'template'=>'{create}{update}{delete}',
         'buttons'=>[
           'update' => function ($url, $model) {
-            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, [
-              'title' => 'Create',
+            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', '/user/admin/update?id='.$model->id, [
+              'title' => 'Update', 'class'=>'table_buttom',
             ]);
           },
           'view' => function ($url, $model) {

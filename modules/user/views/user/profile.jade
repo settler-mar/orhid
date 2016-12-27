@@ -15,12 +15,21 @@
 -use app\components\fileImageInput\FileInput
 
 -$view->title = 'Profile';
+-if ($model -> moderate == 0){
+  -$view->title.= ' (Not moderate)';
+-}else if($model -> moderate == 2){
+    -$view->title.= ' (Awaiting moderation)';
+-}
 -$view->params['breadcrumbs'][] = $view->title;
+
 -$template_input="{label}{input}{error}";
 -$sex = Yii::$app->user->identity->sex;
 .user-form
   -if ( Yii::$app->session->hasFlash('success')) {
-    p.signup-success= Yii::$app->session->getFlash('success');
+    script(type='text/javascript').
+      $(document).ready(function () {
+        popup.open({message: '<?=Yii::$app->session->getFlash('success');?>', type: 'success',time:10000});
+      });
   - }
   - $form = ActiveForm::begin(['id' => 'form-signup','fieldConfig' => ['template' =>$template_input ],'options' => ['enctype'=>'multipart/form-data']]);
 
@@ -35,9 +44,13 @@
 
     != $form->field($model, 'last_name')->textInput(['placeholder' => 'Last name']);
 
-    .form-group
-      label.control-label Email
-      span= $model -> email
+    -if (Yii::$app->user->can('userManager')){
+      != $form->field($model, 'email')->textInput();
+    -}else{
+      .form-group
+        label.control-label Email
+        span= $model -> email
+    -}
 
     != $form->field($model, 'phone')-> widget(\yii\widgets\MaskedInput::className(), ['mask' => '+999-99-999-9999']);
 
@@ -81,127 +94,129 @@
     .form-group
       != Chosen::widget($cityOption);
 
-    != $form->field($profile, 'passport')->textInput();
+    -if(!$model->isManager()){
+      != $form->field($profile, 'passport')->textInput();
 
-    != $form->field($profile, 'birthday')->widget(DatePicker::classname(), ['clientOptions' =>['changeMonth'=> true, 'changeYear'=> true,'maxDate'=> '-18y']])
+      != $form->field($profile, 'birthday')->widget(DatePicker::classname(), ['clientOptions' =>['changeMonth'=> true, 'changeYear'=> true,'maxDate'=> '-18y']])
 
-    .form-group
-      != Chosen::widget(['model' => $profile, 'name' => 'weight', 'data' => Profile::getList('weight'),'template'=>$template_input,]);
+      .form-group
+        != Chosen::widget(['model' => $profile, 'name' => 'weight', 'data' => Profile::getList('weight'),'template'=>$template_input,]);
 
-    .form-group
-      != Chosen::widget(['model' => $profile, 'name' => 'height', 'data' => Profile::getList('height'),'options' => ['placeholder' => 'Height'],'template'=>$template_input,]);
+      .form-group
+        != Chosen::widget(['model' => $profile, 'name' => 'height', 'data' => Profile::getList('height'),'options' => ['placeholder' => 'Height'],'template'=>$template_input,]);
 
-    .form-group
-      != Chosen::widget(['model' => $profile, 'name' => 'eyes', 'data' => Profile::getList('eyes'),'template'=>$template_input,]);
+      .form-group
+        != Chosen::widget(['model' => $profile, 'name' => 'eyes', 'data' => Profile::getList('eyes'),'template'=>$template_input,]);
 
-    .form-group
-      != Chosen::widget(['model' => $profile, 'name' => 'heir', 'data' => Profile::getList('heir'),'template'=>$template_input,]);
+      .form-group
+        != Chosen::widget(['model' => $profile, 'name' => 'heir', 'data' => Profile::getList('heir'),'template'=>$template_input,]);
 
-    != $form->field($profile, 'occupation')->textInput();
+      != $form->field($profile, 'occupation')->textInput();
 
-    .form-group
-      != Chosen::widget(['model' => $profile, 'name' => 'education', 'data' => Profile::getList('education'),'template'=>$template_input,]);
+      .form-group
+        != Chosen::widget(['model' => $profile, 'name' => 'education', 'data' => Profile::getList('education'),'template'=>$template_input,]);
 
-    .form-group
-      != Chosen::widget(['model' => $profile, 'name' => 'religion', 'data' => Profile::getList('religion'),'template'=>$template_input,]);
+      .form-group
+        != Chosen::widget(['model' => $profile, 'name' => 'religion', 'data' => Profile::getList('religion'),'template'=>$template_input,]);
 
-    .form-group
-      != Chosen::widget(['model' => $profile, 'name' => 'marital_status', 'data' => Profile::getList('marital_status'),'template'=>$template_input,]);
+      .form-group
+        != Chosen::widget(['model' => $profile, 'name' => 'marital_status', 'data' => Profile::getList('marital_status'),'template'=>$template_input,]);
 
-    .form-group
-      != Chosen::widget(['model' => $profile, 'name' => 'children_count', 'data' => Profile::getList('children_count'),'template'=>$template_input,]);
+      .form-group
+        != Chosen::widget(['model' => $profile, 'name' => 'children_count', 'data' => Profile::getList('children_count'),'template'=>$template_input,]);
 
-    != $form -> field($profile, 'lang_name') -> textInput();
+      != $form -> field($profile, 'lang_name') -> textInput();
 
-    .form-group
-      != Chosen::widget(['model' => $profile, 'name' => 'lang_proficiency', 'data' => Profile::getList('lang_proficiency'),'template'=>$template_input,]);
-
-
-    .form-group
-      != Chosen::widget(['model' => $profile, 'name' => 'smoking', 'data' => Profile::getList('smoking'),'template'=>$template_input,]);
+      .form-group
+        != Chosen::widget(['model' => $profile, 'name' => 'lang_proficiency', 'data' => Profile::getList('lang_proficiency'),'template'=>$template_input,]);
 
 
-    -
-      $slider_param=[
-        'range' => true,
-        'min' =>18,
-        'max' => 60,
-        'values'=> [ $profile->intro_age_from, $profile->intro_age_to ]
-      ]
-    .form-group
-      label.control-label Intro age
-      .range_block
-        .range_value_block
-          != Html::activeInput('text', $profile, 'intro_age_from', ['class' => 'range_input','readonly' => true])
-          span -
-          != Html::activeInput('text', $profile, 'intro_age_to', ['class' => 'range_input','readonly' => true])
-        != Slider::widget(['clientOptions' => $slider_param]);
+      .form-group
+        != Chosen::widget(['model' => $profile, 'name' => 'smoking', 'data' => Profile::getList('smoking'),'template'=>$template_input,]);
 
 
-    - $slider_param['values']= [ $profile->looking_age_from, $profile->looking_age_to ]
-    .form-group
-      label.control-label Looking age
-      .range_block
-        .range_value_block
-          != Html::activeInput('text', $profile, 'looking_age_from', ['class' => 'range_input', 'readonly' => true])
-          span -
-          != Html::activeInput('text', $profile, 'looking_age_to', ['class' => 'range_input', 'readonly' => true])
-        != Slider::widget(['clientOptions' => $slider_param]);
+      -
+        $slider_param=[
+          'range' => true,
+          'min' =>18,
+          'max' => 60,
+          'values'=> [ $profile->intro_age_from, $profile->intro_age_to ]
+        ]
+      .form-group
+        label.control-label Intro age
+        .range_block
+          .range_value_block
+            != Html::activeInput('text', $profile, 'intro_age_from', ['class' => 'range_input','readonly' => true])
+            span -
+            != Html::activeInput('text', $profile, 'intro_age_to', ['class' => 'range_input','readonly' => true])
+          != Slider::widget(['clientOptions' => $slider_param]);
 
+
+      - $slider_param['values']= [ $profile->looking_age_from, $profile->looking_age_to ]
+      .form-group
+        label.control-label Looking age
+        .range_block
+          .range_value_block
+            != Html::activeInput('text', $profile, 'looking_age_from', ['class' => 'range_input', 'readonly' => true])
+            span -
+            != Html::activeInput('text', $profile, 'looking_age_to', ['class' => 'range_input', 'readonly' => true])
+          != Slider::widget(['clientOptions' => $slider_param]);
+  -}
   //////////////////////////////////////////////////////////////////////////////
+  -if(!$model->isManager()){
+    .form_block
+      .form_block_1
+        | Address is filled in English on the model: 91055 Ukraine, Lugansk, Lenina Street, dom 1, kv 15
+        | (zipcode, country, city, street, building number, apartment number)
 
-  .form_block
-    .form_block_1
-      | Address is filled in English on the model: 91055 Ukraine, Lugansk, Lenina Street, dom 1, kv 15
-      | (zipcode, country, city, street, building number, apartment number)
+      !=  $form->field($profile, 'address')->textArea(['rows' => '6'])
 
-    !=  $form->field($profile, 'address')->textArea(['rows' => '6'])
+      !=  $form->field($profile, 'about')->textArea(['rows' => '6'])
 
-    !=  $form->field($profile, 'about')->textArea(['rows' => '6'])
+      !=  $form->field($profile, 'ideal_relationship')->textArea(['rows' => '6'])
 
-    !=  $form->field($profile, 'ideal_relationship')->textArea(['rows' => '6'])
-
-    -if ($sex == 1){
-      .form_block_3
-        .f_tit
-          | Скан паспорта:
-          span *
-        p
-          | Внимание! Черно-белые копии паспорта не принимаются. Анкета девушки будет активирована только в том случае, если в ней имеется ЦВЕТНАЯ копия паспорта хорошего кач-ва размером не менее 600 пикселей в ширину.
-
-        != $form->field($profile, 'passport_img_1')->widget(FileInput::classname());
-
-        != $form->field($profile, 'passport_img_2')->widget(FileInput::classname());
-
-        != $form->field($profile, 'passport_img_3')->widget(FileInput::classname());
-
+      -if ($model->sex == 1){
         .form_block_3
           .f_tit
-            | Видео аттестации:
+            | Скан паспорта:
             span *
           p
-            | Видеоролик, на котором девушка, держа паспорт в развернутом виде в руках, читает следующий текст на русском языке.
-            | “Я, (фамилия, имя, отчество), сегодня (число, меяц, год), подтверждаю свое искреннее желание разместить анкету на сайте международных знакомств Find-Bride.com, даю согласие на размещение моих персональных данных, фото и видеороликов, и осознаю всю меру ответственности. Я не заинтересована в получении материального вознаграждения за общение на сайте, а также не преследую цели получить выгоду от общения с мужчинами. С правилами ведения переписки, общения в текстовом и видеочате ознакомлена. Я не состою в браке и не имею серьезных отношений с мужчинами.”
-            | Загрузить видео аттестацию (до 150 MB, форматы: mp4, avi):
-          != $form->field($profile, 'video')->widget(FileInput::classname(),['type'=>'video']);
-    -}
+            | Внимание! Черно-белые копии паспорта не принимаются. Анкета девушки будет активирована только в том случае, если в ней имеется ЦВЕТНАЯ копия паспорта хорошего кач-ва размером не менее 600 пикселей в ширину.
 
-    .form_block_3
-      .f_tit
-        | Photo:
-      .photo_block
-        != $form->field($profile, 'photo0')->widget(FileInput::classname(),['hasDelate'=>true]);
-        != $form->field($profile, 'photo1')->widget(FileInput::classname(),['hasDelate'=>true]);
-        != $form->field($profile, 'photo2')->widget(FileInput::classname(),['hasDelate'=>true]);
-        != $form->field($profile, 'photo3')->widget(FileInput::classname(),['hasDelate'=>true]);
-        != $form->field($profile, 'photo4')->widget(FileInput::classname(),['hasDelate'=>true]);
-        != $form->field($profile, 'photo5')->widget(FileInput::classname(),['hasDelate'=>true]);
+          != $form->field($profile, 'passport_img_1')->widget(FileInput::classname());
 
-    .form_block_3
-      .f_tit
-        | Video about me:
-      != $form->field($profile, 'video_about')->widget(FileInput::classname(),['type'=>'video']);
+          != $form->field($profile, 'passport_img_2')->widget(FileInput::classname());
 
+          != $form->field($profile, 'passport_img_3')->widget(FileInput::classname());
+
+          .form_block_3
+            .f_tit
+              | Видео аттестации:
+              span *
+            p
+              | Видеоролик, на котором девушка, держа паспорт в развернутом виде в руках, читает следующий текст на русском языке.
+              | “Я, (фамилия, имя, отчество), сегодня (число, меяц, год), подтверждаю свое искреннее желание разместить анкету на сайте международных знакомств Find-Bride.com, даю согласие на размещение моих персональных данных, фото и видеороликов, и осознаю всю меру ответственности. Я не заинтересована в получении материального вознаграждения за общение на сайте, а также не преследую цели получить выгоду от общения с мужчинами. С правилами ведения переписки, общения в текстовом и видеочате ознакомлена. Я не состою в браке и не имею серьезных отношений с мужчинами.”
+              | Загрузить видео аттестацию (до 150 MB, форматы: mp4, avi):
+            != $form->field($profile, 'video')->widget(FileInput::classname(),['type'=>'video']);
+      -}
+
+      .form_block_3
+        .f_tit
+          | Photo:
+        .photo_block
+          != $form->field($profile, 'photo0')->widget(FileInput::classname(),['hasDelate'=>true]);
+          != $form->field($profile, 'photo1')->widget(FileInput::classname(),['hasDelate'=>true]);
+          != $form->field($profile, 'photo2')->widget(FileInput::classname(),['hasDelate'=>true]);
+          != $form->field($profile, 'photo3')->widget(FileInput::classname(),['hasDelate'=>true]);
+          != $form->field($profile, 'photo4')->widget(FileInput::classname(),['hasDelate'=>true]);
+          != $form->field($profile, 'photo5')->widget(FileInput::classname(),['hasDelate'=>true]);
+
+      .form_block_3
+        .f_tit
+          | Video about me:
+        != $form->field($profile, 'video_about')->widget(FileInput::classname(),['type'=>'video']);
+  -}
+  .clear
   .form-group
     -
       $submitOption = [
@@ -209,16 +224,32 @@
         'name' => 'signup-button'
       ];
     != Html::submitButton('<i class="glyphicon glyphicon-user"></i>Save', $submitOption );
-
-    -if ($sex == 1){
-      -
+    -if(Yii::$app->user->can('userManager')){
+      -if (!$model->isManager() && $model->sex == 1 && $model -> moderate != 1){
+        -
           $submitOption = [
-          'class' => 'btn btn-lg btn-primary sub_form_moderate',
-          'name' => 'moderate-button'
-        ];
-      != Html::submitButton('<i class="glyphicon glyphicon-user"></i>Send to moderation', $submitOption );
-    - };
-
+            'class' => 'btn btn-lg btn-primary sub_form_moderate',
+            'name' => 'moderate-button'
+          ];
+        != Html::submitButton('<i class="glyphicon glyphicon-user"></i>Moderate', $submitOption);
+        -
+          $submitOption = [
+            'class' => 'btn btn-lg btn-stop sub_form_moderate',
+            'name' => 'moderate-button-stop'
+          ];
+        != Html::submitButton('<i class="glyphicon glyphicon-user"></i>Not moderate', $submitOption);
+      - };
+    -}else{
+      -if (!$model->isManager() && $model->sex == 1 && $model -> moderate == 0){
+        -
+            $submitOption = [
+            'class' => 'btn btn-lg btn-primary sub_form_moderate',
+            'name' => 'moderate-button'
+          ];
+        != Html::submitButton('<i class="glyphicon glyphicon-user"></i>Send to moderation', $submitOption );
+      - };
+    -}
+.clear
 -ActiveForm::end();
 
 
