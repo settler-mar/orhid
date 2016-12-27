@@ -1752,8 +1752,18 @@ input {
   cursor: pointer;
   position: relative;
   border-bottom: 1px solid #f6efe9;
+  position: relative;
 }
-
+.this_user:before{
+  content:'';
+  position: absolute;
+  left: 0px;
+  top: 12px;
+  border: 10px transparent solid;
+  border-left: 10px #ac3b3f solid;
+  width: 1px;
+  height: 1px;
+}
 .us_on img {
   width: 30px;
   height: 30px;
