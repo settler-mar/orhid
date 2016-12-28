@@ -1,8 +1,6 @@
 <?php
-
 use yii\db\Migration;
 use yii\rbac\DbManager;
-
 class m161227_142656_fill_rbac_table_data extends Migration
 {
     public function up()
@@ -29,20 +27,16 @@ class m161227_142656_fill_rbac_table_data extends Migration
         ]);
         //Предустановленные значения таблицы связи ролей auth_assignment
     }
-
     public function down()
     {
         echo "m161227_142656_fill_rbac_table_data cannot be reverted.\n";
-
         return false;
     }
-
     /*
     // Use safeUp/safeDown to run migration code within a transaction
     public function safeUp()
     {
     }
-
     public function safeDown()
     {
     }
