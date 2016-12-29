@@ -51,12 +51,13 @@ class DefaultController extends Controller
             $this->redirect(['/']);
         }
         else{
-            if (Yii::$app->user->can('staticPagesAccess')) $actionTemplate = '{update}{delete}';
+            if (Yii::$app->user->can('staticPagesUpdate')) $actionTemplate = '{update}';
+            if (Yii::$app->user->can('staticPagesDelete')) $actionTemplate = $actionTemplate.'{delete}';
             return $this->render('index', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
                 'actionTemplate' => $actionTemplate,
-                'canCreate' => Yii::$app->user->can('staticPagesAccess'),
+                'canCreate' => Yii::$app->user->can('staticPagesCreate'),
             ]);
         }
 
@@ -87,7 +88,7 @@ class DefaultController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
-            if (Yii::$app->user->can('staticPagesAccess')) {
+            if (Yii::$app->user->can('staticPagesCreate')) {
                 return $this->render('create', ['model' => $model,]);
             }
             else {
@@ -109,7 +110,7 @@ class DefaultController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
-            if (Yii::$app->user->can('staticPagesAccess')) {
+            if (Yii::$app->user->can('staticPagesUpdate')) {
                 return $this->render('update', [
                     'model' => $model,
                 ]);
@@ -128,7 +129,7 @@ class DefaultController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::$app->user->can('staticPagesAccess')) {
+        if (Yii::$app->user->can('staticPagesDelete')) {
             $this->findModel($id)->delete();
         }
 

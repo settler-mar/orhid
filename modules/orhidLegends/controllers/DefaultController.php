@@ -52,9 +52,9 @@ class DefaultController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
-            'canCreate' => Yii::$app->user->can('createLegend'),
-            'canUpdate' => Yii::$app->user->can('updateLegend'),
-            'canDelete' => Yii::$app->user->can('deleteLegend'),
+            'canCreate' => Yii::$app->user->can('legendCreate'),
+            'canUpdate' => Yii::$app->user->can('legendUpdate'),
+            'canDelete' => Yii::$app->user->can('legendDelete'),
         ]);
     }
 
@@ -82,7 +82,7 @@ class DefaultController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
-                if (Yii::$app->user->can('createLegend')) {
+                if (Yii::$app->user->can('legendCreate')) {
                     return $this->render('create', ['model' => $model,]);
                 }
                 else {
@@ -113,7 +113,7 @@ class DefaultController extends Controller
             return $this->redirect(['index']);
         }
         else {                                              // begin update
-            if (Yii::$app->user->can('updateLegend')) {
+            if (Yii::$app->user->can('legendUpdate')) {
                 return $this->render('update', [
                     'model' => $model,
                 ]);
@@ -132,7 +132,7 @@ class DefaultController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::$app->user->can('deleteLegend')) {
+        if (Yii::$app->user->can('legendDelete')) {
             if (file_exists($this->findModel($id)->image)) unlink($this->findModel($id)->image);
             $this->findModel($id)->delete();
         }
