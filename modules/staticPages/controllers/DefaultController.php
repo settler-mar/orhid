@@ -51,9 +51,12 @@ class DefaultController extends Controller
             $this->redirect(['/']);
         }
         else{
+            if (Yii::$app->user->can('staticPagesAccess')) $actionTemplate = '{update}{delete}';
             return $this->render('index', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
+                'actionTemplate' => $actionTemplate,
+                'canCreate' => Yii::$app->user->can('staticPagesAccess'),
             ]);
         }
 

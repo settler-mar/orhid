@@ -12,7 +12,6 @@ use dosamigos\tinymce\TinyMce;
 ?>
 
 <div class="static-pages-form">
-    <h1>111</h1>
      <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>

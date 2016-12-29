@@ -21,19 +21,7 @@ class DefaultController extends Controller
      */
     public function behaviors()
     {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['create', 'update', 'delete'],
-                'rules' => [
-                    [
-                        'actions' => ['create', 'update', 'delete'],
-                        'allow' => true,
-                        'roles' => ['userManager'],
-                    ],
-                ],
-            ],
-        ];
+        return [];
     }
 
     function beforeAction($action) {
@@ -52,28 +40,15 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        /*$auth = Yii::$app->authManager;
-        $createPost = $auth->createPermission('staticPagesAccess');
-        $createPost->description = 'Access to static pages table';
-        $auth->add($createPost);
-        $updatePost = $auth->createPermission('updateLegend');
-        $updatePost->description = 'Update legend';
-        $auth->add($updatePost);
-        $deletePost = $auth->createPermission('deleteLegend');
-        $deletePost->description = 'Delete legend';
-        $auth->add($deletePost);
-        $author = $auth->getRole('administrator');
-
-        $auth->addChild($author, $createPost);
-        $auth->addChild($author, $updatePost);
-        $auth->addChild($author, $deletePost);*/
-
         $searchModel = new OrhidBlogSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'canCreate' => Yii::$app->user->can('blogCreate'),
+            'canUpdate' => Yii::$app->user->can('blogUpdate'),
+            'canDelete' => Yii::$app->user->can('blogDelete'),
         ]);
     }
 
@@ -101,7 +76,7 @@ class DefaultController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
-            if (Yii::$app->user->can('createBlog')) {
+            if (Yii::$app->user->can('blogCreate')) {
                 return $this->render('create', ['model' => $model,]);
             }
             else {
@@ -132,7 +107,7 @@ class DefaultController extends Controller
             return $this->redirect(['index']);
         }
         else {                                              // begin update
-            if (Yii::$app->user->can('updateBlog')) {
+            if (Yii::$app->user->can('blogUpdate')) {
                 return $this->render('update', [
                     'model' => $model,
                 ]);
@@ -151,7 +126,8 @@ class DefaultController extends Controller
      */
     public function actionDelete($id)
     {
-        if (Yii::$app->user->can('deleteBlog')) {
+        if (Yii::$app->user->can('blogDelete')) {
+            if (file_exists($this->findModel($id)->image)) unlink($this->findModel($id)->image);
             $this->findModel($id)->delete();
         }
         return $this->redirect(['index']);

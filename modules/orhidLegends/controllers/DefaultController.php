@@ -27,17 +27,6 @@ class DefaultController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-            'access' =>[
-                'class' => AccessControl::className(),
-                'only' => ['create','update','delete'],
-                'rules' => [
-                    [
-                        'actions' =>  ['create','update','delete'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
         ];
     }
 
@@ -63,6 +52,9 @@ class DefaultController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'canCreate' => Yii::$app->user->can('createLegend'),
+            'canUpdate' => Yii::$app->user->can('updateLegend'),
+            'canDelete' => Yii::$app->user->can('deleteLegend'),
         ]);
     }
 
@@ -141,6 +133,7 @@ class DefaultController extends Controller
     public function actionDelete($id)
     {
         if (Yii::$app->user->can('deleteLegend')) {
+            if (file_exists($this->findModel($id)->image)) unlink($this->findModel($id)->image);
             $this->findModel($id)->delete();
         }
 

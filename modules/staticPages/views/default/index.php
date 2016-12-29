@@ -12,12 +12,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="static-pages-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('Create Static Pages', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
+    <?php  if ($canCreate) { ?>
+        <p><?= Html::a('Create Static Page', ['create'], ['class' => 'btn btn-success']) ?>  </p>
+    <?php } ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -29,7 +28,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'text',
             'language',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+             'template' => $actionTemplate,],
         ],
     ]); ?>
 </div>
