@@ -25,9 +25,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'name',
-            'text',
-            'language',
-
+            [
+                'attribute'=>'text',
+              // 'value' => function($data){return strip_tags($data->text);},
+                'format'=>'html',
+            ],
+            [
+                'attribute'=>'language',
+                'value' => function($data){return ($data->language==0)?'English':'Русский';},
+                'filter' => array('0' => 'English', '1' => 'Русский'),
+            ],
             ['class' => 'yii\grid\ActionColumn',
              'template' => $actionTemplate,],
         ],

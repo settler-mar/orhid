@@ -7,6 +7,15 @@ use yii\grid\GridView;
 /* @var $searchModel app\modules\orhidBlog\models\OrhidBlogSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+function crop_str($string, $limit, $after = '')
+{
+    if (strlen($string) > $limit) {
+        $substring_limited = substr($string, 0, $limit); //режем строку от 0 до limit
+        return  substr($substring_limited, 0, strrpos($substring_limited, ' ')) . $after;
+    } else
+        return  $string;
+}
+
 $this->title = 'Orhid Blogs';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -21,12 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <div class="row">
      <?php foreach ($dataProvider->models as $arr) { ?>
-        <div class="col-sm-12 col-md-12">
+        <div class="col-sm-12 col-md-12 <?php ($arr->state==0) ? print_r('published_no') : ('') ?>">
             <div class="thumbnail">
                 <img src="<?=$arr->image?>" alt="...">
                 <div class="caption">
                     <h3> <?=$arr->title?></h3>
-                    <p> <?=$arr->text?></p>
+                    <p> <?=crop_str(strip_tags($arr->text),150,'...')?></p>
                     <?php  if ($canUpdate) { ?>
                         <p><?= Html::a('Update', ['update', 'id' => $arr->id], ['class' => 'btn btn-primary']) ?>  </p>
                     <?php } ?>

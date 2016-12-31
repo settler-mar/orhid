@@ -36,9 +36,6 @@ class m161227_142656_fill_rbac_table_data extends Migration
     public function down()
     {
         echo "Hello, user";
-
-        $this->delete('auth_item');
-        $this->delete('auth_item_child');
         return true;
     }
     /*

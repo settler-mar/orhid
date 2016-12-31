@@ -7,6 +7,15 @@ use yii\grid\GridView;
 /* @var $searchModel app\modules\orhidLegends\models\OrhidLegendsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+function crop_str($string, $limit, $after = '')
+{
+    if (strlen($string) > $limit) {
+        $substring_limited = substr($string, 0, $limit); //режем строку от 0 до limit
+        return  substr($substring_limited, 0, strrpos($substring_limited, ' ')) . $after;
+    } else
+        return  $string;
+}
+
 $this->title = 'Orhid Legends';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -24,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <img src="<?=$arr->image?>" alt="...">
                     <div class="caption">
                         <h3> <?=$arr->title?></h3>
-                        <p> <?=$arr->text?></p>
+                        <p> <?=crop_str(strip_tags($arr->text),150,'...')?></p>
                         <?php  if ($canUpdate) { ?>
                             <p><?= Html::a('Update', ['update', 'id' => $arr->id], ['class' => 'btn btn-primary']) ?>  </p>
                         <?php } ?>

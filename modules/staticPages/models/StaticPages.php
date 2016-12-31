@@ -31,7 +31,7 @@ class StaticPages extends \yii\db\ActiveRecord
             [['name', 'text', 'language'], 'required'],
             [['language'], 'integer'],
             [['name'], 'string', 'max' => 32],
-            [['text'], 'string', 'max' => 255],
+            [['text'], 'string'],
         ];
     }
 

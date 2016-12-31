@@ -46,6 +46,8 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
+        if (!is_dir('image/uploads/')) mkdir('image/uploads/');
+        if (!is_dir('image/uploads_thumbs/')) mkdir('image/uploads_thumbs/');
         $searchModel = new OrhidLegendsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -100,16 +102,10 @@ class DefaultController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        $old_address = $this->findModel($id)->image;
-        if ($model->load(Yii::$app->request->post())){
-            $model->image = $old_address;
-            if ($model->save()){
-                if ($model->image!=null){
-                    if (file_exists($old_address)) {
-                        unlink($old_address);
-                    }
-                }
-            }
+        $old_address =$model->image;
+        if ($model->load(Yii::$app->request->post())){   // data from request
+            if ($model->image==null) $model->image = $old_address;
+            $model->save();
             return $this->redirect(['index']);
         }
         else {                                              // begin update
@@ -123,7 +119,6 @@ class DefaultController extends Controller
             }
         }
     }
-
     /**
      * Deletes an existing OrhidLegends model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
