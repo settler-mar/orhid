@@ -43,8 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'language',
                 'value' => function($data){return ($data->language==0)?'English':'Русский';},
-                'filter' => array(0 => 'English', 1 => 'Русский'),
-                'contentOptions' => ['style' => 'width:120px;'],
+                'filter' => array('' => 'All',0 => 'English', 1 => 'Русский'),
                ],
             ['class' => 'yii\grid\ActionColumn',
              'template' => $actionTemplate,],
