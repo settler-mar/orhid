@@ -7,6 +7,15 @@ use yii\grid\GridView;
 /* @var $searchModel app\modules\staticPages\models\StaticPagesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+function crop_str($string, $limit, $after = '')
+{
+    if (strlen($string) > $limit) {
+        $substring_limited = substr($string, 0, $limit); //режем строку от 0 до limit
+        return  substr($substring_limited, 0, strrpos($substring_limited, ' ')) . $after;
+    } else
+        return  $string;
+}
+
 $this->title = 'Static Pages';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -27,14 +36,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'name',
             [
                 'attribute'=>'text',
+                'value' => function($data){return crop_str(strip_tags($data->text),150,'...');},
               // 'value' => function($data){return strip_tags($data->text);},
-                'format'=>'html',
+              //  'format'=>'html',
             ],
             [
                 'attribute'=>'language',
                 'value' => function($data){return ($data->language==0)?'English':'Русский';},
-                'filter' => array('0' => 'English', '1' => 'Русский'),
-            ],
+                'filter' => array(0 => 'English', 1 => 'Русский'),
+                'contentOptions' => ['style' => 'width:120px;'],
+               ],
             ['class' => 'yii\grid\ActionColumn',
              'template' => $actionTemplate,],
         ],
