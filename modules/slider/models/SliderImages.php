@@ -57,6 +57,7 @@ class SliderImages extends \yii\db\ActiveRecord
             $this->string = substr(uniqid('img'),0,12);
             $this->image = UploadedFile::getInstance($this, 'address');
             if ($this->image!=null) {
+                if (!is_dir('img/slider/')) mkdir('img/slider/');
                 $this->filename = 'img/slider/' . $this->string . '.' . $this->image->extension;
                 $this->image->saveAs($this->filename);
                 $this->address = '' . $this->filename;

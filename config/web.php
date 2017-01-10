@@ -110,6 +110,15 @@ $config = [
         'chat' => [
             'class' => 'app\modules\chat\Module',
         ],
+        'staticPages' => [
+            'class' => 'app\modules\staticPages\Module',
+        ],
+        'orhidLegends' => [
+            'class' => 'app\modules\orhidLegends\Module',
+        ],
+        'orhidBlog' => [
+            'class' => 'app\modules\orhidBlog\Module',
+        ],
         'rbac' =>  [
             'class' => 'johnitvn\rbacplus\Module',
             'userModelClassName'=>null,

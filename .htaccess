@@ -14,4 +14,7 @@ RewriteEngine On
 # Redirect all requests to web
 RewriteCond %{REQUEST_URI} ^(.*)$
 RewriteRule ^(.*)$ web/$1
+
 </IfModule>
+
+RewriteRule ^plugins/(.*)$ backend/web/plugins/$1 [L]
