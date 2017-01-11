@@ -28,7 +28,7 @@ class StaticPages extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'text', 'language','title','meta_title','keywords','description','index'], 'required'],
+            [['name', 'language','title','index'], 'required'],
             [['language'], 'integer'],
             [['name'], 'string', 'max' => 32],
             [['title'], 'string', 'max' => 50],
