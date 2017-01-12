@@ -14,7 +14,7 @@ use dosamigos\tinymce\TinyMce;
 <div class="static-pages-form">
      <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true, 'readonly' => !$canCreate]) ?>
 
     <?=
     $form->field($model, 'text')->widget(TinyMce::className(), [

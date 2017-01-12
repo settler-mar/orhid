@@ -91,7 +91,10 @@ class DefaultController extends Controller
             return $this->redirect(['index']);
         } else {
             if (Yii::$app->user->can('staticPagesCreate')) {
-                return $this->render('create', ['model' => $model,]);
+                return $this->render('create', [
+                    'model' => $model,
+                    'canCreate' => Yii::$app->user->can('staticPagesCreate')
+                ]);
             }
             else {
                 return $this->redirect(['index']);
@@ -115,6 +118,7 @@ class DefaultController extends Controller
             if (Yii::$app->user->can('staticPagesUpdate')) {
                 return $this->render('update', [
                     'model' => $model,
+                    'canCreate' => Yii::$app->user->can('staticPagesCreate'),
                 ]);
             }
             else{
