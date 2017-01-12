@@ -11,18 +11,26 @@ class m170111_171917_add_rows_to_stticPages extends Migration
         $this->alterColumn('static_pages','meta_title',Schema::TYPE_STRING . '(50)');
         $this->alterColumn('static_pages','keywords',Schema::TYPE_STRING . '(200)');
         $this->alterColumn('static_pages','description',Schema::TYPE_STRING . '(500)');
-        $this->alterColumn('static_pages','text',Schema::TYPE_STRING);
-        $this->batchInsert('static_pages', ['ID', 'name', 'language'], [
-            ['1','Main page', 0],
-            ['2','Main page', 1],
-            ['3','Top', 0],
-            ['4','Top', 1],
-            ['5','Shop', 0],
-            ['6','Shop', 1],
-            ['7','about', 0],
-            ['8','about', 1],
-            ['9','legends', 0],
-            ['10','legends', 1]]);
+        $this->alterColumn('static_pages','text',Schema::TYPE_TEXT);
+        $this->alterColumn('static_pages','index',$this->boolean());
+        $this->batchInsert('static_pages', ['ID', 'name', 'title', 'language'], [
+            ['1','Main page','Main page', 0],
+            ['2','Main page','Main page', 1],
+            ['3','Top','Top', 0],
+            ['4','Top','Top', 1],
+            ['5','Shop','Shop', 0],
+            ['6','Shop','Shop', 1],
+            ['7','About','About', 0],
+            ['8','About','About', 1],
+            ['9','Legends','Legends', 0],
+            ['10','Legends','Legends', 1],
+            ['11','Mens list','Mens list', 0],
+            ['12','Mens list','Mens list', 1],
+            ['13','Competition','Competition', 0],
+            ['14','Competition','Competition', 1],
+            ['15','Online help','Online help', 0],
+            ['16','Online help','Online help', 1],
+          ]);
     }
 
     public function down()

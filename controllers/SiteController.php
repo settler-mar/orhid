@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use Yii;
+use app\modules\staticPages\models\StaticPages;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
@@ -63,12 +64,14 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-         return $this->render('index.jade');
+      $page=StaticPages::find()->where(['id' => 1])->asArray()->one();
+      return $this->render('index.jade',['page'=>$page]);
     }
 
     public function actionLegends()
     {
-         return $this->render('legends.jade');
+      $page=StaticPages::find()->where(['id' => 9])->asArray()->one();
+      return $this->render('legends.jade',['page'=>$page]);
     }
 
 
@@ -117,8 +120,11 @@ class SiteController extends Controller
 
             return $this->refresh();
         }
+
+        $page=StaticPages::find()->where(['id' => 15])->asArray()->one();
         return $this->render('contact', [
             'model' => $model,
+            'page'=>$page
         ]);
     }
 
@@ -129,7 +135,8 @@ class SiteController extends Controller
      */
     public function actionAbout()
     {
-        return $this->render('about');
+      $page=StaticPages::find()->where(['id' => 7])->asArray()->one();
+      return $this->render('about',['page'=>$page]);
     }
 
     /**
@@ -149,8 +156,8 @@ class SiteController extends Controller
 
             //->asArray()
             ->all(); //выводим все что получилось
-
-        return $this->render('top',['user'=>$user]);
+        $page=StaticPages::find()->where(['id' => 3])->asArray()->one();
+        return $this->render('top',['user'=>$user,'page'=>$page]);
     }
 
 

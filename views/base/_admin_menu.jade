@@ -6,6 +6,7 @@ if (Yii::$app->user->can('userManager'))
         $menuItems[] = ['label' => 'Country', 'url' => '/user/country'];
         $menuItems[] = ['label' => 'Shop', 'url' => '/shop/shop'];
         $menuItems[] = ['label' => 'Slider', 'url' => '/slider/admin'];
+
 if (Yii::$app->user->can('rbac'))
     -
         $rbac =[];
@@ -14,6 +15,10 @@ if (Yii::$app->user->can('rbac'))
         $rbac[]=['label' => 'Role', 'url' => '/rbac/role'];
         $rbac[]=['label' => 'Assignment', 'url' => '/rbac/assignment'];
         $menuItems[] = ['label' => 'Rbac', 'url' => '', 'child' => $rbac]
+
+if (Yii::$app->user->can('staticPagesAccess'))
+    -
+        $menuItems[] = ['label' => 'Static pages', 'url' => '/staticPages'];
 
 if count($menuItems) > 0
     .admin_top_menu

@@ -3,7 +3,8 @@
     use yii\bootstrap\ActiveForm;
     use yii\captcha\Captcha;
 
-    $view->title = 'Online help';
+    $view->title = $page['title'];
+    $view->params['page'] = $page;
     $view->params['breadcrumbs'][] = $view->title;
 
 .site-contact
