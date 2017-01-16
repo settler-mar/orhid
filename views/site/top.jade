@@ -1,7 +1,9 @@
 -
     use yii\helpers\Html;
     use app\modules\user\models\User;
-    $view->title = 'Top';
+
+    $view->title = $page['title'];
+    $view->params['page'] = $page;
     $view->params['breadcrumbs'][] = $view->title;
 
 include ../mixins/user

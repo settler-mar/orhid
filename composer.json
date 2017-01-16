@@ -26,7 +26,12 @@
         "karpoff/yii2-crop-image-upload": "^0.0.1",
         "jbzoo/image": "^3.0",
         "yiisoft/yii2-jui": "^2.0",
+<<<<<<< HEAD
+        "2amigos/yii2-ckeditor-widget": "^2.0",
+        "2amigos/yii2-tinymce-widget": "~1.1"
+=======
         "johnitvn/yii2-rbac-plus": "*"
+>>>>>>> origin/master
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

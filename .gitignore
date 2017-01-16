@@ -39,6 +39,8 @@ params.php
 /web/assets/*
 # ignoring slider pictures
 /web/img/slider/
+# ignoring tinyMce redactor pictures
+/web/image/
 
 /web/index.php
 

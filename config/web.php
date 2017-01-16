@@ -28,7 +28,7 @@ $config = [
         ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
-            'cache' => 'yii\caching\FileCache',
+            //'cache' => 'yii\caching\FileCache',
         ],
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -109,6 +109,15 @@ $config = [
         ],
         'chat' => [
             'class' => 'app\modules\chat\Module',
+        ],
+        'staticPages' => [
+            'class' => 'app\modules\staticPages\Module',
+        ],
+        'orhidLegends' => [
+            'class' => 'app\modules\orhidLegends\Module',
+        ],
+        'orhidBlog' => [
+            'class' => 'app\modules\orhidBlog\Module',
         ],
         'rbac' =>  [
             'class' => 'johnitvn\rbacplus\Module',
