@@ -32,10 +32,11 @@ class TarificatorTable extends \yii\db\ActiveRecord
     {
         return [
             [['code', 'name','timer', 'price', 'description'], 'required'],
-            [['code','timer'], 'integer'],
+            [['timer'], 'integer'],
             [['price'], 'number'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 32],
+            [['code'], 'string', 'max' => 32],
         ];
     }
 

@@ -35,15 +35,8 @@
         [
         'format' => 'raw',
         'value' => function($model) use ($form){
-                        $obj = json_decode($this->includeData);
-                        if ($obj['checkBox_'.$model->code] == '1'){
-                          return Html::checkbox( 'checkBox_'.$model->code, 1,null);
-                        }
-                        else{
                         return Html::checkbox( 'checkBox_'.$model->code, 0,null);
                         }
-
-                   }
         ],[
         'format' => 'raw',
         'value' => function($model) use ($form){

@@ -31,7 +31,8 @@
     'value' => function($data){return crop_str(strip_tags($data->description),150,'...');},
      ],
     'includeData',
-    ['class' => 'yii\grid\ActionColumn'],
+    ['class' => 'yii\grid\ActionColumn',
+    'template' => '{update}{delete}',],
     ]
 
   !=GridView::widget(['dataProvider' => $dataProvider, 'filterModel' => $searchModel, 'columns' => $columns ])

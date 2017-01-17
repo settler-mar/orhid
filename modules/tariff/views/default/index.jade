@@ -13,10 +13,11 @@
 
   -
     $columns = [
-    'price',
     'code',
+    'price',
     'description:ntext',
-    ['class' => 'yii\grid\ActionColumn'],
+    ['class' => 'yii\grid\ActionColumn',
+    'template' => '{update}{delete}',],
     ]
 
   !=GridView::widget(['dataProvider' => $dataProvider, 'filterModel' => $searchModel, 'columns' => $columns ])

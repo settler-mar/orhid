@@ -30,7 +30,7 @@ class Tariff extends \yii\db\ActiveRecord
         return [
             [['price', 'code', 'description'], 'required'],
             [['price'], 'number'],
-            [['code'], 'integer'],
+            [['code'], 'string', 'max' => 32],
             [['description'], 'string'],
         ];
     }
