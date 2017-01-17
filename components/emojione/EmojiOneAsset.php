@@ -1,6 +1,6 @@
 <?php
 
-namespace mervick\emojionearea;
+namespace app\components\emojione;
 
 /**
  * Class EmojiOneAsset

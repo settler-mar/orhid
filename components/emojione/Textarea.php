@@ -7,7 +7,7 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\widgets\InputWidget;
 
-class Widget extends InputWidget
+class Textarea extends InputWidget
 {
   /**
    * @var array the HTML attributes for the textarea input

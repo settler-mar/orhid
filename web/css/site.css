@@ -1811,7 +1811,7 @@ input {
   background: #f6efe9;
   display: block;
   padding: 9px;
-  overflow: hidden;
+  /* overflow: hidden; */
   width: 96.2%;
 }
 
@@ -1829,7 +1829,7 @@ input {
 
 .send_1 {
   display: block;
-  float: left;
+  /* float: left; */
   color: #fff;
   background: #AC3B3F;
   text-decoration: none;
