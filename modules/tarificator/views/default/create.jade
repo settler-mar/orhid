@@ -1,0 +1,9 @@
+-use yii\helpers\Html
+-$view->title = 'Create Tarificator Table'
+-$view->params['breadcrumbs'][] = ['label' => 'Tarificator Tables', 'url' => ['index']]
+-$view->params['breadcrumbs'][] = $view->title
+.tarificator-table-create
+  h1
+    !=Html::encode($view->title)
+
+  !=$view->render('_form', ['model' => $model, 'tariffs' => $tariffs, 'dataProvider' => $dataProvider,])

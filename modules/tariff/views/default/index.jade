@@ -1,0 +1,23 @@
+-use yii\helpers\Html
+-use yii\grid\GridView
+-$view->title = 'Tariffs'
+-$view->params['breadcrumbs'][] = $view->title
+.tariff-index
+  h1
+    !=Html::encode($view->title)
+  //-!= $view->render('_search', ['model' => $searchModel]) ?>
+
+  p
+    !=Html::a('Create Tariff', ['create'], ['class' => 'btn btn-success'])
+
+
+  -
+    $columns = [
+    'price',
+    'code',
+    'description:ntext',
+    ['class' => 'yii\grid\ActionColumn'],
+    ]
+
+  !=GridView::widget(['dataProvider' => $dataProvider, 'filterModel' => $searchModel, 'columns' => $columns ])
+

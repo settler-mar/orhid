@@ -1,0 +1,38 @@
+-use yii\helpers\Html
+-use yii\grid\GridView
+-$view->title = 'Tarificator Tables'
+-$view->params['breadcrumbs'][] = $view->title
+-
+  function crop_str($string, $limit, $after = '')
+    {
+      if (strlen($string) > $limit) {
+        $substring_limited = substr($string, 0, $limit); //режем строку от 0 до limit
+        return  substr($substring_limited, 0, strrpos($substring_limited, ' ')) . $after;
+      }
+      else return  $string;
+    }
+
+.tarificator-table-index
+  h1
+    !=Html::encode($view->title)
+  //-!= $view->render('_search', ['model' => $searchModel]) ?>
+
+  p
+    !=Html::a('Create Tarificator Table', ['create'], ['class' => 'btn btn-success'])
+
+
+  -
+    $columns = [
+    'code',
+    'name',
+    'price',
+    [
+    'attribute'=>'description',
+    'value' => function($data){return crop_str(strip_tags($data->description),150,'...');},
+     ],
+    'includeData',
+    ['class' => 'yii\grid\ActionColumn'],
+    ]
+
+  !=GridView::widget(['dataProvider' => $dataProvider, 'filterModel' => $searchModel, 'columns' => $columns ])
+

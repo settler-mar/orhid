@@ -133,7 +133,13 @@ $config = [
         ],
         'slider' => [
             'class' => 'app\modules\slider\Module',
-        ]
+        ],
+        'tarificator' => [
+            'class' => 'app\modules\tarificator\Module',
+        ],
+        'tariff' => [
+            'class' => 'app\modules\tariff\Module',
+        ],
     ],
 ];
 

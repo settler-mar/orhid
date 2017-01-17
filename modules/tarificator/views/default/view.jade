@@ -1,0 +1,22 @@
+-use yii\helpers\Html
+-use yii\widgets\DetailView
+-$view->title = $model->name
+-$view->params['breadcrumbs'][] = ['label' => 'Tarificator Tables', 'url' => ['index']]
+-$view->params['breadcrumbs'][] = $view->title
+.tarificator-table-view
+  h1
+    !=Html::encode($view->title)
+  p
+    !=Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary'])
+    !=Html::a('Delete', ['delete', 'id' => $model->id], ['class' => 'btn btn-danger','data' => ['confirm' => 'Are you sure you want to delete this item?','method' => 'post',],])
+
+  -
+    $attributes = [
+    'id',
+    'code',
+    'name',
+    'price',
+    'description:ntext',
+    'includeData:ntext',
+    ]
+  !=DetailView::widget(['model' => $model,'attributes' => $attributes ])
