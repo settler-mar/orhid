@@ -18,7 +18,7 @@ class TarificatorTableSearch extends TarificatorTable
     public function rules()
     {
         return [
-            [['id', 'code'], 'integer'],
+            [['id', 'timer'], 'integer'],
             [['name', 'description'], 'safe'],
             [['price'], 'number'],
         ];
@@ -58,8 +58,8 @@ class TarificatorTableSearch extends TarificatorTable
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'code' => $this->code,
             'price' => $this->price,
+            'timer' => $this->timer,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])

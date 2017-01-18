@@ -23,9 +23,9 @@
 
   -
     $columns = [
-    'code',
     'name',
     'price',
+    'timer',
     [
     'attribute'=>'description',
     'value' => function($data){return crop_str(strip_tags($data->description),150,'...');},

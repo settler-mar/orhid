@@ -9,7 +9,6 @@ use yii\helpers\Json;
  * This is the model class for table "tarificatorTable".
  *
  * @property integer $id
- * @property integer $code
  * @property string $name
  * @property double $price
  * @property string $description
@@ -31,12 +30,11 @@ class TarificatorTable extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['code', 'name','timer', 'price', 'description'], 'required'],
+            [['name','timer', 'price', 'description'], 'required'],
             [['timer'], 'integer'],
             [['price'], 'number'],
             [['description'], 'string'],
             [['name'], 'string', 'max' => 32],
-            [['code'], 'string', 'max' => 32],
         ];
     }
 
@@ -47,9 +45,8 @@ class TarificatorTable extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'code' => 'Code',
             'name' => 'Name',
-            'timer' => 'Timer',
+            'timer' => 'Time',
             'price' => 'Price',
             'description' => 'Description',
             'includeData' => 'Include Data',
@@ -61,8 +58,9 @@ class TarificatorTable extends \yii\db\ActiveRecord
         $request = Yii::$app->request->post();
         foreach ($query as $t){
             if ($request['checkBox_'.$t->code]=='1') {
-                $jsonArray[$t->code] = $request['inputText_'.$t->code];
+                $jsonArray[$t->code] = "unlimited";
             }
+            else if ($request['inputText_'.$t->code]!="") $jsonArray[$t->code] = $request['inputText_'.$t->code];
         }
         $this->includeData = json_encode($jsonArray);
         return parent::beforeSave($insert);
