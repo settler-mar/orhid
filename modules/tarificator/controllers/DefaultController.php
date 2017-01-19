@@ -35,10 +35,12 @@ class DefaultController extends Controller
     {
         $searchModel = new TarificatorTableSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        if (Yii::$app->user->can('tarificatorView')!=1) $this->redirect(['/']);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'canCreate' => Yii::$app->user->can('tarificatorCreate'),
+            'canUpdate' => Yii::$app->user->can('tarificatorUpdate'),
         ]);
     }
 

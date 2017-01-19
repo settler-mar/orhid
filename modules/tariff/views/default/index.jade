@@ -3,21 +3,15 @@
 -$view->title = 'Tariffs'
 -$view->params['breadcrumbs'][] = $view->title
 .tariff-index
-  h1
-    !=Html::encode($view->title)
-  //-!= $view->render('_search', ['model' => $searchModel]) ?>
-
-  p
-    !=Html::a('Create Tariff', ['create'], ['class' => 'btn btn-success'])
-
-
   -
+    if ($canCreate==1) echo Html::a('Create Tariff', ['create'], ['class' => 'btn btn-success']);
+    if ($canUpdate==1) $template = '{update}'; else $template = '';
     $columns = [
     'code',
     'price',
     'description:ntext',
     ['class' => 'yii\grid\ActionColumn',
-    'template' => '{update}{delete}',],
+    'template' => $template],
     ]
 
   !=GridView::widget(['dataProvider' => $dataProvider, 'filterModel' => $searchModel, 'columns' => $columns ])

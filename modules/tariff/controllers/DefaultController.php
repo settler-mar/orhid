@@ -16,14 +16,7 @@ class DefaultController extends Controller
 {
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['post'],
-                ],
-            ],
-        ];
+        return [];
     }
 
     /**
@@ -34,10 +27,12 @@ class DefaultController extends Controller
     {
         $searchModel = new TariffSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        if (Yii::$app->user->can('tariffView')!=1) $this->redirect(['/']);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'canCreate' => Yii::$app->user->can('tariffCreate'),
+            'canUpdate' => Yii::$app->user->can('tariffUpdate'),
         ]);
     }
 
