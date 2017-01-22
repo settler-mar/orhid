@@ -1,10 +1,19 @@
 //- Navbar mixin
 mixin navbar(menus)
+    -
+        //$route_url= explode('/',$view->context->route);
+        //echo Yii::$app->controller->id;
+        //echo (yii\helpers\Url::toRoute([$view->context->route],false)).'<br>';
+        $this_url=yii\helpers\Url::to();
     ul
         each $menu in $menus
+            -
+                $active = '';
+                if ($this_url==$menu['url'])
+                    $active='active'
             li
                 if $menu['url']!==false
-                    a(href= $menu['url'], title= $menu['label'])= $menu['label']
+                    a(class= $active, href= $menu['url'], title= $menu['label'])= $menu['label']
                 else
                     a(title= $menu['label'])= $menu['label']
                 if isset($menu['child']) && is_array($menu['child'])

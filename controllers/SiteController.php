@@ -68,6 +68,14 @@ class SiteController extends Controller
       return $this->render('index.jade',['page'=>$page]);
     }
 
+    public function actionServices()
+    {
+      $page=array(
+        title=>'Services'
+      );
+      return $this->render('services.jade',['page'=>$page]);
+    }
+
     public function actionLegends()
     {
       $page=StaticPages::find()->where(['id' => 9])->asArray()->one();

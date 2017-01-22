@@ -45,10 +45,11 @@ $config = [
                 '<action:(online|registration|logout|confirm|reset|profile|resetpassword)>' => 'user/user/<action>',
 
                 //закрываем прямой доступ к базовому контроллеру
+                'site'=>'404',
                 'site/<action>'=>'404',
                 'site/<action>/<action2>'=>'404',
                 //базовые страницы в основном контроллере
-                '<action:(top|shop|about|blog|legends|mans|competitions|onlinehelp)>' => 'site/<action>',
+                '<action:(top|shop|about|blog|legends|mans|competitions|onlinehelp|services)>' => 'site/<action>',
                 //Страница пользователя
                 '<action:(user)>/<id:\d+>' => 'site/user/',
 
