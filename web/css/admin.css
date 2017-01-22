@@ -51,6 +51,11 @@
 
 .admin_top_menu ul li:hover ul {
   display: block;
+  position: absolute;
+  /* width: 170%; */
+}
+.admin_top_menu ul li:hover ul a{
+  white-space: nowrap;
 }
 
 .user-index {

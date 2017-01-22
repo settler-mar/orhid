@@ -1,0 +1,11 @@
+-use yii\widgets\DetailView
+
+-
+  $attributes = [
+    'id',
+    'price',
+    'code',
+    'description:ntext',
+  ]
+
+!=DetailView::widget(['model' => $model,'attributes' => $attributes ])

@@ -1,0 +1,11 @@
+-use yii\helpers\Html
+-$view->title = 'Update Tarificator Table: ' . ' ' . $model->name
+-$view->params['breadcrumbs'][] = ['label' => 'Tarificator Tables', 'url' => ['index']]
+-$view->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'id' => $model->id]]
+-$view->params['breadcrumbs'][] = 'Update';
+.tarificator-table-update
+  h1
+    !=Html::encode($view->title)
+  !=$view->render('_form', ['model' => $model, 'tariffs' => $tariffs, 'includeData' => $model->includeData])
+  p
+    -if ($model->includeData!="") print_r($model->includeData);

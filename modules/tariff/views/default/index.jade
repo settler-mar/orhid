@@ -1,0 +1,18 @@
+-use yii\helpers\Html
+-use yii\grid\GridView
+-$view->title = 'Tariffs'
+-$view->params['breadcrumbs'][] = $view->title
+.tariff-index
+  -
+    if ($canCreate==1) echo Html::a('Create Tariff', ['create'], ['class' => 'btn btn-success']);
+    if ($canUpdate==1) $template = '{update}'; else $template = '';
+    $columns = [
+    'code',
+    'price',
+    'description:ntext',
+    ['class' => 'yii\grid\ActionColumn',
+    'template' => $template],
+    ]
+
+  !=GridView::widget(['dataProvider' => $dataProvider, 'filterModel' => $searchModel, 'columns' => $columns ])
+

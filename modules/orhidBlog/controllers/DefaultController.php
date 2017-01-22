@@ -44,7 +44,7 @@ class DefaultController extends Controller
         if (!is_dir('image/uploads_thumbs/')) mkdir('image/uploads_thumbs/');
         $searchModel = new OrhidBlogSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+print_r(Yii::$app->user->can('blogCreate'));
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
