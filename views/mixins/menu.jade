@@ -3,7 +3,10 @@ mixin navbar(menus)
     ul
         each $menu in $menus
             li
-                a(href= $menu['url'], title= $menu['label'])= $menu['label']
+                if $menu['url']!==false
+                    a(href= $menu['url'], title= $menu['label'])= $menu['label']
+                else
+                    a(title= $menu['label'])= $menu['label']
                 if isset($menu['child']) && is_array($menu['child'])
                     if count($menu['child']) > 0
                         +navbar_lavel2($menu['child'])
