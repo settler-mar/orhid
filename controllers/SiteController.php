@@ -71,7 +71,9 @@ class SiteController extends Controller
     public function actionServices()
     {
       $page=array(
-        title=>'Services'
+        'title'=>'Services',
+        'meta_title'=>'Services',
+        'index'=>1,
       );
       return $this->render('services.jade',['page'=>$page]);
     }

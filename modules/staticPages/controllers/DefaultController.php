@@ -51,8 +51,8 @@ class DefaultController extends Controller
             $this->redirect(['/']);
         }
         else{
-            if (!is_dir('image/uploads/')) mkdir('image/uploads/');
-            if (!is_dir('image/uploads_thumbs/')) mkdir('image/uploads_thumbs/');
+            if (!is_dir('image/uploads/')) mkdir('image/uploads/',0777,true);
+            if (!is_dir('image/uploads_thumbs/')) mkdir('image/uploads_thumbs/',0777,true);
             if (Yii::$app->user->can('staticPagesUpdate')) $actionTemplate = '{update}';
             if (Yii::$app->user->can('staticPagesDelete')) $actionTemplate = $actionTemplate.'{delete}';
             return $this->render('index', [
