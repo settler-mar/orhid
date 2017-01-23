@@ -75,7 +75,8 @@ class Profile extends \yii\db\ActiveRecord
                 'skipOnEmpty' => true
             ],
             [['video','video_about'],'validateVideo','params'=>['maxSize'=>1024*1024*150]],
-            [['occupation', 'lang_name', 'address', 'about', 'ideal_relationship', 'passport_img_1', 'passport_img_2', 'passport_img_3', 'photos', 'video'], 'string', 'max' => 255],
+            [['occupation', 'lang_name', 'address', 'passport_img_1', 'passport_img_2', 'passport_img_3', 'photos', 'video'], 'string', 'max' => 255],
+            [[ 'about', 'ideal_relationship'], 'string', 'max' => 1000],
         ];
     }
 
