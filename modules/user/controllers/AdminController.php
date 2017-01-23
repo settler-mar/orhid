@@ -113,7 +113,7 @@ class AdminController extends Controller
             //удаляем картинку до сохранения
             $post['ProfileForm']['photo']=$model->photo;
             //добавляем метку обновления
-            $post['ProfileForm']['updated_at'] = time();
+            $post['ProfileForm']['updated_at'] = date("Y-m-d H:i:s");;
         }
 
 
