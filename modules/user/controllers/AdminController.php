@@ -84,7 +84,7 @@ class AdminController extends Controller
     {
         $model = ProfileForm::findOne(['id'=>$id]);
         if ($model === null) {
-            throw new NotFoundHttpException( 'User is not found');
+            throw new NotFoundHttpException( 'User did not find');
         }
 
         if($model->sex==0){
@@ -130,21 +130,20 @@ class AdminController extends Controller
 
             //Готовим профиль к сохранению
             if ($profile->load($post) && $profile->validate()) {
-                $to_save = true;
+                $to_save = true;   // сюда не заходит , т.к. скорее всего не проходит валидацию в profile
             }
 
             //Готовим пользователя к сохранению
             if ($model->load($post) && $model->validate()) {
-                $to_save = true && $to_save;
+                $to_save = true ;
             } else {
                 $to_save = false;
             }
-
             //Если номально отвалидировало отправляем на сохранение
             if($to_save && $profile->save() && $model->save()){
                 //При успешнос мохранении обновляем страницу и выводим сообщение
                 Yii::$app->getSession()->setFlash('success', 'The profile updated.');
-                return $this->redirect(['update','id'=>$model->id]);
+                return$this->redirect(['index']);
             }
         }
 

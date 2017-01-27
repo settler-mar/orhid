@@ -58,7 +58,7 @@ class User extends ActiveRecord  implements IdentityInterface
                 'cropped_field' => 'photo_cropped',*/
             ],
         ];
-    }
+          }
 
     /**
      * @inheritdoc
