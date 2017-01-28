@@ -21,7 +21,7 @@ if (Yii::$app->user->can('tariffView'))
         if (Yii::$app->user->can('tariffView'))
             $price[]=['label' => 'Price item', 'url' => '/tariff'];
         if (Yii::$app->user->can('tarificatorView'))
-            $price[]=['label' => 'Price item', 'url' => '/tarificator'];
+            $price[]=['label' => 'Price plan', 'url' => '/tarificator'];
 
         $menuItems[] = ['label' => 'Price', 'url' => false, 'child' => $price]
 
