@@ -70,12 +70,13 @@ class SiteController extends Controller
 
     public function actionServices()
     {
+      $guest = Yii::$app->user->isGuest;
       $page=array(
         'title'=>'Services',
         'meta_title'=>'Services',
         'index'=>1,
       );
-      return $this->render('services.jade',['page'=>$page]);
+      return $this->render('services.jade',['page'=>$page, 'guest'=> $guest]);
     }
 
     public function actionLegends()

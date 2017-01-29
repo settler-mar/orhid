@@ -23,8 +23,13 @@
                     | 10 next letters
                     span per month
                 p 6 photos in the profile
-                .more_tar Read more
-                a(href='#') buy
+                //.more_tar Read more
+                -if($guest==0){
+                    a(href='/pay') buy
+                -}else{
+                    p Авторизуйтесь или
+                    a Зарегистрируйтесь
+                -}
         .tarif.gold
             .tar_1
                 p Gold
@@ -39,8 +44,13 @@
                     | 10 next letters
                     span per month
                 p 6 photos in the profile
-                .more_tar Read more
-                a(href='#') buy
+                //.more_tar Read more
+                -if($guest==0){
+                a(href='/pay') buy
+                -}else{
+                p Авторизуйтесь или
+                a Зарегистрируйтесь
+                -}
         .tarif.silver
             .tar_1
                 p Silver
@@ -55,5 +65,10 @@
                     | 10 next letters
                     span per month
                 p 6 photos in the profile
-                .more_tar Read more
-                a(href='#') buy
+                //.more_tar Read more
+                -if($guest==0){
+                a(href='/pay') buy
+                -}else{
+                p Авторизуйтесь или
+                a Зарегистрируйтесь
+                -}

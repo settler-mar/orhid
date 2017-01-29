@@ -30,10 +30,10 @@ class TarificatorTable extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','timer', 'price', 'description'], 'required'],
+            [['name','timer', 'price', 'description','color'], 'required'],
             [['timer'], 'integer'],
             [['price'], 'number'],
-            [['description'], 'string'],
+            [['description','color'], 'string'],
             [['name'], 'string', 'max' => 32],
         ];
     }
@@ -48,6 +48,7 @@ class TarificatorTable extends \yii\db\ActiveRecord
             'name' => 'Name',
             'timer' => 'Time',
             'price' => 'Price',
+            'color' => 'Color',
             'description' => 'Description',
             'includeData' => 'Include Data',
         ];
