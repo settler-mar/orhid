@@ -31,7 +31,7 @@ class TarificatorTable extends \yii\db\ActiveRecord
     {
         return [
             [['name','timer', 'price', 'description','color'], 'required'],
-            [['timer'], 'integer'],
+            [['timer','credits'], 'integer'],
             [['price'], 'number'],
             [['description','color'], 'string'],
             [['name'], 'string', 'max' => 32],
@@ -48,6 +48,7 @@ class TarificatorTable extends \yii\db\ActiveRecord
             'name' => 'Name',
             'timer' => 'Time',
             'price' => 'Price',
+            'credeits' =>'Credits',
             'color' => 'Color',
             'description' => 'Description',
             'includeData' => 'Include Data',
