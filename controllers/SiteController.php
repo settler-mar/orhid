@@ -12,6 +12,7 @@ use app\models\ContactForm;
 
 use app\modules\user\models\Profile;
 use app\modules\user\models\User;
+use app\modules\tarificator\models\TarificatorTable;
 
 class SiteController extends Controller
 {
@@ -70,13 +71,19 @@ class SiteController extends Controller
 
     public function actionServices()
     {
+      $tarificatorTariffs = TarificatorTable::find()->where('credits = :credits', [':credits' => 0])->all();
+      $tarificatorCredits = TarificatorTable::find()->where(['not in', 'credits', [0]])->all();
       $guest = Yii::$app->user->isGuest;
       $page=array(
         'title'=>'Services',
         'meta_title'=>'Services',
         'index'=>1,
       );
-      return $this->render('services.jade',['page'=>$page, 'guest'=> $guest]);
+        //return redirect
+      return $this->render('services.jade',['page'=>$page,
+          'guest'=> $guest,
+          'tarificatorTariffs' =>$tarificatorTariffs,
+          'tarificatorCredits' => $tarificatorCredits]);
     }
 
     public function actionLegends()

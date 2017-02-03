@@ -9,66 +9,63 @@
 
 .site-contact
     .all_tarif
-        .tarif.platinum
+        p.tariffs Пакеты с услугами
+        -
+          foreach($tarificatorTariffs as $tarif){
+
+        .tarif(class= $tarif->name)
             .tar_1
-                p Platinum
+                p
+                    -echo $tarif->name;
             .tar_2
-                p $50
+                p
+                   -echo $tarif->price;
                 span per month
             .tar_3
+                -
+                    $array = json_decode($tarif->includeData);
+                    if ($array) foreach($array as $key => $value)
+                    {
                 p
-                    | 30 presentation letters
-                    span per month
-                p
-                    | 10 next letters
-                    span per month
-                p 6 photos in the profile
+                    -echo $key
+                    span
+                        -echo $value
+                -}
                 //.more_tar Read more
                 -if($guest==0){
-                    a(href='/pay') buy
+                a(href='/pay',name =$tarif->name) buy
                 -}else{
+                p Авторизуйтесь или
+                a Зарегистрируйтесь
+                -}
+        -}
+    .all_credits
+        p.credits Кредитные пакеты
+        -
+            foreach($tarificatorCredits as $tarif){
+        .tarif(class= $tarif->name)
+            .tar_1
+                p
+                    -echo $tarif->name;
+            .tar_2
+                p
+                    -echo $tarif->price;
+                    span per month
+            .tar_3
+                -
+                    $array = json_decode($tarif->includeData);
+                    if ($array) foreach($array as $key => $value)
+                    {
+                p
+                    -echo $key
+                    span
+                        -echo $value
+                    -}
+                    //.more_tar Read more
+                    -if($guest==0){
+                    a(href='/pay',name =$tarif->name) buy
+                    -}else{
                     p Авторизуйтесь или
                     a Зарегистрируйтесь
-                -}
-        .tarif.gold
-            .tar_1
-                p Gold
-            .tar_2
-                p $30
-                span per month
-            .tar_3
-                p
-                    | 30 presentation letters
-                    span per month
-                p
-                    | 10 next letters
-                    span per month
-                p 6 photos in the profile
-                //.more_tar Read more
-                -if($guest==0){
-                a(href='/pay') buy
-                -}else{
-                p Авторизуйтесь или
-                a Зарегистрируйтесь
-                -}
-        .tarif.silver
-            .tar_1
-                p Silver
-            .tar_2
-                p $10
-                span per month
-            .tar_3
-                p
-                    | 30 presentation letters
-                    span per month
-                p
-                    | 10 next letters
-                    span per month
-                p 6 photos in the profile
-                //.more_tar Read more
-                -if($guest==0){
-                a(href='/pay') buy
-                -}else{
-                p Авторизуйтесь или
-                a Зарегистрируйтесь
-                -}
+                    -}
+            -}
