@@ -7,5 +7,3 @@
   h1
     !=Html::encode($view->title)
   !=$view->render('_form', ['model' => $model, 'tariffs' => $tariffs, 'includeData' => $model->includeData])
-  p
-    -if ($model->includeData!="") print_r($model->includeData);

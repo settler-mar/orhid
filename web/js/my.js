@@ -2,19 +2,6 @@
 
 $(document).ready(function() {
 // checkbox when create tarificatorTable row
-    $(".field-tarificatortable-credits").hide();
-    $("input[name='hide_the_tarifTable']" ).on( "click", function() {
-        if($("input[name='hide_the_tarifTable']").attr("checked") == 'checked') {
-            $("#w1" ).show(500);
-            $(".field-tarificatortable-credits").hide();
-            $("input[name='hide_the_tarifTable']").attr('checked', false);
-        }
-        else{
-            $("#w1").hide();
-            $(".field-tarificatortable-credits").show(500);
-            $("input[name='hide_the_tarifTable']").attr('checked', true);
-        }
-    });
 
 $('.open_menu').click(function(){
     if ($('#left_open').is(":hidden")) {

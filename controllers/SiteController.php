@@ -80,6 +80,8 @@ class SiteController extends Controller
         'index'=>1,
       );
         //return redirect
+      d($tarificatorTariffs);
+      ddd($tarificatorCredits);
       return $this->render('services.jade',['page'=>$page,
           'guest'=> $guest,
           'tarificatorTariffs' =>$tarificatorTariffs,

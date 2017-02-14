@@ -28,7 +28,9 @@
         "2amigos/yii2-tinymce-widget": "~1.1",
         "johnitvn/yii2-rbac-plus": "*",
         "thiagotalma/yii2-simplecolorpicker": "*",
-        "kartik-v/yii2-widget-colorinput": "*"
+        "kartik-v/yii2-widget-colorinput": "*",
+        "paypal/rest-api-sdk-php": "^1.11",
+        "raveren/kint": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

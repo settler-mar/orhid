@@ -6,7 +6,7 @@ class m170131_163348_add_credits_column_to_tarificatorTable extends Migration
 {
     public function up()
     {
-        $this->addColumn('tarificatorTable', 'credits', $this->integer()->notNull());
+        $this->addColumn('tarificatorTable', 'credits', $this->integer()->defaultValue(0));
     }
 
     public function down()

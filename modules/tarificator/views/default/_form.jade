@@ -33,20 +33,20 @@
   -
     $columns = ['code','description','price',
         [
-        'header' => 'Unlimited',
-        'format' => 'raw',
-        'value' => function($model) use ($form){
-                        return Html::checkbox( 'checkBox_'.$model->code, 0,null);
+            'header' => 'Unlimited',
+            'format' => 'raw',
+            'value' => function($model) use ($form,$includeData){
+                        return Html::checkbox( 'checkBox_'.$model->code, $includeData[$model->code] && $includeData[$model->code]=='unlimited',null);
                         }
         ],[
-        'header' => 'Numder of units',
-        'format' => 'raw',
-        'value' => function($model) use ($form){
-                        return Html::input("text",'inputText_'.$model->code);
+            'header' => 'Numder of units',
+            'format' => 'raw',
+            'value' => function($model) use ($form,$includeData){
+                        return Html::input("text",'inputText_'.$model->code,$includeData[$model->code] && $includeData[$model->code]!='unlimited'?$includeData[$model->code]:NULL);
                    }
         ],
     ]
-  != Html::checkbox('hide_the_tarifTable',false,['label'=>'Пакет кредитов'])
+  != Html::checkbox('hide_the_tarifTable',$model->credits,['label'=>'credit package'])
   !=$form->field($model, 'credits')->textInput()
   !=GridView::widget(['dataProvider' => $tariffs, 'columns' => $columns])
   .form-group

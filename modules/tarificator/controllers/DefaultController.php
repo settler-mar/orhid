@@ -27,6 +27,20 @@ class DefaultController extends Controller
         ];
     }
 
+    function beforeAction($action) {
+
+      if (Yii::$app->user->isGuest) {
+        throw new \yii\web\ForbiddenHttpException('You are not allowed to perform this action.');
+        return false;
+      }
+
+      $this->view->registerJsFile('/js/bootstrap.min.js');
+      $this->view->registerJsFile('/js/admin.js');
+      $this->view->registerCssFile('/css/bootstrap.min.css');
+      $this->view->registerCssFile('/css/admin.css',['depends'=>['app\assets\AppAsset']]);
+      return true;
+    }
+
     /**
      * Lists all TarificatorTable models.
      * @return mixed
@@ -90,6 +104,7 @@ class DefaultController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
+            $model->includeData=json_decode($model->includeData,true);
             return $this->render('update', [
                 'model' => $model,
                 'tariffs' => $tariffs,
