@@ -13,6 +13,7 @@ use app\models\ContactForm;
 use app\modules\user\models\Profile;
 use app\modules\user\models\User;
 use app\modules\tarificator\models\TarificatorTable;
+use app\modules\tariff\models\Tariff;
 
 class SiteController extends Controller
 {
@@ -73,6 +74,13 @@ class SiteController extends Controller
     {
       $tarificatorTariffs = TarificatorTable::find()->where('credits = :credits', [':credits' => 0])->all();
       $tarificatorCredits = TarificatorTable::find()->where(['not in', 'credits', [0]])->all();
+      $tariffElements_tmp = Tariff::find()->asArray()->all();
+      $tariffElements=array();
+      foreach ($tariffElements_tmp as $tariffElement){
+        $tariffElements[$tariffElement['code']
+        ]=$tariffElement;
+      }
+
       $guest = Yii::$app->user->isGuest;
       $page=array(
         'title'=>'Services',
@@ -80,12 +88,13 @@ class SiteController extends Controller
         'index'=>1,
       );
         //return redirect
-      d($tarificatorTariffs);
-      ddd($tarificatorCredits);
-      return $this->render('services.jade',['page'=>$page,
+      return $this->render('services.jade',[
+          'page'=>$page,
           'guest'=> $guest,
           'tarificatorTariffs' =>$tarificatorTariffs,
-          'tarificatorCredits' => $tarificatorCredits]);
+          'tarificatorCredits' => $tarificatorCredits,
+          'tariffElements' => $tariffElements,
+      ]);
     }
 
     public function actionLegends()

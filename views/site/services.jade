@@ -9,17 +9,16 @@
 
 .site-contact
     .all_tarif
-        p.tariffs Пакеты с услугами
         -
           foreach($tarificatorTariffs as $tarif){
 
-        .tarif(class= $tarif->name)
-            .tar_1
+        .tarif(style= 'background:'.$tarif->color)
+            .tar_1(style= 'color:'.$tarif->color)
                 p
                     -echo $tarif->name;
             .tar_2
-                p
-                   -echo $tarif->price;
+                p(data-select-like-a-boss= $tarif->id)
+                   -echo '$'.$tarif->price;
                 span per month
             .tar_3
                 -
@@ -27,45 +26,39 @@
                     if ($array) foreach($array as $key => $value)
                     {
                 p
-                    -echo $key
+                    -echo $tariffElements[$key]['description']
                     span
                         -echo $value
                 -}
                 //.more_tar Read more
                 -if($guest==0){
-                a(href='/pay',name =$tarif->name) buy
+                a(href='/payment/tariff/'.$tarif->id,name =$tarif->name) buy
                 -}else{
                 p Авторизуйтесь или
                 a Зарегистрируйтесь
                 -}
         -}
-    .all_credits
-        p.credits Кредитные пакеты
-        -
-            foreach($tarificatorCredits as $tarif){
-        .tarif(class= $tarif->name)
-            .tar_1
-                p
-                    -echo $tarif->name;
-            .tar_2
-                p
-                    -echo $tarif->price;
-                    span per month
-            .tar_3
-                -
-                    $array = json_decode($tarif->includeData);
-                    if ($array) foreach($array as $key => $value)
-                    {
-                p
-                    -echo $key
-                    span
-                        -echo $value
-                    -}
-                    //.more_tar Read more
-                    -if($guest==0){
-                    a(href='/pay',name =$tarif->name) buy
-                    -}else{
-                    p Авторизуйтесь или
-                    a Зарегистрируйтесь
-                    -}
+
+
+        .all_credits
+            p.credits Кредитные пакеты
+            - foreach($tarificatorCredits as $tarif){
+                .tarif_unit(style= 'background:'.$tarif->color)
+                    .tar_1(style= 'color:'.$tarif->color)
+                        -echo $tarif->name;
+                    .tar_4
+                        p
+                            -echo 'credits '.$tarif->credits;
+                    .tar_2
+                        p
+                            -echo '$'.$tarif->price;
+                    .tar_3
+                        p
+                            //.more_tar Read more
+                            -if($guest==0){
+                            a(href='/payment/tariff/'.$tarif->id,name =$tarif->name) buy
+                            -}else{
+                            p Авторизуйтесь или
+                            a Зарегистрируйтесь
+                            -}
             -}

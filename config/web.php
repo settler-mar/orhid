@@ -39,6 +39,8 @@ $config = [
                 'user/user/<action>'=>'404',
                 'user/user/<action>/<action2>'=>'404',
                 '/chat/default/<action>'=>'404',
+                'payment/default/<action>'=>'404',
+                'payment/default/<action>/<action2>'=>'404',
                 //получение города по стране
                 'city/get/<id:\d+>' => 'city/get',
                 //Взаимодействия с пользователем на сайте
@@ -55,7 +57,11 @@ $config = [
 
                 //страница сообщения
                 '<action:(chat)>/<id:\d+>' => 'chat/default/<action>',
-                'chat/<action:(get|send)>' => 'chat/default/<action>'
+                'chat/<action:(get|send)>' => 'chat/default/<action>',
+
+                //оплаты
+                'payment/<action:(tariff|shop|finish)>/<id:\d+>' => 'payment/default/<action>',
+                'payment/<action:(finish)>' => 'payment/default/<action>',
             ],
         ],
         'errorHandler'=>[
@@ -145,7 +151,7 @@ $config = [
           'class' => 'app\modules\payment\Module',
           'clientId'     => $personal['paypal_client_id'],
           'clientSecret' => $personal['paypal_client_secret'],
-          'baseUrl' => 'http://127.0.0.1:8080/payment/default/finish',
+          'baseUrl' => 'http://127.0.0.1:8080/payment/finish',
           //'isProduction' => false,
           // This is config file for the PayPal system
           'config'       => [

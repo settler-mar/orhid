@@ -5,12 +5,12 @@ namespace app\modules\payment\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\modules\payment\models\PaymentsList;
+use app\modules\payment\models\Payments;
 
 /**
- * PaymentSearch represents the model behind the search form about `app\modules\payment\models\PaymentsList`.
+ * PaymentSearch represents the model behind the search form of `app\modules\payment\models\Payments`.
  */
-class PaymentSearch extends PaymentsList
+class PaymentSearch extends Payments
 {
     /**
      * @inheritdoc
@@ -18,7 +18,9 @@ class PaymentSearch extends PaymentsList
     public function rules()
     {
         return [
-            [['id', 'user_id', 'order_id', 'status'], 'integer'],
+            [['id', 'type', 'pos_id', 'status','client_id'], 'integer'],
+            [['price'], 'number'],
+            [['code'], 'safe'],
         ];
     }
 
@@ -40,7 +42,7 @@ class PaymentSearch extends PaymentsList
      */
     public function search($params)
     {
-        $query = PaymentsList::find();
+        $query = Payments::find();
 
         // add conditions that should always apply here
 
@@ -59,10 +61,13 @@ class PaymentSearch extends PaymentsList
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'user_id' => $this->user_id,
-            'order_id' => $this->order_id,
+            'type' => $this->type,
+            'pos_id' => $this->pos_id,
+            'price' => $this->price,
             'status' => $this->status,
         ]);
+
+        $query->andFilterWhere(['like', 'code', $this->code]);
 
         return $dataProvider;
     }

@@ -1,20 +1,17 @@
 <?php
 
-//http://paypal.github.io/PayPal-PHP-SDK/sample/
-//https://github.com/paypal/PayPal-PHP-SDK/blob/master/sample/payments/ExecutePayment.php
-//http://paypal.github.io/PayPal-PHP-SDK/sample/doc/payments/OrderGet.html
-//http://paypal.github.io/PayPal-PHP-SDK/sample/doc/payments/OrderCreateForVoid.html
-
 namespace app\modules\payment\controllers;
 
 use Yii;
-use app\modules\payment\models\PaymentsList;
+use app\modules\payment\models\Payments;
 use app\modules\payment\models\PaymentSearch;
-use app\modules\payment\models\DoPayment;
-
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\modules\payment\models\DoPayment;
+use app\modules\tarificator\models\TarificatorTable;
+use app\modules\user\models\User;
+
 use PayPal\Api\Address;
 use PayPal\Api\CreditCard;
 use PayPal\Api\Amount;
@@ -33,7 +30,7 @@ use PayPal\Api\PaymentExecution;
 use PayPal\Api\PayerInfo;
 
 /**
- * DefaultController implements the CRUD actions for PaymentsList model.
+ * DefaultController implements the CRUD actions for Payments model.
  */
 class DefaultController extends Controller
 {
@@ -46,17 +43,16 @@ class DefaultController extends Controller
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
                 ],
             ],
         ];
     }
 
     /**
-     * Lists all PaymentsList models.
+     * Lists all Payments models.
      * @return mixed
      */
-    public function actionIndex()
+    /*public function actionIndex()
     {
         $searchModel = new PaymentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -65,45 +61,10 @@ class DefaultController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
-    }
+    }*/
 
     /**
-     * Lists all PaymentsList models.
-     * @return mixed
-     */
-    public function actionTest(){
-      $pay=new DoPayment('credit_card');
-      //$pay=new DoPayment();
-
-      $pay->addItem(array(
-        'name'=>'Ground Coffee 40 oz',
-        'price'=>7,
-        'tax'=>0.52
-      ));
-      $pay->addItem(array(
-        'name'=>'Granola bars',
-        'quantity'=>2,
-        'price'=>30,
-        'tax'=>0.15
-      ));
-      $payment= $pay->make_payment();
-
-      echo $payment->getId().'<br>';
-      $approvalUrl = $payment->getApprovalLink();
-      echo $approvalUrl;
-      //return $this->redirect($approvalUrl);
-    }
-
-    public function actionFinish(){
-      $pay=new DoPayment();
-      $payment=$pay->finishPayment();
-
-      echo $payment->getId().'<br>';
-      echo $payment->getState().'<br>';
-      ddd($payment->getTransactions());
-    }
-    /**
-     * Displays a single PaymentsList model.
+     * Displays a single Payments model.
      * @param integer $id
      * @return mixed
      */
@@ -114,69 +75,108 @@ class DefaultController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new PaymentsList model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
-     */
-    public function actionCreate()
-    {
-        $model = new PaymentsList();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
 
     /**
-     * Updates an existing PaymentsList model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Deletes an existing PaymentsList model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionDelete($id)
-    {
-        $this->findModel($id)->delete();
-
-        return $this->redirect(['index']);
-    }
-
-    /**
-     * Finds the PaymentsList model based on its primary key value.
+     * Finds the Payments model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return PaymentsList the loaded model
+     * @return Payments the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = PaymentsList::findOne($id)) !== null) {
+        if (($model = Payments::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+  public function actionFinish(){
+    $pay=new DoPayment();
+    try {
+      $payment=$pay->finishPayment();
+    } catch (Exception $e) {
+      throw new NotFoundHttpException('Error payment. Contact your administrator.');
+    }
+
+    $pay=Payments::find()->where(['code'=>$payment->getId(),'status'=>0])->one();
+    if(!$pay){
+      throw new NotFoundHttpException('Error payment. Contact your administrator.');
+    }
+
+    if($payment->getState()=='approved') {
+      $pay->status = 1;
+      $pay->save();
+
+      if($pay->type==1){//Если оплатили тариф
+        //d($pay);
+        $tariff = TarificatorTable::find()->where(['id'=>$pay->pos_id])->one();
+        //ddd($tariff);
+
+        $user = User::find()->where(['id'=>$pay->client_id])->one();
+        if($tariff->credits==0){
+          $user->tariff_unit=$tariff->includeData;
+          $user->tariff_end_date=time()+$tariff->timer*60*60*24;
+          $user->tariff_id=$tariff->id;
+        }else{
+          $user->credits+=$tariff->credits;
+        }
+        $user->save();
+
+        return $this->render('payment_finish', [
+          'pay' => $pay,
+          'user' => $user,
+          'tariff' => $tariff,
+        ]);
+      }
+      return;
+    }
+
+    throw new NotFoundHttpException('Error payment. Contact your administrator.');
+  }
+
+  public function actionTariff($id){
+    $tarificatorTariffs = TarificatorTable::findOne($id);
+    if(!$tarificatorTariffs){
+      throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    $request=Yii::$app->request;
+    if($request->getIsPost()){
+
+      if($request->post('method')==0){ //paypal
+        $pay=new DoPayment('paypal');
+        //$pay=new DoPayment();
+
+        $pay->addItem(array(
+          'name'=>$tarificatorTariffs->name.' package',
+          'price'=>$tarificatorTariffs->price,
+          'tax'=>0
+        ));
+        $payment= $pay->make_payment();
+
+        //echo $payment->getId().'<br>';
+
+        $customer = new Payments();
+        $customer->type = 1;
+        $customer->pos_id = $id;
+        $customer->price = $tarificatorTariffs->price;
+        $customer->client_id = Yii::$app->user->getId();
+        $customer->code = $payment->getId();
+        $customer->save();
+
+        $approvalUrl = $payment->getApprovalLink();
+        //echo $approvalUrl;
+        return $this->redirect($approvalUrl);
+      }
+
+      throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    return $this->render('payment',[
+      'tarificator'=>$tarificatorTariffs,
+    ]);
+  }
 }
