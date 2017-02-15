@@ -15,6 +15,8 @@ class m170214_175605_create_table_payments extends Migration
         'price'         => Schema::TYPE_FLOAT . ' NOT NULL',
         'code'         => Schema::TYPE_STRING . '(100) NOT NULL',
         'status'         => Schema::TYPE_INTEGER . ' DEFAULT 0',
+        'pay_time'   => Schema::TYPE_INTEGER . ' DEFAULT 0',
+        'create_time'   => Schema::TYPE_INTEGER . ' DEFAULT 0',
       ]);
     }
 

@@ -9,7 +9,6 @@ use yii\widgets\DetailView;
 $this->title = 'Payment successful';
 $this->params['breadcrumbs'][] = $this->title;
 
-d($user);
 ?>
 
 <p>

@@ -108,6 +108,7 @@ class DefaultController extends Controller
 
     if($payment->getState()=='approved') {
       $pay->status = 1;
+      $pay->pay_time = time();
       $pay->save();
 
       if($pay->type==1){//Если оплатили тариф
@@ -162,6 +163,7 @@ class DefaultController extends Controller
         $customer = new Payments();
         $customer->type = 1;
         $customer->pos_id = $id;
+        $customer->create_time = time();
         $customer->price = $tarificatorTariffs->price;
         $customer->client_id = Yii::$app->user->getId();
         $customer->code = $payment->getId();
