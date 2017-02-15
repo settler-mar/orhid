@@ -10,23 +10,23 @@ use yii\grid\GridView;
 $this->title = 'Payments Lists';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<dl>
+    <dt>Name</dt>
+    <dd><?=$user->first_name ?> <?=$user->last_name ?></dd>
+    <dt>Credits</dt>
+    <dd><?=$user->credits ?></dd>
+    <dt>Tariff</dt>
+    <dd><?=$user->tariff_unit ?></dd>
+    <dt>Date</dt>
+    <dd><?=date("Y-m-d H:i:s",$user->tariff_end_date) ?></dd>
+</dl>
 <div class="payments-list-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <p>
-        <?= Html::a('Create Payments List', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'user_id',
-            'order_id',
+            'pos_id',
             'status',
 
             ['class' => 'yii\grid\ActionColumn'],

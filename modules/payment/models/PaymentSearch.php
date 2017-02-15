@@ -18,7 +18,7 @@ class PaymentSearch extends Payments
     public function rules()
     {
         return [
-            [['id', 'type', 'pos_id', 'status','client_id'], 'integer'],
+            [['id', 'type', 'pos_id', 'client_id', 'status', 'pay_time', 'create_time'], 'integer'],
             [['price'], 'number'],
             [['code'], 'safe'],
         ];
@@ -49,7 +49,6 @@ class PaymentSearch extends Payments
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
-
         $this->load($params);
 
         if (!$this->validate()) {
@@ -63,8 +62,11 @@ class PaymentSearch extends Payments
             'id' => $this->id,
             'type' => $this->type,
             'pos_id' => $this->pos_id,
+            'client_id' => $this->client_id,
             'price' => $this->price,
             'status' => $this->status,
+            'pay_time' => $this->pay_time,
+            'create_time' => $this->create_time,
         ]);
 
         $query->andFilterWhere(['like', 'code', $this->code]);

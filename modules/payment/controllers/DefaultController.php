@@ -52,16 +52,18 @@ class DefaultController extends Controller
      * Lists all Payments models.
      * @return mixed
      */
-    /*public function actionIndex()
+    public function actionIndex()
     {
         $searchModel = new PaymentSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(['PaymentSearch' => ['client_id' => Yii::$app->user->id]]);
+        $user = User::find()->where(['id'=>Yii::$app->user->id])->one();
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
+
             'dataProvider' => $dataProvider,
+            'user' => $user,
         ]);
-    }*/
+    }
 
     /**
      * Displays a single Payments model.

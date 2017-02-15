@@ -9,6 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property int $type
+ * @property int $client_id
  * @property int $pos_id
  * @property double $price
  * @property string $code
@@ -30,7 +31,7 @@ class Payments extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type', 'pos_id', 'price', 'code'], 'required'],
+            [['type', 'pos_id', 'price', 'code','client_id'], 'required'],
             [['type', 'pos_id', 'status','client_id'], 'integer'],
             [['price'], 'number'],
             [['code'], 'string', 'max' => 100],
@@ -45,7 +46,7 @@ class Payments extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'type' => 'Type',
-            'pos_id' => 'Pos ID',
+            'pos_id' => 'Tariff',
             'price' => 'Price',
             'code' => 'Code',
             'status' => 'Status',
