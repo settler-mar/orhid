@@ -3,7 +3,7 @@
 namespace app\modules\payment\models;
 
 use Yii;
-
+use app\modules\tarificator\models\TarificatorTable;
 /**
  * This is the model class for table "payments".
  *
@@ -17,6 +17,8 @@ use Yii;
  */
 class Payments extends \yii\db\ActiveRecord
 {
+    const STATUS_ACTIVE = 1;
+    const TIME_OUT = 0;
     /**
      * @inheritdoc
      */
@@ -25,6 +27,10 @@ class Payments extends \yii\db\ActiveRecord
         return 'payments';
     }
 
+    public function getTarificatorTable()
+    {
+        return $this->hasOne(TarificatorTable::className(),['id' => 'pos_id']);
+    }
     /**
      * @inheritdoc
      */

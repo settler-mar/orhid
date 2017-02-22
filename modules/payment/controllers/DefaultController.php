@@ -2,6 +2,7 @@
 
 namespace app\modules\payment\controllers;
 
+use app\modules\tariff\models\Tariff;
 use Yii;
 use app\modules\payment\models\Payments;
 use app\modules\payment\models\PaymentSearch;
@@ -54,13 +55,25 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new PaymentSearch();
-        $dataProvider = $searchModel->search(['PaymentSearch' => ['client_id' => Yii::$app->user->id]]);
+        $currentTariff = Payments::find()
+            ->andWhere(['client_id'=> Yii::$app->user->id])
+            ->andWhere(['status'=>Payments::STATUS_ACTIVE])
+            ->with(['tarificatorTable'])
+            ->one();
+        if ($currentTariff == null) {
+            $currentTariff = Payments::find()
+                ->andWhere(['client_id' => Yii::$app->user->id])
+                ->andWhere(['status' => Payments::TIME_OUT])
+                ->orderBy('pay_time')
+                ->with(['tarificatorTable'])
+                ->one();
+        }
+        $tariffs = Tariff::find()->select(['code','description'])->asArray()->all();
         $user = User::find()->where(['id'=>Yii::$app->user->id])->one();
 
         return $this->render('index', [
-
-            'dataProvider' => $dataProvider,
+            'currentTariff' => $currentTariff,
+            'tariffs' => $tariffs,
             'user' => $user,
         ]);
     }

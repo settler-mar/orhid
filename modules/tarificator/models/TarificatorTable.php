@@ -2,6 +2,7 @@
 
 namespace app\modules\tarificator\models;
 
+use Faker\Provider\ar_SA\Payment;
 use Yii;
 use app\modules\tariff\models\Tariff;
 use yii\helpers\Json;
@@ -16,6 +17,10 @@ use yii\helpers\Json;
  */
 class TarificatorTable extends \yii\db\ActiveRecord
 {
+    public function getPayments()
+    {
+        return $this->hasMany(Payments::className(),['pos_id' => 'id']);
+    }
     /**
      * @inheritdoc
      */
