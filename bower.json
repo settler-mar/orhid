@@ -1,0 +1,7 @@
+{
+  "name": "application",
+  "description": "your application description Bower package.",
+  "dependencies": {
+
+  }
+}
