@@ -39,8 +39,8 @@ $config = [
                 'user/user/<action>'=>'404',
                 'user/user/<action>/<action2>'=>'404',
                 '/chat/default/<action>'=>'404',
-                'payment/default/<action>'=>'404',
-                'payment/default/<action>/<action2>'=>'404',
+               // 'payment/default/<action>'=>'404',
+                //'payment/default/<action>/<action2>'=>'404',
                 //получение города по стране
                 'city/get/<id:\d+>' => 'city/get',
                 //Взаимодействия с пользователем на сайте
@@ -60,7 +60,8 @@ $config = [
                 'chat/<action:(get|send)>' => 'chat/default/<action>',
 
                 //оплаты
-                'payment/<action:(tariff|shop|finish)>/<id:\d+>' => 'payment/default/<action>',
+                'payment/default/<action>/<id:\d+>' => 'payment/default/<action>',
+                'payment/<action:(tariff|shop|view|finish)>/<id:\d+>' => 'payment/default/<action>',
                 'payment/<action:(finish)>' => 'payment/default/<action>',
             ],
         ],

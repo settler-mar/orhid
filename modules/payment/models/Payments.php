@@ -22,6 +22,15 @@ class Payments extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+    public static function getTextStatus(){
+        return array(
+            '0'=>'Text for status 0000',
+            '1'=>'Text for status 1111',
+            '2'=>'Text for status 2222',
+            '3'=>'Text for status 3333'
+        );
+    }
+
     public static function tableName()
     {
         return 'payments';

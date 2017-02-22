@@ -3,19 +3,18 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\modules\payment\models\PaymentsList */
+/* @var $model app\modules\staticPages\models\StaticPages */
 
-$this->title = 'Update Payments List: ' . $model->id;
-$this->params['breadcrumbs'][] = ['label' => 'Payments Lists', 'url' => ['index']];
+$this->title = 'Update Static Pages: ' . $model->id;
+$this->params['breadcrumbs'][] = ['label' => 'Static Pages', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = 'Update';
 ?>
-<div class="payments-list-update">
-
-    <h1><?= Html::encode($this->title) ?></h1>
+<div class="static-pages-update">
 
     <?= $this->render('_form', [
         'model' => $model,
+        'canCreate' => $canCreate
     ]) ?>
 
 </div>

@@ -55,26 +55,36 @@ class DefaultController extends Controller
      */
     public function actionIndex()
     {
-        $currentTariff = Payments::find()
+        $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId())['administrator'];
+        if($role) {
+            $searchModel = new PaymentSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            return $this->render('adminIndex', [
+                'dataProvider' => $dataProvider,
+            ]);
+        }
+        else{
+            $currentTariff = Payments::find()
             ->andWhere(['client_id'=> Yii::$app->user->id])
             ->andWhere(['status'=>Payments::STATUS_ACTIVE])
             ->with(['tarificatorTable'])
             ->one();
-        if ($currentTariff == null) {
-            $currentTariff = Payments::find()
-                ->andWhere(['client_id' => Yii::$app->user->id])
-                ->andWhere(['status' => Payments::TIME_OUT])
-                ->orderBy('pay_time')
-                ->with(['tarificatorTable'])
-                ->one();
+            if ($currentTariff == null) {
+                $currentTariff = Payments::find()
+                    ->andWhere(['client_id' => Yii::$app->user->id])
+                    ->andWhere(['status' => Payments::TIME_OUT])
+                    ->orderBy('pay_time')
+                    ->with(['tarificatorTable'])
+                    ->one();
+            }
+            $tariffs = Tariff::find()->select(['code','description'])->asArray()->all();
+            $user = User::find()->where(['id'=>Yii::$app->user->id])->one();
+           return $this->render('index', [
+                'currentTariff' => $currentTariff,
+                'tariffs' => $tariffs,
+                'user' => $user,
+            ]);
         }
-        $tariffs = Tariff::find()->select(['code','description'])->asArray()->all();
-        $user = User::find()->where(['id'=>Yii::$app->user->id])->one();
-       return $this->render('index', [
-            'currentTariff' => $currentTariff,
-            'tariffs' => $tariffs,
-            'user' => $user,
-        ]);
     }
 
     /**
@@ -87,6 +97,19 @@ class DefaultController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+    }
+
+    public function actionUpdate($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['index']);
+        } else {
+            return $this->render('update', [
+                'model' => $this->findModel($id),
+            ]);
+        }
     }
 
 
