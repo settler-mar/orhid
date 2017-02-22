@@ -14,6 +14,7 @@ use karpoff\icrop\CropImageUploadBehavior;
 use JBZoo\Image\Image;
 use \yii\db\ActiveRecord;
 use \yii\db\Query;
+use app\modules\tariff\models\Tariff;
 
 class User extends ActiveRecord  implements IdentityInterface
 {
@@ -47,7 +48,15 @@ class User extends ActiveRecord  implements IdentityInterface
     public function canIdo($code){
         $arr = json_decode($this->tariff_unit, true);
         if  (($arr[$code]!=null)&&($arr[$code]!='0')) return 1;
-        else return 0;
+        else {
+            $tariffs = Tariff::find()->where(['code' => $code])->select(['price'])->one();
+            if ($tariffs){
+                if ($tariffs->price > $this->credits ) return 0;
+                else return 2;
+            }
+            else return 0;
+        }
+        return 0;
     }
 
     function behaviors()

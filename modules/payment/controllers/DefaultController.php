@@ -70,8 +70,7 @@ class DefaultController extends Controller
         }
         $tariffs = Tariff::find()->select(['code','description'])->asArray()->all();
         $user = User::find()->where(['id'=>Yii::$app->user->id])->one();
-
-        return $this->render('index', [
+       return $this->render('index', [
             'currentTariff' => $currentTariff,
             'tariffs' => $tariffs,
             'user' => $user,
