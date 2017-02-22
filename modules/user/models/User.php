@@ -44,6 +44,12 @@ class User extends ActiveRecord  implements IdentityInterface
         return 'user';
     }
 
+    public function canIdo($code){
+        $arr = json_decode($this->tariff_unit, true);
+        if  (($arr[$code]!=null)&&($arr[$code]!='0')) return 1;
+        else return 0;
+    }
+
     function behaviors()
     {
         return [
