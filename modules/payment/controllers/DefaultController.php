@@ -10,6 +10,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\modules\payment\models\DoPayment;
+use app\modules\payment\models\Card;
 use app\modules\tarificator\models\TarificatorTable;
 use app\modules\user\models\User;
 
@@ -137,7 +138,9 @@ class DefaultController extends Controller
     } catch (Exception $e) {
       throw new NotFoundHttpException('Error payment. Contact your administrator.');
     }
-
+    if(!$pay){
+      throw new NotFoundHttpException('Error payment. Contact your administrator.');
+    }
     $pay=Payments::find()->where(['code'=>$payment->getId(),'status'=>0])->one();
     if(!$pay){
       throw new NotFoundHttpException('Error payment. Contact your administrator.');
@@ -148,28 +151,7 @@ class DefaultController extends Controller
       $pay->pay_time = time();
       $pay->save();
 
-      if($pay->type==1){//Если оплатили тариф
-        //d($pay);
-        $tariff = TarificatorTable::find()->where(['id'=>$pay->pos_id])->one();
-        //ddd($tariff);
-
-        $user = User::find()->where(['id'=>$pay->client_id])->one();
-        if($tariff->credits==0){
-          $user->tariff_unit=$tariff->includeData;
-          $user->tariff_end_date=time()+$tariff->timer*60*60*24;
-          $user->tariff_id=$tariff->id;
-        }else{
-          $user->credits+=$tariff->credits;
-        }
-        $user->save();
-
-        return $this->render('payment_finish', [
-          'pay' => $pay,
-          'user' => $user,
-          'tariff' => $tariff,
-        ]);
-      }
-      return;
+      return $this->applay_tariff($pay->type,$pay->pos_id,$pay->client_id);
     }
 
     throw new NotFoundHttpException('Error payment. Contact your administrator.');
@@ -200,6 +182,7 @@ class DefaultController extends Controller
         $customer = new Payments();
         $customer->type = 1;
         $customer->pos_id = $id;
+        $customer->method = 1;
         $customer->create_time = time();
         $customer->price = $tarificatorTariffs->price;
         $customer->client_id = Yii::$app->user->getId();
@@ -211,11 +194,77 @@ class DefaultController extends Controller
         return $this->redirect($approvalUrl);
       }
 
+      if($request->post('method')==1){
+
+        if($request->post('cc_type')){
+          $pay=new DoPayment('credit_card');
+
+          $pay->addCardData($request->post());
+
+          $pay->addItem(array(
+            'name'=>$tarificatorTariffs->name.' package',
+            'price'=>$tarificatorTariffs->price,
+            'tax'=>0
+          ));
+          $payment= $pay->make_payment();
+
+          //echo $payment->getId().'<br>';
+          if($payment->getState()=='approved') {
+            $customer = new Payments();
+            $customer->type = 1;
+            $customer->status = 1;
+            $customer->pos_id = $id;
+            $customer->method = 2;
+            $customer->create_time = time();
+            $customer->pay_time = time();
+            $customer->price = $tarificatorTariffs->price;
+            $customer->client_id = Yii::$app->user->getId();
+            $customer->code = $payment->getId();
+            $customer->save();
+
+            return $this->applay_tariff(1,$id,Yii::$app->user->getId());
+          }
+
+          ddd($payment);
+          return $payment;
+        }
+        $this->view->registerJsFile("/js/skeuocard.min.js");
+        $this->view->registerJsFile("/js/cssua.min.js");
+        $this->view->registerCssFile('/css/skeuocard.css');
+
+        return $this->render('card',[
+          'tarificator'=>$tarificatorTariffs,
+          'post'=>$request->post(),
+        ]);
+      }
       throw new NotFoundHttpException('The requested page does not exist.');
     }
 
     return $this->render('payment',[
       'tarificator'=>$tarificatorTariffs,
     ]);
+  }
+
+  public function applay_tariff($type,$tarif,$user){
+    if($type==1) {
+      //d($pay);
+      $tariff = TarificatorTable::find()->where(['id' => $tarif])->one();
+      //ddd($tariff);
+
+      $user = User::find()->where(['id' => $user])->one();
+      if ($tariff->credits == 0) {
+        $user->tariff_unit = $tariff->includeData;
+        $user->tariff_end_date = time() + $tariff->timer * 60 * 60 * 24;
+        $user->tariff_id = $tariff->id;
+      } else {
+        $user->credits += $tariff->credits;
+      }
+      $user->save();
+
+      return $this->render('payment_finish', [
+        'user' => $user,
+        'tariff' => $tariff,
+      ]);
+    }
   }
 }

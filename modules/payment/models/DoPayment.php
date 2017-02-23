@@ -1,11 +1,8 @@
 <?php
-
 namespace app\modules\payment\models;
-
 use yii\base\Model;
 use Yii;
 use yii\helpers\ArrayHelper;
-
 use PayPal\Api\Address;
 use PayPal\Api\CreditCard;
 use PayPal\Api\Amount;
@@ -21,8 +18,7 @@ use PayPal\Api\RedirectUrls;
 use PayPal\Rest\ApiContext;
 use PayPal\Api\ExecutePayment;
 use PayPal\Api\PaymentExecution;
-use PayPal\Api\PayerInfo;
-
+use PayPal\Api\PaymentCard;
 /**
  * This is the model class for table "payments_list".
  *
@@ -40,33 +36,43 @@ class DoPayment extends Model
   public $itemsList=array();
   public $shipping =0;
   public $paymentDescription="Payment without description";
-
   function __construct($paymentType = 'paypal')
   {
     $this->paymentType=$paymentType;
     $this->init();
   }
-
   /**
    *
    */
   public function init()
   {
     $this->Module=\Yii::$app->getModule('payment');
-
     $this->apiContext = new \PayPal\Rest\ApiContext(
       new \PayPal\Auth\OAuthTokenCredential(
         $this->Module->clientId,     // ClientID
         $this->Module->clientSecret      // ClientSecret
       )
     );
-
     $this->apiContext->setConfig($this->Module->config);
-
     $this->payer = new Payer();
-    $this->payer->setPaymentMethod($this->paymentType)->setPayerInfo(new PayerInfo(array('email' => 'jaypatel512-facilitator@hotmail.com')));
+    $this->payer->setPaymentMethod($this->paymentType);
   }
-
+  public function addCardData($cardData=false){
+    if($this->paymentType!='credit_card') return false;
+    $card = new PaymentCard();
+    $n=explode(' ',$cardData["cc_name"]);
+    $card->setType($cardData["cc_type"])
+      ->setNumber($cardData["cc_number"])
+      ->setExpireMonth($cardData["cc_exp_month"])
+      ->setExpireYear($cardData["cc_exp_year"])
+      ->setCvv2($cardData["cc_cvc"])
+      ->setFirstName($n[0])
+      ->setBillingCountry("US")
+      ->setLastName($n[1]);
+    $fi = new FundingInstrument();
+    $fi->setPaymentCard($card);
+    $this->payer->setFundingInstruments(array($fi));
+  }
   public function addItem($item){
     $item=ArrayHelper::merge(
       [
@@ -75,64 +81,58 @@ class DoPayment extends Model
         'quantity'          => 1,
         'vat'               => 0
       ],$item);
-
     $this->itemsList[]=$item;
   }
-
   public function setShipping($val){
     $this->shipping=$val;
   }
-
   public function setPaymentDescription($val){
     $this->paymentDescription=$val;
   }
-
   public function make_payment(){
     $itemList = new ItemList();
     $subTotal = 0;
     $vat = 0;
-
     foreach ($this->itemsList as $item){
       $item1 = new Item();
       $item1->setName($item['name'])
         ->setCurrency($item['currency'])
         ->setQuantity($item['quantity'])
         ->setPrice($item['price']);
-
       $subTotal+=$item['quantity']*$item['price'];
-      $vat+=$item['vat']*$item['price'];
-
+      $vat+=$item['vat']*$item['quantity'];
       $itemList->addItem($item1);
     }
-
     $details = new Details();
     $details->setShipping($this->shipping)
       ->setTax($vat)
       ->setSubtotal($subTotal);
-
     $amount = new Amount();
     $amount->setCurrency($this->Module->config['currency'])
       ->setTotal($subTotal+$vat+$this->shipping)
       ->setDetails($details);
-
     $transaction = new Transaction();
     $transaction->setAmount($amount)
       ->setItemList($itemList)
       ->setDescription($this->paymentDescription)
       ->setInvoiceNumber(uniqid());
-
-    $redirectUrls = new RedirectUrls();
-    $redirectUrls->setReturnUrl($this->Module->baseUrl."?success=true")
-      ->setCancelUrl($this->Module->baseUrl."?success=false");
-
-    $payment = new Payment();
-    $payment->setIntent('order')
-      ->setPayer($this->payer)
-      ->setRedirectUrls($redirectUrls)
-      ->setTransactions(array($transaction));
-
+    if($this->paymentType=='paypal') {
+      $redirectUrls = new RedirectUrls();
+      $redirectUrls->setReturnUrl($this->Module->baseUrl . "?success=true")
+        ->setCancelUrl($this->Module->baseUrl . "?success=false");
+      $payment = new Payment();
+      $payment->setIntent('order')
+        ->setPayer($this->payer)
+        ->setRedirectUrls($redirectUrls)
+        ->setTransactions(array($transaction));
+    }
+    if($this->paymentType=='credit_card'){
+      $payment = new Payment();
+      $payment->setIntent("sale")
+        ->setPayer($this->payer)
+        ->setTransactions(array($transaction));
+    }
     $request = clone $payment;
-
     try {
       $payment->create($this->apiContext);
     } catch (Exception $ex) {
@@ -140,23 +140,18 @@ class DoPayment extends Model
       exit(1);
     }
     //$approvalUrl = $payment->getApprovalLink();
-
     return $payment;
   }
-
   public function finishPayment(){
     if (isset($_GET['success']) && $_GET['success'] == 'true') {
       $paymentId = $_GET['paymentId'];
       $payment = Payment::get($paymentId, $this->apiContext);
-
       $execution = new PaymentExecution();
       $execution->setPayerId($_GET['PayerID']);
-
       /*echo $payment->getId().'<br>';
       d($payment->getCart());
       d($payment->getState());
       d($payment->getTransactions());*/
-
       try {
         // Execute the payment
         // (See bootstrap.php for more on `ApiContext`)
@@ -172,6 +167,7 @@ class DoPayment extends Model
           /*echo "Get Payment";
           d($ex);
           exit(1);*/
+          \Yii::$app->getSession()->setFlash('error', 'Error payment. Try later or contact your administrator.');
           return false;
         }
       } catch (Exception $ex) {
@@ -179,18 +175,17 @@ class DoPayment extends Model
         /*echo "Executed Payment";
         d($ex);
         exit(1);*/
+        \Yii::$app->getSession()->setFlash('error', 'Executed Payment. Try later or contact your administrator.');
         return false;
       }
-
       // NOTE: PLEASE DO NOT USE RESULTPRINTER CLASS IN YOUR ORIGINAL CODE. FOR SAMPLE ONLY
       //echo "Get Payment ".$payment->getId();
       //d($payment);
       return $payment;
-
     }else {
+      \Yii::$app->getSession()->setFlash('error', 'You canceled the payment. You can change the payment method or repeat the current.');
       // NOTE: PLEASE DO NOT USE RESULTPRINTER CLASS IN YOUR ORIGINAL CODE. FOR SAMPLE ONLY
       return false;
     }
-
   }
 }

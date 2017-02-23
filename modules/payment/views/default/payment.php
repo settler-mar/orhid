@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
   </label>
   <br>
   <label>
-    <input type="radio" value="1" name="method" disabled>Visa/Mastercard
+    <input type="radio" value="1" name="method">Visa/Mastercard
   </label>
   <hr>
   <input type="submit">
