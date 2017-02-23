@@ -31,6 +31,15 @@ class Payments extends \yii\db\ActiveRecord
         );
     }
 
+    public static function getTextMethod(){
+    return array(
+        '0'=>'По умолчанию',
+        '1'=>'PayPal',
+        '2'=>'Visa/MasterCard',
+        '3'=>'Administrator'
+    );
+}
+
     public static function tableName()
     {
         return 'payments';
