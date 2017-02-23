@@ -30,16 +30,26 @@ class Payments extends \yii\db\ActiveRecord
             '3'=>'Text for status 3333'
         );
     }
-
+    public static function statusText($param)
+    {
+        $textForStatus = Payments::getTextStatus();
+        if ($param < count($textForStatus)) return  $textForStatus[$param];
+        else return 'Unknown status';
+    }
     public static function getTextMethod(){
-    return array(
-        '0'=>'По умолчанию',
-        '1'=>'PayPal',
-        '2'=>'Visa/MasterCard',
-        '3'=>'Administrator'
-    );
-}
-
+        return array(
+            '0'=>'По умолчанию',
+            '1'=>'PayPal',
+            '2'=>'Visa/MasterCard',
+            '3'=>'Administrator'
+        );
+    }
+    public static function MethodPayText($param)
+    {
+        $textForStatus = Payments::getTextMethod();
+        if ($param < count($textForStatus)) return  $textForStatus[$param];
+        else return 'Unknown pay system';
+    }
     public static function tableName()
     {
         return 'payments';

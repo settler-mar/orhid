@@ -10,9 +10,16 @@ $this->params['breadcrumbs'][] = $this->title;
     'dataProvider' => $dataProvider,
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
-        'status',
+        ['attribute'=> 'status',
+            'content' => function($data){
+                return $data::statusText($data->status);
+            },],
         'client_id',
         'price',
+        ['attribute'=> 'method',
+            'content' => function($data){
+                return $data::MethodPayText($data->method);
+            },],
         ['class' => 'yii\grid\ActionColumn',
             'template' => '{view}{update}',],
     ],

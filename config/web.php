@@ -165,6 +165,9 @@ $config = [
             'log.LogLevel'           => 'FINE', // 'FINE','INFO','WARN','ERROR';
           ]
         ],
+        'logs' => [
+            'class' => 'app\modules\logs\Module',
+        ],
     ],
 ];
 

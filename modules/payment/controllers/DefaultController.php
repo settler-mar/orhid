@@ -104,7 +104,9 @@ class DefaultController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+            $model->method = 3;
+            $model->save();
             return $this->redirect(['index']);
         } else {
             return $this->render('update', [
@@ -147,6 +149,7 @@ class DefaultController extends Controller
     }
 
     if($payment->getState()=='approved') {
+      $pay->method = 1;
       $pay->status = 1;
       $pay->pay_time = time();
       $pay->save();
