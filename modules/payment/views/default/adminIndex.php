@@ -8,20 +8,29 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?= GridView::widget([
     'dataProvider' => $dataProvider,
+    'filterModel' => $searchModel,
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
+        ['attribute'=> 'client_id',
+            'content' => function($data){
+                return $data->user->first_name.' '.$data->user->last_name.'('.$data->user->id.')';
+            },],
+        ['attribute'=> 'pay_time',
+            'content' => function($data){
+                return  date("j-M-Y H:i:s", $data->pay_time);
+            },],
+        ['attribute'=> 'price',
+            'content' => function($data){
+                return  number_format($data->price, 2, ',', ' ');
+            },],
         ['attribute'=> 'status',
             'content' => function($data){
                 return $data::statusText($data->status);
             },],
-        'client_id',
-        'price',
         ['attribute'=> 'method',
             'content' => function($data){
                 return $data::MethodPayText($data->method);
             },],
-        ['class' => 'yii\grid\ActionColumn',
-            'template' => '{view}{update}',],
     ],
 ]); ?>
 

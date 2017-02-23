@@ -4,6 +4,7 @@ namespace app\modules\payment\models;
 
 use Yii;
 use app\modules\tarificator\models\TarificatorTable;
+use app\modules\user\models\User;
 /**
  * This is the model class for table "payments".
  *
@@ -40,7 +41,7 @@ class Payments extends \yii\db\ActiveRecord
         return array(
             '0'=>'По умолчанию',
             '1'=>'PayPal',
-            '2'=>'Visa/MasterCard',
+            '2'=>'Card',
             '3'=>'Administrator'
         );
     }
@@ -58,6 +59,10 @@ class Payments extends \yii\db\ActiveRecord
     public function getTarificatorTable()
     {
         return $this->hasOne(TarificatorTable::className(),['id' => 'pos_id']);
+    }
+    public function getUser()
+    {
+        return $this->hasOne(User::className(),['id' => 'client_id']);
     }
     /**
      * @inheritdoc

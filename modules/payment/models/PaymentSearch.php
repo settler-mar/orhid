@@ -70,6 +70,7 @@ class PaymentSearch extends Payments
         ]);
 
         $query->andFilterWhere(['like', 'code', $this->code]);
+        $query->with(['user']);
 
         return $dataProvider;
     }

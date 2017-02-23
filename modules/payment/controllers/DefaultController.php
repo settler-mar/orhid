@@ -60,7 +60,9 @@ class DefaultController extends Controller
         if($role) {
             $searchModel = new PaymentSearch();
             $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
             return $this->render('adminIndex', [
+                'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
             ]);
         }
