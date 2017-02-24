@@ -25,6 +25,7 @@ class Payments extends \yii\db\ActiveRecord
      */
     public static function getTextStatus(){
         return array(
+            '' => 'All',
             '0'=>'Text for status 0000',
             '1'=>'Text for status 1111',
             '2'=>'Text for status 2222',
@@ -39,7 +40,7 @@ class Payments extends \yii\db\ActiveRecord
     }
     public static function getTextMethod(){
         return array(
-            '0'=>'По умолчанию',
+            ''=>'По умолчанию',
             '1'=>'PayPal',
             '2'=>'Card',
             '3'=>'Administrator'
@@ -84,9 +85,11 @@ class Payments extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'client_id' => 'Client',
             'type' => 'Type',
             'pos_id' => 'Tariff',
             'price' => 'Price',
+            'method' => 'Method',
             'code' => 'Code',
             'status' => 'Status',
             'clientId' => 'clientId',

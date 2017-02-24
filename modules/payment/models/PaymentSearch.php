@@ -18,7 +18,7 @@ class PaymentSearch extends Payments
     public function rules()
     {
         return [
-            [['id', 'type', 'pos_id', 'client_id', 'status', 'pay_time', 'create_time'], 'integer'],
+            [['id', 'type', 'pos_id', 'client_id','method', 'status', 'pay_time', 'create_time'], 'integer'],
             [['price'], 'number'],
             [['code'], 'safe'],
         ];
@@ -50,6 +50,8 @@ class PaymentSearch extends Payments
             'query' => $query,
         ]);
         $this->load($params);
+        $date_from = strtotime($this['pay_time']);
+        $date_to =   strtotime($time_to['pay_time_to']);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -57,20 +59,14 @@ class PaymentSearch extends Payments
             return $dataProvider;
         }
 
+        if ($date_from!=null) $query->andFilterWhere(['>=', 'pay_time', $date_from]);
+        if ($date_to!=null) $query->andFilterWhere(['<=', 'pay_time', $date_to]);
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'type' => $this->type,
-            'pos_id' => $this->pos_id,
-            'client_id' => $this->client_id,
-            'price' => $this->price,
             'status' => $this->status,
-            'pay_time' => $this->pay_time,
-            'create_time' => $this->create_time,
+            'type' => $this->method,
+            'client_id' => $this->client_id,
         ]);
-
-        $query->andFilterWhere(['like', 'code', $this->code]);
-        $query->with(['user']);
 
         return $dataProvider;
     }

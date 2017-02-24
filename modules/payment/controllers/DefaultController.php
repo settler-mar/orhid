@@ -13,6 +13,7 @@ use app\modules\payment\models\DoPayment;
 use app\modules\payment\models\Card;
 use app\modules\tarificator\models\TarificatorTable;
 use app\modules\user\models\User;
+use app\modules\payment\models\PaymentFilterForm;
 
 use PayPal\Api\Address;
 use PayPal\Api\CreditCard;
@@ -58,11 +59,20 @@ class DefaultController extends Controller
     {
         $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId())['administrator'];
         if($role) {
+            $filterForm = new PaymentFilterForm();
+
+            if(Yii::$app->request->post()) {
+                $filterForm->load(Yii::$app->request->post());
+                $query['PaymentSearch'] = $filterForm->toArray();
+                $time_to = ['pay_time_to' => $filterForm->pay_time_to];
+             }
+
             $searchModel = new PaymentSearch();
-            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            $dataProvider = $searchModel->search($query,$time_to);
 
             return $this->render('adminIndex', [
                 'searchModel' => $searchModel,
+                'filterForm' => $filterForm,
                 'dataProvider' => $dataProvider,
             ]);
         }
