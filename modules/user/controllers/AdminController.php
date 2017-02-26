@@ -56,6 +56,20 @@ class AdminController extends Controller
         ]);
     }
 
+    public function actionLogin($id){
+
+      $session = Yii::$app->session;
+      $last_admin_id=$session->get('admin_id');
+      if(!$last_admin_id) {
+        $session->set('admin_id', Yii::$app->user->id);
+      }
+
+      $identity = User::findIdentity($id);
+      Yii::$app->user->login($identity);
+
+      return $this->redirect(['/']);
+    }
+
     public function actionCreate()
     {
         $model = new CreateForm();

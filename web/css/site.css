@@ -441,6 +441,8 @@ img {
     width: 360px;
 }
 
+.uzer_hed .toAdmin{display: block;clear: both;text-align: center;}
+
 .uzer_hed .form-group {
     display: inline-block !important;
     width: 130px !important;
@@ -2241,7 +2243,7 @@ table [name="UserSearch[username]"] {
     padding: 4px 0;
     font-family: "Times New Roman", Times, serif;
     font-size: 1.8rem;
-    }
+}
 .tar_1 p:before, .tar_1 p:after {content: "•"; left: -10px; position: relative;
     font-size:18px; top: 0px;}
 .tar_1 p:after {right: -10px; left: inherit;}

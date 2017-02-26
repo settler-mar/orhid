@@ -51,8 +51,10 @@ class UserController extends Controller
      * @return \yii\web\Response
      */
     public function actionLogout(){
-        Yii::$app->user->logout();
-        return $this->goHome();
+      $session = Yii::$app->session;
+      $session->remove('admin_id');
+      Yii::$app->user->logout();
+      return $this->goHome();
     }
 
     /**
@@ -157,6 +159,19 @@ class UserController extends Controller
         ], ['id' => Yii::$app->user->id])->execute();
         return 'is online';
     }
+
+  public function actionReturnToAdmin(){
+    $session = Yii::$app->session;
+    $last_admin_id=$session->get('admin_id');
+    if(!$last_admin_id) {
+      throw new BadRequestHttpException("Access is denied");
+    }
+
+    $identity = User::findIdentity($last_admin_id);
+    Yii::$app->user->login($identity);
+
+    return $this->redirect(['/']);
+  }
     /**
      * Профиль пользователя (личный кабинет)
      * @return string|\yii\web\Response

@@ -31,7 +31,7 @@ class User extends ActiveRecord  implements IdentityInterface
 
     // Время действия токенов
     const EXPIRE = 3600;
-
+    public $toAdmin=false;
 
     /** @var string Default username regexp */
     public static $usernameRegexp = '/^[-a-zA-Z0-9_\.@]+$/';

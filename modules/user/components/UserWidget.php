@@ -30,7 +30,17 @@ class UserWidget extends Widget
         if(strlen($user_data['photo'])<10){
             $user_data['photo']=($user_data['sex']==0)?'/img/male.png':'/img/female.png';
         }
-        return $this->render('onlineWidget', $user_data);
+
+      $session = Yii::$app->session;
+      $last_admin_id=$session->get('admin_id');
+      if($last_admin_id && Yii::$app->user->id!=$last_admin_id){
+        $user_data['toAdmin']=true;
+      }else{
+        $user_data['toAdmin']=false;
+      }
+
+
+      return $this->render('onlineWidget', $user_data);
     }
 
 }

@@ -110,7 +110,7 @@
       //'updated_at',
       [
         'class' => 'yii\grid\ActionColumn',
-        'template'=>'{create}{update}{delete}',
+        'template'=>'{login}{update}{delete}',
         'buttons'=>[
           'update' => function ($url, $model) {
             return Html::a('<span class="glyphicon glyphicon-pencil"></span>', '/user/admin/update?id='.$model->id, [
@@ -118,6 +118,10 @@
             ]);
           },
           'view' => function ($url, $model) {
+            return Html::a('<span class="glyphicon glyphicon-log-in"></span>', $url, [
+              'title' => 'Enter',
+            ]);
+          },'login' => function ($url, $model) {
             return Html::a('<span class="glyphicon glyphicon-log-in"></span>', $url, [
               'title' => 'Enter',
             ]);
