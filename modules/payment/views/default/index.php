@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h3>End date</h3>
     <dd><?=date("Y-m-d H:i:s",$user->tariff_end_date) ?></dd>
 </dl>
-
+<?php if ($currentTariff){?>
 <div class="payments-list-index">
         <div class="col-sm-6 col-md-4">
             <div class="thumbnail">
@@ -53,5 +53,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
         </div>
 </div>
+<?php }  else {?>
+    <h3>You don't have any Tariff. </h3>
+    <h3>You can buy some Tariff. Then on this page will be posted tariff description. </h3>
+<?php }?>
 
 </div>

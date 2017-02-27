@@ -77,26 +77,32 @@ class DefaultController extends Controller
             ]);
         }
         else{
-            $currentTariff = Payments::find()
-            ->andWhere(['client_id'=> Yii::$app->user->id])
-            ->andWhere(['status'=>Payments::STATUS_ACTIVE])
-            ->with(['tarificatorTable'])
-            ->one();
-            if ($currentTariff == null) {
+            $user = User::find()->where(['id'=>Yii::$app->user->id])->one();
+            if ($user->sex == '1') {
                 $currentTariff = Payments::find()
                     ->andWhere(['client_id' => Yii::$app->user->id])
-                    ->andWhere(['status' => Payments::TIME_OUT])
-                    ->orderBy('pay_time')
+                    ->andWhere(['status' => Payments::STATUS_ACTIVE])
                     ->with(['tarificatorTable'])
                     ->one();
+                if ($currentTariff == null) {
+                    $currentTariff = Payments::find()
+                        ->andWhere(['client_id' => Yii::$app->user->id])
+                        ->andWhere(['status' => Payments::TIME_OUT])
+                        ->orderBy('pay_time')
+                        ->with(['tarificatorTable'])
+                        ->one();
+                }
+                $tariffs = Tariff::find()->select(['code', 'description'])->asArray()->all();
+
+                return $this->render('index', [
+                    'currentTariff' => $currentTariff,
+                    'tariffs' => $tariffs,
+                    'user' => $user,
+                ]);
             }
-            $tariffs = Tariff::find()->select(['code','description'])->asArray()->all();
-            $user = User::find()->where(['id'=>Yii::$app->user->id])->one();
-           return $this->render('index', [
-                'currentTariff' => $currentTariff,
-                'tariffs' => $tariffs,
-                'user' => $user,
-            ]);
+            else {
+                $this->redirect('/');
+            }
         }
     }
 
