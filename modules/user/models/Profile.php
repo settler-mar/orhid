@@ -456,7 +456,7 @@ class Profile extends \yii\db\ActiveRecord
         $class = str_replace('\\', '/', $class);
         $class = explode('/', $class);
         $class=$class[count($class)-1];
-        if($post[$class]['birthday'] && strlen($post[$class]['birthday'])>3) {
+        if($post[$class] && $post[$class]['birthday'] && strlen($post[$class]['birthday'])>3) {
             $birthday = (strtotime($post[$class]['birthday']));
             $fileToBd['birthday'] = $birthday;
         }
