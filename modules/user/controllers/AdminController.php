@@ -101,11 +101,16 @@ class AdminController extends Controller
             throw new NotFoundHttpException( 'User did not find');
         }
 
-        if($model->sex==0){
-            $profile=ProfileMale::findIdentity($id);
-        }else{
-            $profile=ProfileFemale::findIdentity($id);
-        }
+        //Вызывало ошибку при смене пароля для другого админа
+        /*if($model->role){
+            $profile=Profile::findIdentity($id);
+        }else{*/
+            if($model->sex==0){
+                $profile=ProfileMale::findIdentity($id);
+            }else{
+                $profile=ProfileFemale::findIdentity($id);
+            }
+        //}
 
 
         if (!$profile) {
