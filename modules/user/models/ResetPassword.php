@@ -40,9 +40,13 @@ class ResetPassword extends Model
      */
     public function resetPassword()
     {
-        $user = $this->_user;
-        $user->setPassword($this->password);
-        $user->removePasswordResetToken();  // Удаление токена восстановления пароля
-        return (($user->save())) ? $user->id : false;
+      $user = $this->_user;
+      $user->setPassword($this->password);
+      $user->removePasswordResetToken();  // Удаление токена восстановления пароля
+      if ($user->status == User::STATUS_WAIT){
+        $user->status = User::STATUS_ACTIVE;
+        $user->removeEmailConfirmToken();
+      }
+      return (($user->save())) ? $user->id : false;
     }
 }

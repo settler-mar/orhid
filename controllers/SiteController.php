@@ -180,7 +180,7 @@ class SiteController extends Controller
             ->where([
                 'auth_assignment.user_id'=>null, //убераем с выборки всех пользователей с ролями
                 'user.sex' => 1, //Только женщины
-                //,'moderate'=>1, //только прошедшие модерацию
+                'moderate'=>1, //только прошедшие модерацию
             ])
 
             //->asArray()
@@ -189,6 +189,21 @@ class SiteController extends Controller
         return $this->render('top',['user'=>$user,'page'=>$page]);
     }
 
+    public function actionMans()
+    {
+      $user=User::find()
+        ->joinWith(['profile','city','role']) //добавляем вывод из связвнных таблиц
+        ->where([
+          'auth_assignment.user_id'=>null, //убераем с выборки всех пользователей с ролями
+          'user.sex' => 0, //Только мужчины
+          'moderate'=>1, //только прошедшие модерацию
+        ])
+
+        //->asArray()
+        ->all(); //выводим все что получилось
+      $page=StaticPages::find()->where(['id' => 11])->asArray()->one();
+      return $this->render('mans',['user'=>$user,'page'=>$page]);
+    }
 
      /**
      * @return user page
@@ -207,6 +222,16 @@ class SiteController extends Controller
             throw new \yii\web\NotFoundHttpException('User not found or blocked');
 
 
-        return $this->render('user',['model'=>$user]);
+
+        if(Yii::$app->user->isGuest){
+          $v=0;
+          $adm=0;
+        }else{
+          $u=User::findOne(Yii::$app->user->id);
+          $v=$u->sex+1;
+          $adm=count($u->role);
+        }
+
+        return $this->render('user',['model'=>$user,"v"=>$v,'is_admin'=>$adm]);
     }
 }

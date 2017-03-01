@@ -93,11 +93,19 @@
                 span.online_2
                  != TimePassed::widget(['timeStart'=>$model->last_online])
     // one_info
+    - if(($v==0 || $v!=($model->sex+1)) && $is_admin<1){
     .chat_us
         a(href='#') Live chat
         a(href='#') Send message
         a(href='#') Live video chat
         a(href='#') Send a gift
+    -}
+    - if($is_admin>=1){
+        .chat_us
+            a(href= '/user/admin/login?id='.$model->id)
+                span.glyphicon.glyphicon-log-in
+                | Login as this user
+    -}
     #profile_mini.profile
         | Нопия портфолио
 
@@ -117,3 +125,4 @@
             param(name='movie', value='/player/uppod.swf')
             param(name='flashvars', value="comment=test&st=/player/video209-1292.txt&file=/".$profile['video_about'])
     -}
+

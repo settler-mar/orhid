@@ -49,3 +49,5 @@ params.php
 *.local
 Будет удалено web/assets/
 /web/img/shop_item/
+/web/uploads_thumbs/
+/web/uploads/
