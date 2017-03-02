@@ -317,9 +317,44 @@ var userChat = (function() {
                 user['this_user']=(user.id==this.user);
                 user_out+=templates.chat_user(user)
             }
-            if(render) $('.user_all').html(user_out)
+            if(render){
+                $('.user_all').html(user_out)
+            }
+        }
+        if(data.chat) {
+            $('.mess_block .loading').remove();
+            var chat_out='';
+            for(i=0;data.chat.length>i;i++){
+                chat_out+=templates.chat_message(data.chat[i])
+            }
+            if(data.chat.length>0){
+                mes_b=$('.mess_block');
+                scroll=mes_b.scrollTop(); //текущее состояние прокрутки
+                h=mes_b.height(); //высота контейнерв
+                msg_h=0; //высота содержимого
+                children=mes_b.children();
+                for(i=0;i<children.lenght;i++){
+                    msg_h+=children.eq(i).outerHeight()
+                }
+                //придумать прокрутку вниз если
+                $('.mess_block').append(chat_out)
+            }
         }
         this.timer()
+    }
+
+    function _send(){
+        post={};
+        $('.send_chat .emojionearea-editor img').removeAttr('alt');
+        post["message"]=$('.send_chat .emojionearea-editor').html();
+        if(post["message"].length<1) return;
+        post["to"]=this.user;
+        $('.send_chat .emojionearea-editor').html('');
+        $.post('/chat/send',post,this.send_msg_ansv,'json')
+    }
+
+    function _send_msg_ansv(data){
+        console.log(data);
     }
 
     function init(data){
@@ -329,6 +364,9 @@ var userChat = (function() {
         this.update=_update.bind(this);
         this.parce=_parce.bind(this);
         this.timer=_timer.bind(this);
+        this.send=_send.bind(this);
+        this.send_msg_ansv=_send_msg_ansv.bind(this);
+        $('.send_chat [type=submit]').on('click',this.send);
         this.update()
     }
 
