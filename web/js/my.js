@@ -297,8 +297,27 @@ var userChat = (function() {
 
     function _parce(data) {
         this.last_msg=data.time;
+        render = false;
+        t_user=[];
         if(data.users){
-
+            user_out='';
+            if($('.user_all .loading').length>0) {
+                render = true;
+            }else{
+                els=$('.user_all>*');
+                for(var i=0;i<els.length;i++){
+                    t_user.push($(els[i]).attr('user'));
+                }
+                if(els.length!=data.users.length)render = true
+            }
+            data.users.sort(chat_user_sort);
+            for(var i=0;i<data.users.length;i++){
+                user=data.users[i];
+                if(!render && user.id!=t_user[i])render = true;
+                user['this_user']=(user.id==this.user);
+                user_out+=templates.chat_user(user)
+            }
+            if(render) $('.user_all').html(user_out)
         }
         this.timer()
     }
@@ -317,3 +336,12 @@ var userChat = (function() {
         init: init
     };
 })();
+
+function chat_user_sort(a, b) {
+    a_time=a.in_time>a.out_time?a.in_time:a.out_time;
+    b_time=b.in_time>b.out_time?b.in_time:b.out_time;
+    if((!!a.in_new)!=(!!b.in_new))
+        return !a.in_new;
+    else
+        return a_time<b_time
+}

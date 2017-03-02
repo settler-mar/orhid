@@ -17,6 +17,8 @@
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.5",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
+
+
         "jacmoe/yii2-gii-jade": "^0.2.0",
         "jacmoe/yii2-tale-jade": "^1.5",
         "jisoft/yii2-sypexgeo": "dev-master",
@@ -25,6 +27,9 @@
         "jbzoo/image": "^3.0",
         "yiisoft/yii2-jui": "^2.0",
         "2amigos/yii2-ckeditor-widget": "^2.0",
+        "2amigos/yii2-tinymce-widget": "~1.1",
+        "johnitvn/yii2-rbac-plus": "*",
+        "mervick/yii2-emojionearea": "*",
         "2amigos/yii2-tinymce-widget": "~1.1",
         "johnitvn/yii2-rbac-plus": "*",
         "thiagotalma/yii2-simplecolorpicker": "*",

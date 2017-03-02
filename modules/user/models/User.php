@@ -155,28 +155,33 @@ class User extends ActiveRecord  implements IdentityInterface
         return $this->hasMany(AuthAssignment::className(), ['user_id' => 'id']);
     }
 
-    public function getChatMsgIn(){
+    //public function getChatMsgIn(){
       //return  $this->hasMany(Chat::className(), ['user_to' => 'id']);
       //return $this->hasMany(Chat::className(), ['user_to' => 'id'])->count();
         //->viaTable('{{%Chat}} b', ['b.user_to'=>'id']);
-    }
-    public function getChatMsgOut(){
+    //}
+    /*public function getChatMsgOut(){
       return  $this->hasMany(Chat::className(), ['user_from' => 'id']);
-    }
+    }*/
     /*public function getMsgcnt(){
         return $this->getMessage()->count();
     }*/
-    public function getChatMessage(){
+    /*public function getChatMessage(){
       return Chat::find()
         ->where(['user_to' => $this->id])
         ->orWhere(['user_from' => $this->id]);
-    }
+    }*/
 
     /*public function getMsgnew(){
         return $this->getMessage()
           ->where(['user_to'=>$this->id,'is_read'=>0])
           ->count();
     }*/
+    public function getChatInbox(){
+      //$my_id=$this->id;
+      //,'user_from'=>$my_id,'created_at>'.(time()-30*60*60*24)
+      return $this->hasMany(Chat::className(), ['user_to'=>'id']);
+    }
     /* Геттер для полного имени человека */
     public function getFullName() {
         return $this->last_name . ' ' . $this->first_name;
