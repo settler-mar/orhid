@@ -50,7 +50,7 @@ class DefaultController extends Controller
       if(!$user || ($user['moderate']!=1))
         throw new \yii\web\NotFoundHttpException('User not found or blocked');
 //$user['sex']==Yii::$app->user->identity->sex
-      if((($user['sex']==1)&&($user->canIdo('chatUnit')!=1)) || (!Yii::$app->user->identity->isManager()))
+      if((($user['sex']==1)&&($user->canIdo('chatUnit')!=1)) && (!Yii::$app->user->identity->isManager()))
         throw new \yii\web\NotFoundHttpException('No rights for access to chat with the user. Contact your administrator.');
 
       return $this->render('index',['user'=>$user,'my_id'=>$my_id]);
