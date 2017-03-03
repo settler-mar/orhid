@@ -1,0 +1,11 @@
+-
+    use yii\helpers\Html;
+    use app\modules\user\models\User;
+
+    $view->title = $page['title'];
+    $view->params['page'] = $page;
+    $view->params['breadcrumbs'][] = $view->title;
+
+include ../mixins/user
+
++userMiniCard($user,User::MAX_ONLINE_TIME)

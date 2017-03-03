@@ -1,0 +1,64 @@
+-
+    use yii\helpers\Html;
+    use yii\bootstrap\ActiveForm;
+    use yii\captcha\Captcha;
+
+    $view->title = $page['title'];
+    $view->params['page'] = $page;
+    $view->params['breadcrumbs'][] = $view->title;
+
+.site-contact
+    .all_tarif
+        -
+          foreach($tarificatorTariffs as $tarif){
+
+        .tarif(style= 'background:'.$tarif->color)
+            .tar_1(style= 'color:'.$tarif->color)
+                p
+                    -echo $tarif->name;
+            .tar_2
+                p(data-select-like-a-boss= $tarif->id)
+                   -echo '$'.$tarif->price;
+                span per month
+            .tar_3
+                -
+                    $array = json_decode($tarif->includeData);
+                    if ($array) foreach($array as $key => $value)
+                    {
+                p
+                    -echo $tariffElements[$key]['description']
+                    span
+                        -echo $value
+                -}
+                //.more_tar Read more
+                -if($guest==0){
+                a(href='/payment/tariff/'.$tarif->id,name =$tarif->name) buy
+                -}else{
+                p Авторизуйтесь или
+                a Зарегистрируйтесь
+                -}
+        -}
+
+
+        .all_credits
+            p.credits Кредитные пакеты
+            - foreach($tarificatorCredits as $tarif){
+                .tarif_unit(style= 'background:'.$tarif->color)
+                    .tar_1(style= 'color:'.$tarif->color)
+                        -echo $tarif->name;
+                    .tar_4
+                        p
+                            -echo 'credits '.$tarif->credits;
+                    .tar_2
+                        p
+                            -echo '$'.$tarif->price;
+                    .tar_3
+                        p
+                            //.more_tar Read more
+                            -if($guest==0){
+                            a(href='/payment/tariff/'.$tarif->id,name =$tarif->name) buy
+                            -}else{
+                            p Авторизуйтесь или
+                            a Зарегистрируйтесь
+                            -}
+            -}

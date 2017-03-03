@@ -1,0 +1,9 @@
+-use yii\helpers\Html
+-$view->title = 'Update Tariff: ' . ' ' . $model->id
+-$view->params['breadcrumbs'][] = ['label' => 'Tariffs', 'url' => ['index']]
+-$view->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]]
+-$view->params['breadcrumbs'][] = 'Update';
+.tariff-update
+  h1
+    !=Html::encode($view->title)
+  !=$view->render('_form', ['model' => $model,])

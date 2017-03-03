@@ -56,7 +56,7 @@
 
     != $form->field($model, 'password')->passwordInput(['placeholder' => 'Password']);
 
-    - $sex_var = User::getSexArray();
+    - $sex_var = $model->getSexArray();
     .form-group
       label.control-label Sex
       span= $sex_var[$model -> sex]
@@ -100,39 +100,39 @@
       != $form->field($profile, 'birthday')->widget(DatePicker::classname(), ['clientOptions' =>['changeMonth'=> true, 'changeYear'=> true,'maxDate'=> '-18y']])
 
       .form-group
-        != Chosen::widget(['model' => $profile, 'name' => 'weight', 'data' => Profile::getList('weight'),'template'=>$template_input,]);
+        != Chosen::widget(['model' => $profile, 'name' => 'weight', 'data' => $profile->getList('weight'),'template'=>$template_input,]);
 
       .form-group
-        != Chosen::widget(['model' => $profile, 'name' => 'height', 'data' => Profile::getList('height'),'options' => ['placeholder' => 'Height'],'template'=>$template_input,]);
+        != Chosen::widget(['model' => $profile, 'name' => 'height', 'data' => $profile->getList('height'),'options' => ['placeholder' => 'Height'],'template'=>$template_input,]);
 
       .form-group
-        != Chosen::widget(['model' => $profile, 'name' => 'eyes', 'data' => Profile::getList('eyes'),'template'=>$template_input,]);
+        != Chosen::widget(['model' => $profile, 'name' => 'eyes', 'data' => $profile->getList('eyes'),'template'=>$template_input,]);
 
       .form-group
-        != Chosen::widget(['model' => $profile, 'name' => 'heir', 'data' => Profile::getList('heir'),'template'=>$template_input,]);
+        != Chosen::widget(['model' => $profile, 'name' => 'heir', 'data' => $profile->getList('heir'),'template'=>$template_input,]);
 
       != $form->field($profile, 'occupation')->textInput();
 
       .form-group
-        != Chosen::widget(['model' => $profile, 'name' => 'education', 'data' => Profile::getList('education'),'template'=>$template_input,]);
+        != Chosen::widget(['model' => $profile, 'name' => 'education', 'data' => $profile->getList('education'),'template'=>$template_input,]);
 
       .form-group
-        != Chosen::widget(['model' => $profile, 'name' => 'religion', 'data' => Profile::getList('religion'),'template'=>$template_input,]);
+        != Chosen::widget(['model' => $profile, 'name' => 'religion', 'data' => $profile->getList('religion'),'template'=>$template_input,]);
 
       .form-group
-        != Chosen::widget(['model' => $profile, 'name' => 'marital_status', 'data' => Profile::getList('marital_status'),'template'=>$template_input,]);
+        != Chosen::widget(['model' => $profile, 'name' => 'marital_status', 'data' => $profile->getList('marital_status'),'template'=>$template_input,]);
 
       .form-group
-        != Chosen::widget(['model' => $profile, 'name' => 'children_count', 'data' => Profile::getList('children_count'),'template'=>$template_input,]);
+        != Chosen::widget(['model' => $profile, 'name' => 'children_count', 'data' => $profile->getList('children_count'),'template'=>$template_input,]);
 
       != $form -> field($profile, 'lang_name') -> textInput();
 
       .form-group
-        != Chosen::widget(['model' => $profile, 'name' => 'lang_proficiency', 'data' => Profile::getList('lang_proficiency'),'template'=>$template_input,]);
+        != Chosen::widget(['model' => $profile, 'name' => 'lang_proficiency', 'data' => $profile->getList('lang_proficiency'),'template'=>$template_input,]);
 
 
       .form-group
-        != Chosen::widget(['model' => $profile, 'name' => 'smoking', 'data' => Profile::getList('smoking'),'template'=>$template_input,]);
+        != Chosen::widget(['model' => $profile, 'name' => 'smoking', 'data' => $profile->getList('smoking'),'template'=>$template_input,]);
 
 
       -

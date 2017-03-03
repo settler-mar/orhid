@@ -1,0 +1,9 @@
+-use yii\helpers\Html
+-$view->title = 'Create Tariff'
+-$view->params['breadcrumbs'][] = ['label' => 'Tariffs', 'url' => ['index']]
+-$view->params['breadcrumbs'][] = $view->title
+.tariff-create
+  h1
+    !=Html::encode($view->title)
+
+  !=$view->render('_form', ['model' => $model,])

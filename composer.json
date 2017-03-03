@@ -17,6 +17,8 @@
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.5",
         "yiisoft/yii2-swiftmailer": "~2.0.0",
+
+
         "jacmoe/yii2-gii-jade": "^0.2.0",
         "jacmoe/yii2-tale-jade": "^1.5",
         "jisoft/yii2-sypexgeo": "dev-master",
@@ -27,7 +29,13 @@
         "2amigos/yii2-ckeditor-widget": "^2.0",
         "2amigos/yii2-tinymce-widget": "~1.1",
         "johnitvn/yii2-rbac-plus": "*",
-        "mervick/yii2-emojionearea": "*"
+        "mervick/yii2-emojionearea": "*",
+        "2amigos/yii2-tinymce-widget": "~1.1",
+        "johnitvn/yii2-rbac-plus": "*",
+        "thiagotalma/yii2-simplecolorpicker": "*",
+        "kartik-v/yii2-widget-colorinput": "*",
+        "paypal/rest-api-sdk-php": "^1.11",
+        "raveren/kint": "^1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
@@ -45,6 +53,12 @@
     "scripts": {
         "post-create-project-cmd": [
             "yii\\composer\\Installer::postCreateProject"
+        ],
+        "post-install-cmd": [
+            "bower install"
+        ],
+        "post-update-cmd": [
+            "bower install"
         ]
     },
     "extra": {

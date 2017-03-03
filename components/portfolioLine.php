@@ -14,11 +14,12 @@ class PortfolioLine extends Widget{
         if ($this->portfolio[$this->params]==$this->not_show) return '';
         if (strlen($this->portfolio[$this->params])==0) return '';
 
+        $profile=new Profile;
         $out = '<p><span>';
-        $attributes=Profile::attributeLabels();
+        $attributes=$profile->attributeLabels();
         $out.= $attributes[$this->params];
         $out.= '</span>';
-        $out.= Profile::getSelectValue($this->params,$this->portfolio);
+        $out.= $profile->getSelectValue($this->params,$this->portfolio);
         return $out;
     }
 

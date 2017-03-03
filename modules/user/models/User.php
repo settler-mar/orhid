@@ -14,6 +14,7 @@ use karpoff\icrop\CropImageUploadBehavior;
 use JBZoo\Image\Image;
 use \yii\db\ActiveRecord;
 use \yii\db\Query;
+use app\modules\tariff\models\Tariff;
 
 class User extends ActiveRecord  implements IdentityInterface
 {
@@ -30,7 +31,7 @@ class User extends ActiveRecord  implements IdentityInterface
 
     // Время действия токенов
     const EXPIRE = 3600;
-
+    public $toAdmin=false;
 
     /** @var string Default username regexp */
     public static $usernameRegexp = '/^[-a-zA-Z0-9_\.@]+$/';
@@ -42,6 +43,20 @@ class User extends ActiveRecord  implements IdentityInterface
     public static function tableName()
     {
         return 'user';
+    }
+
+    public function canIdo($code){
+        $arr = json_decode($this->tariff_unit, true);
+        if  (($arr[$code]!=null)&&($arr[$code]!='0')) return 1;
+        else {
+            $tariffs = Tariff::find()->where(['code' => $code])->select(['price'])->one();
+            if ($tariffs){
+                if ($tariffs->price > $this->credits ) return 0;
+                else return 2;
+            }
+            else return 0;
+        }
+        return 0;
     }
 
     function behaviors()
@@ -58,7 +73,7 @@ class User extends ActiveRecord  implements IdentityInterface
                 'cropped_field' => 'photo_cropped',*/
             ],
         ];
-    }
+          }
 
     /**
      * @inheritdoc
@@ -68,11 +83,12 @@ class User extends ActiveRecord  implements IdentityInterface
         return [
             [['last_name', 'first_name', 'phone'], 'required'],
             [['email', 'last_name', 'first_name', 'password_hash'], 'string', 'max' => 100],
+            [['tariff_unit'], 'string', 'max' => 400],
             [['username'], 'string', 'max' => 25],
             ['username', 'match', 'pattern' => '/^[a-z]\w*$/i'],
             ['email', 'email'],
             ['password', 'string', 'min' => 6, 'max' => 61],
-            [['sex', 'city', 'country', 'moderate', 'status'], 'integer'],
+            [['sex', 'city', 'country', 'moderate', 'status','credits','tariff_end_date','tariff_id'], 'integer'],
             ['photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert']],
             [['photo'], 'image',
                 'minHeight' => 500,

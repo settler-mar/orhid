@@ -40,8 +40,8 @@ class CreateForm extends User
         if (parent::beforeSave($insert)) {
             $this->status = 1;
             $this->photo = '';
-            $this->created_at = date('Y-m-d H:i:s');
-            $this->updated_at = date('Y-m-d H:i:s');
+            $this->created_at=date("Y-m-d H:i:s");
+            $this->updated_at = date("Y-m-d H:i:s");
             //var_dump($this);
             $this->setPassword($this->password);
             //var_dump($this);

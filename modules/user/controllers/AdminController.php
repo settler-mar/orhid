@@ -56,6 +56,20 @@ class AdminController extends Controller
         ]);
     }
 
+    public function actionLogin($id){
+
+      $session = Yii::$app->session;
+      $last_admin_id=$session->get('admin_id');
+      if(!$last_admin_id) {
+        $session->set('admin_id', Yii::$app->user->id);
+      }
+
+      $identity = User::findIdentity($id);
+      Yii::$app->user->login($identity);
+
+      return $this->redirect(['/']);
+    }
+
     public function actionCreate()
     {
         $model = new CreateForm();
@@ -84,14 +98,19 @@ class AdminController extends Controller
     {
         $model = ProfileForm::findOne(['id'=>$id]);
         if ($model === null) {
-            throw new NotFoundHttpException( 'User is not found');
+            throw new NotFoundHttpException( 'User did not find');
         }
 
-        if($model->sex==0){
-            $profile=ProfileMale::findIdentity($id);
-        }else{
-            $profile=ProfileFemale::findIdentity($id);
-        }
+        //Вызывало ошибку при смене пароля для другого админа
+        /*if($model->role){
+            $profile=Profile::findIdentity($id);
+        }else{*/
+            if($model->sex==0){
+                $profile=ProfileMale::findIdentity($id);
+            }else{
+                $profile=ProfileFemale::findIdentity($id);
+            }
+        //}
 
 
         if (!$profile) {
@@ -113,7 +132,7 @@ class AdminController extends Controller
             //удаляем картинку до сохранения
             $post['ProfileForm']['photo']=$model->photo;
             //добавляем метку обновления
-            $post['ProfileForm']['updated_at'] = time();
+            $post['ProfileForm']['updated_at'] = date("Y-m-d H:i:s");;
         }
 
 
@@ -130,21 +149,20 @@ class AdminController extends Controller
 
             //Готовим профиль к сохранению
             if ($profile->load($post) && $profile->validate()) {
-                $to_save = true;
+                $to_save = true;   // сюда не заходит , т.к. скорее всего не проходит валидацию в profile
             }
 
             //Готовим пользователя к сохранению
             if ($model->load($post) && $model->validate()) {
-                $to_save = true && $to_save;
+                $to_save = true ;
             } else {
                 $to_save = false;
             }
-
             //Если номально отвалидировало отправляем на сохранение
             if($to_save && $profile->save() && $model->save()){
                 //При успешнос мохранении обновляем страницу и выводим сообщение
                 Yii::$app->getSession()->setFlash('success', 'The profile updated.');
-                return $this->redirect(['update','id'=>$model->id]);
+                return$this->redirect(['index']);
             }
         }
 

@@ -22,6 +22,13 @@ class DefaultController extends Controller
     if(Yii::$app->user->identity->moderate!=1)
       throw new \yii\web\NotFoundHttpException('Page is available only after moderation profiles.');
 
+    if(count(Yii::$app->user->identity->role)>0){
+      throw new \yii\web\NotFoundHttpException('Page is available only to non-administrators users.');
+    };
+    /*$u=User::findOne(Yii::$app->user->id);
+    $v=$u->sex+1;
+    $adm=count($u->role);*/
+
     return true;
   }
     /**
@@ -79,15 +86,15 @@ class DefaultController extends Controller
         ->all();
 
       foreach($users as $user){
-        if($user['user_to']==$my_id){
-          $u_id=$user['user_from'];
+        if($user['user_from']==$my_id){
+          $u_id=$user['user_to'];
           $u=array(
             'out'=>(int)$user['cnt'],
             'out_new'=>(int)$user['new'],
             'out_time'=>(int)$user['created_at'],
           );
         }else{
-          $u_id=$user['user_to'];
+          $u_id=$user['user_from'];
           $u=array(
             'in'=>(int)$user['cnt'],
             'in_new'=>(int)$user['new'],
@@ -130,10 +137,46 @@ class DefaultController extends Controller
         ->all();
 
       $out['chat']=array();
+      $clear_new=false;
       foreach($chat as $message) {
         $message['created_at_str']=date('H:i M j',$message['created_at']);
+        $message['dop_class']='admin_'.($message['user_to']==$my_id?1:0);
+        if($message['user_to']==$my_id)$clear_new=true;
         $out['chat'][] = $message;
+      }
+
+      if($clear_new){
+        Chat::updateAll(array('is_read'=>'1'),'user_to='.$my_id.' AND user_from='.$request->post('user'));
       }
       return json_encode($out);
     }
+
+  public function actionSend(){
+    if (!Yii::$app->request->isAjax) {
+      return 'Only on Ajax';
+    }
+    $out = array(
+      'time' => time(),
+      'status'=>0 //0 это все норм.
+    );
+
+    $my_id=Yii::$app->user->identity->id;
+    $request = Yii::$app->request;
+
+
+    //тут должна быть проверка на возможность отправки сообщения и выдаа сообщений об ошибке
+
+    // вставить новую строку данных
+    $message = new Chat();
+    $message->user_from = $my_id;
+    $message->user_to = $request->post('to');
+    $message->is_read = 0;
+    $message->message = strip_tags($request->post('message'),'<img>');
+    $message->created_at = time();
+    $message->save();
+
+
+
+    return json_encode($out);
+  }
 }

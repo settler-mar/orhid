@@ -11,6 +11,9 @@
     a(href='#') Mail
     span 12
 
+if ($toAdmin)
+    .toAdmin
+        a(href='/return-to-admin') Return to admin
 script(type='text/javascript').
     $(document).ready(function() {
         onlineTrace()

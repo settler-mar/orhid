@@ -12,6 +12,8 @@ use app\models\ContactForm;
 
 use app\modules\user\models\Profile;
 use app\modules\user\models\User;
+use app\modules\tarificator\models\TarificatorTable;
+use app\modules\tariff\models\Tariff;
 
 class SiteController extends Controller
 {
@@ -66,6 +68,33 @@ class SiteController extends Controller
     {
       $page=StaticPages::find()->where(['id' => 1])->asArray()->one();
       return $this->render('index.jade',['page'=>$page]);
+    }
+
+    public function actionServices()
+    {
+      $tarificatorTariffs = TarificatorTable::find()->where('credits = :credits', [':credits' => 0])->all();
+      $tarificatorCredits = TarificatorTable::find()->where(['not in', 'credits', [0]])->all();
+      $tariffElements_tmp = Tariff::find()->asArray()->all();
+      $tariffElements=array();
+      foreach ($tariffElements_tmp as $tariffElement){
+        $tariffElements[$tariffElement['code']
+        ]=$tariffElement;
+      }
+
+      $guest = Yii::$app->user->isGuest;
+      $page=array(
+        'title'=>'Services',
+        'meta_title'=>'Services',
+        'index'=>1,
+      );
+        //return redirect
+      return $this->render('services.jade',[
+          'page'=>$page,
+          'guest'=> $guest,
+          'tarificatorTariffs' =>$tarificatorTariffs,
+          'tarificatorCredits' => $tarificatorCredits,
+          'tariffElements' => $tariffElements,
+      ]);
     }
 
     public function actionLegends()
@@ -151,7 +180,7 @@ class SiteController extends Controller
             ->where([
                 'auth_assignment.user_id'=>null, //убераем с выборки всех пользователей с ролями
                 'user.sex' => 1, //Только женщины
-                //,'moderate'=>1, //только прошедшие модерацию
+                'moderate'=>1, //только прошедшие модерацию
             ])
 
             //->asArray()
@@ -160,6 +189,21 @@ class SiteController extends Controller
         return $this->render('top',['user'=>$user,'page'=>$page]);
     }
 
+    public function actionMans()
+    {
+      $user=User::find()
+        ->joinWith(['profile','city','role']) //добавляем вывод из связвнных таблиц
+        ->where([
+          'auth_assignment.user_id'=>null, //убераем с выборки всех пользователей с ролями
+          'user.sex' => 0, //Только мужчины
+          'moderate'=>1, //только прошедшие модерацию
+        ])
+
+        //->asArray()
+        ->all(); //выводим все что получилось
+      $page=StaticPages::find()->where(['id' => 11])->asArray()->one();
+      return $this->render('mans',['user'=>$user,'page'=>$page]);
+    }
 
      /**
      * @return user page
@@ -178,6 +222,16 @@ class SiteController extends Controller
             throw new \yii\web\NotFoundHttpException('User not found or blocked');
 
 
-        return $this->render('user',['model'=>$user]);
+
+        if(Yii::$app->user->isGuest){
+          $v=0;
+          $adm=0;
+        }else{
+          $u=User::findOne(Yii::$app->user->id);
+          $v=$u->sex+1;
+          $adm=count($u->role);
+        }
+
+        return $this->render('user',['model'=>$user,"v"=>$v,'is_admin'=>$adm]);
     }
 }

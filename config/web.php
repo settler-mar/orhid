@@ -39,22 +39,30 @@ $config = [
                 'user/user/<action>'=>'404',
                 'user/user/<action>/<action2>'=>'404',
                 '/chat/default/<action>'=>'404',
+               // 'payment/default/<action>'=>'404',
+                //'payment/default/<action>/<action2>'=>'404',
                 //получение города по стране
                 'city/get/<id:\d+>' => 'city/get',
                 //Взаимодействия с пользователем на сайте
-                '<action:(online|registration|logout|confirm|reset|profile|resetpassword)>' => 'user/user/<action>',
+                '<action:(online|registration|logout|confirm|reset|profile|resetpassword|return-to-admin)>' => 'user/user/<action>',
 
                 //закрываем прямой доступ к базовому контроллеру
+                'site'=>'404',
                 'site/<action>'=>'404',
                 'site/<action>/<action2>'=>'404',
                 //базовые страницы в основном контроллере
-                '<action:(top|shop|about|blog|legends|mans|competitions|onlinehelp)>' => 'site/<action>',
+                '<action:(top|shop|about|blog|legends|mans|competitions|onlinehelp|services)>' => 'site/<action>',
                 //Страница пользователя
                 '<action:(user)>/<id:\d+>' => 'site/user/',
 
                 //страница сообщения
                 '<action:(chat)>/<id:\d+>' => 'chat/default/<action>',
-                'chat/<action:(get|send)>' => 'chat/default/<action>'
+                'chat/<action:(get|send)>' => 'chat/default/<action>',
+
+                //оплаты
+                'payment/default/<action>/<id:\d+>' => 'payment/default/<action>',
+                'payment/<action:(tariff|shop|view|finish)>/<id:\d+>' => 'payment/default/<action>',
+                'payment/<action:(finish)>' => 'payment/default/<action>',
             ],
         ],
         'errorHandler'=>[
@@ -65,7 +73,7 @@ $config = [
             // send all mails to a file by default. You have to set
             // 'useFileTransport' to false and configure a transport
             // for the mailer to send real emails.
-            'useFileTransport' => true,
+            'useFileTransport' => false,
             'transport' => $personal['MailTransport'],
             'messageConfig' => [
                 //'from' => ['admin@website.com' => 'Admin'], // this is needed for sending emails
@@ -133,7 +141,33 @@ $config = [
         ],
         'slider' => [
             'class' => 'app\modules\slider\Module',
-        ]
+        ],
+        'tarificator' => [
+            'class' => 'app\modules\tarificator\Module',
+        ],
+        'tariff' => [
+            'class' => 'app\modules\tariff\Module',
+        ],
+        'payment' => [
+          'class' => 'app\modules\payment\Module',
+          'clientId'     => $personal['paypal_client_id'],
+          'clientSecret' => $personal['paypal_client_secret'],
+          'baseUrl' => 'http://127.0.0.1:8080/payment/finish',
+          //'isProduction' => false,
+          // This is config file for the PayPal system
+          'config'       => [
+            'currency'=>"USD",
+            'http.ConnectionTimeOut' => 30,
+            'http.Retry'             => 1,
+            'mode'                   => 'sandbox', // development (sandbox) or production (live) mode
+            'log.LogEnabled'         => YII_DEBUG ? 1 : 0,
+            'log.FileName'           => '@runtime/logs/paypal.log',
+            'log.LogLevel'           => 'FINE', // 'FINE','INFO','WARN','ERROR';
+          ]
+        ],
+        'logs' => [
+            'class' => 'app\modules\logs\Module',
+        ],
     ],
 ];
 

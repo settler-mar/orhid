@@ -41,7 +41,7 @@ else
     != $form->field($model, 'phone')->widget(\yii\widgets\MaskedInput::className(), ['mask' => '+999-99-999-9999']);
 
     .form-group
-      != Chosen::widget(['model'=>$model,'name' => 'sex','data' => User::getSexArray(),'options' => ['placeholder' => 'Sex'],'template'=>$template_input,]);
+      != Chosen::widget(['model'=>$model,'name' => 'sex','data' => $model->getSexArray(),'options' => ['placeholder' => 'Sex'],'template'=>$template_input,]);
 
     -
       $countryOption=[
