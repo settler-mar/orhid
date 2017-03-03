@@ -49,8 +49,8 @@ class DefaultController extends Controller
         ->one(); //выводим все что получилось
       if(!$user || ($user['moderate']!=1))
         throw new \yii\web\NotFoundHttpException('User not found or blocked');
-
-      if($user['sex']==Yii::$app->user->identity->sex && !Yii::$app->user->identity->isManager())
+//$user['sex']==Yii::$app->user->identity->sex
+      if((($user['sex']==1)&&($user->canIdo('chatUnit')!=1)) || (!Yii::$app->user->identity->isManager()))
         throw new \yii\web\NotFoundHttpException('No rights for access to chat with the user. Contact your administrator.');
 
       return $this->render('index',['user'=>$user,'my_id'=>$my_id]);
@@ -60,6 +60,7 @@ class DefaultController extends Controller
       if (!Yii::$app->request->isAjax) {
         return 'Only on Ajax';
       }
+
       $out = array(
         'time' => time(),
         'users' => array()
@@ -155,6 +156,7 @@ class DefaultController extends Controller
     if (!Yii::$app->request->isAjax) {
       return 'Only on Ajax';
     }
+
     $out = array(
       'time' => time(),
       'status'=>0 //0 это все норм.
@@ -163,8 +165,16 @@ class DefaultController extends Controller
     $my_id=Yii::$app->user->identity->id;
     $request = Yii::$app->request;
 
+    $user = User::find()->where(['id'=>Yii::$app->user->id])->one();
 
-    //тут должна быть проверка на возможность отправки сообщения и выдаа сообщений об ошибке
+      if ((Yii::$app->user->identity->sex==1)&&($user->canIdo('chatUnit')!=1)) {
+          $out = array(
+              'time' => time(),
+              'status'=>1, //0 это все норм.
+              'msg' => 'Not enough chatUnit in your tariff for Messenger'
+          );
+          return json_encode($out);
+      }
 
     // вставить новую строку данных
     $message = new Chat();
@@ -174,8 +184,6 @@ class DefaultController extends Controller
     $message->message = strip_tags($request->post('message'),'<img>');
     $message->created_at = time();
     $message->save();
-
-
 
     return json_encode($out);
   }

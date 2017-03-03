@@ -337,7 +337,8 @@ var userChat = (function() {
                     msg_h+=children.eq(i).outerHeight()
                 }
                 //придумать прокрутку вниз если
-                $('.mess_block').append(chat_out)
+                $('.mess_block').append(chat_out).scrollTop(9999);
+
             }
         }
         this.timer()
