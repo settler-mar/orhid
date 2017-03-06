@@ -97,8 +97,8 @@
     .chat_us
         a(href= '/chat/'.$model->id) Live chat
         a(href='#') Send message
-        a(href='#') Live video chat
-        a(href='#') Send a gift
+        //a(href='#') Live video chat
+        a(href= '/user-gift/'.$model->id) Send a gift
     -}
     - if($is_admin>=1){
         .chat_us

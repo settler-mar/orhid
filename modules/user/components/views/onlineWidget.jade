@@ -5,11 +5,10 @@
         strong= $username
         a(href='logout') Logout!
 .top_mes
-    a(href='#') Chat
-    span 8
+    a(href='/chat' count=8) Chat
+    a(href='/mail') Mail
 .top_mes
-    a(href='#') Mail
-    span 12
+
 
 if ($toAdmin)
     .toAdmin

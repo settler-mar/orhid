@@ -63,6 +63,10 @@ $config = [
                 'payment/default/<action>/<id:\d+>' => 'payment/default/<action>',
                 'payment/<action:(tariff|shop|view|finish)>/<id:\d+>' => 'payment/default/<action>',
                 'payment/<action:(finish)>' => 'payment/default/<action>',
+
+                //магазин
+                '<action:user-gift>/<id:\d+>'=>'shop/default/<action>', //выбор подарка для пользователя
+                'user-gift/<id:\d+>/<code:\d+>'=>'shop/default/user-gift2', //выбор подарка для пользователя
             ],
         ],
         'errorHandler'=>[
