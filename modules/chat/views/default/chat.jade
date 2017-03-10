@@ -26,8 +26,30 @@
           else
             i.online_2
               != TimePassed::widget(['timeStart' => $user -> last_online])
+      .chat_block
+        .user_block
+          a(href= $user->getPhoto())
+            img(src= $user->getPhoto())
+          span
+            a(href= '/user/'.$user->id)= $user->username
+          .add_fav Add to favorites
+          .remove_fav
+            span ×
+            | Remove from general
+          .users
+            img(src='img/users.png')
+        // user_block
+        .send_chat.send_top
+          textarea.mess_1
+          input.send_1(type='submit', value='Отправить', name='')
+        .mess_block
+          .loading
+        .send_chat
+          //!= \mervick\emojionearea\Widget::widget(['name' => 'chat','options'=>['filtersPosition'=>"bottom"]])
+          != app\components\emojione\Input::widget(['name' => '','options'=>['filtersPosition'=>"bottom"]])
+          input.send_1(type='submit', value='Отправить', name='')
       // chat_block
-      .user_chat.all_chat
+      .user_chat
         .user_add
           span General
             span.count_user (0)
@@ -42,3 +64,4 @@ script(type='text/javascript').
   $(document).ready(function() {
     userChat.init({user:<?=$user_id;?>,my_id:<?=$my_id;?>});
   });
+

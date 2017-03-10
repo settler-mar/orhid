@@ -31,6 +31,11 @@ class DefaultController extends Controller
 
     return true;
   }
+
+  public function actionIndex()
+  {
+    return $this->actionChat(0);
+  }
     /**
      * Renders the index view for the module
      * @return string
@@ -39,21 +44,40 @@ class DefaultController extends Controller
     {
       $my_id = Yii::$app->user->identity->id;
 
+      $where=[ 'auth_assignment.user_id'=>null];//убераем с выборки всех пользователей с ролями
+      if($id>0){
+        $where['user.id']= $id;
+        $tpl='chat';
+      }else{
+        $tpl='index';
+        $where['user.sex']=(1-Yii::$app->user->identity->sex);
+        $where['moderate']=1;
+      }
+
+      //ddd($where);
       $user=User::find()
         ->joinWith(['profile','role','city_','country_']) //добавляем вывод из связвнных таблиц
-        ->where([
-          'auth_assignment.user_id'=>null, //убераем с выборки всех пользователей с ролями
-          'user.id' => $id
-        ])
-        //->asArray()
-        ->one(); //выводим все что получилось
-      if(!$user || ($user['moderate']!=1))
+        ->where($where);
+
+      if($id==0){
+        $cnt=$user->count();
+        $cnt=rand(0,$cnt-1);
+        $user=$user->offset($cnt);
+        $user=$user->limit(1);
+      };
+
+      $user=$user->one();//выводим все что получилось
+
+      if(!$user || ($user->moderate!=1))
         throw new \yii\web\NotFoundHttpException('User not found or blocked');
-//$user['sex']==Yii::$app->user->identity->sex
-      if((($user['sex']==1)&&($user->canIdo('chatUnit')!=1)) && (!Yii::$app->user->identity->isManager()))
+
+      //d($user);
+      //ddd(Yii::$app->user->identity);
+      //if((($user['sex']==1)&&($user->canIdo('chatUnit')!=1)) && (!Yii::$app->user->identity->isManager()))
+      if($user->sex==Yii::$app->user->identity->sex || (Yii::$app->user->identity->isManager()))
         throw new \yii\web\NotFoundHttpException('No rights for access to chat with the user. Contact your administrator.');
 
-      return $this->render('index',['user'=>$user,'my_id'=>$my_id]);
+      return $this->render($tpl,['user'=>$user,'my_id'=>$my_id,'user_id'=>$id]);
     }
 
     public function actionGet(){
@@ -68,7 +92,6 @@ class DefaultController extends Controller
 
       $my_id=Yii::$app->user->identity->id;
       $request = Yii::$app->request;
-
 
       $users_arr=array($request->post('user'));
       $users_data=array();
@@ -149,6 +172,12 @@ class DefaultController extends Controller
       if($clear_new){
         Chat::updateAll(array('is_read'=>'1'),'user_to='.$my_id.' AND user_from='.$request->post('user'));
       }
+
+      if(strlen(Yii::$app->user->identity->favorites)>0){
+        $out['favorites']=explode(',',Yii::$app->user->identity->favorites);
+      }else{
+        $out['favorites']=[];
+      }
       return json_encode($out);
     }
 
@@ -167,14 +196,14 @@ class DefaultController extends Controller
 
     $user = User::find()->where(['id'=>Yii::$app->user->id])->one();
 
-      if ((Yii::$app->user->identity->sex==1)&&($user->canIdo('chatUnit')!=1)) {
+     /* if ((Yii::$app->user->identity->sex==1)&&($user->canIdo('chatUnit')!=1)) {
           $out = array(
               'time' => time(),
               'status'=>1, //0 это все норм.
               'msg' => 'Not enough chatUnit in your tariff for Messenger'
           );
           return json_encode($out);
-      }
+      }*/
 
     // вставить новую строку данных
     $message = new Chat();

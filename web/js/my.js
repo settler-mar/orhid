@@ -299,6 +299,7 @@ var userChat = (function() {
         this.last_msg=data.time;
         render = false;
         t_user=[];
+        tot_fav=0;
         if(data.users){
             user_out='';
             if($('.user_all .loading').length>0) {
@@ -315,10 +316,15 @@ var userChat = (function() {
                 user=data.users[i];
                 if(!render && user.id!=t_user[i])render = true;
                 user['this_user']=(user.id==this.user);
+
+                user.fav=(data.favorites.indexOf(user.id+'')>=0);
+                if(user.fav)tot_fav++;
                 user_out+=templates.chat_user(user)
             }
             if(render){
-                $('.user_all').html(user_out)
+                $('.user_all').html(user_out);
+                $('.count_user').text('('+data.users.length+')');
+                $('.count_user_fav').text('('+data.users.length+')');
             }
         }
         if(data.chat) {
@@ -338,7 +344,6 @@ var userChat = (function() {
                 }
                 //придумать прокрутку вниз если
                 $('.mess_block').append(chat_out).scrollTop(9999);
-
             }
         }
         this.timer()

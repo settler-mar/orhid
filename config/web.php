@@ -57,6 +57,7 @@ $config = [
 
                 //страница сообщения
                 '<action:(chat)>/<id:\d+>' => 'chat/default/<action>',
+                'chat' => 'chat/default/index',
                 'chat/<action:(get|send)>' => 'chat/default/<action>',
 
                 //оплаты
