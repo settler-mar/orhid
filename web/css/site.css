@@ -1748,6 +1748,8 @@ input {
   margin-top: -31px;
 }
 
+.show_fav .us_on{display:none;}
+.show_fav .us_on.fav{display:block;}
 .all_chat .us_on {
   font-size:15px;
   width: 96%;

@@ -131,6 +131,60 @@ class UserController extends Controller
 
     }
 
+    //добавление пользователя в избранне
+    public function actionFav(){
+
+      $out=[
+        'message'=>"Error to edit favorites.",
+        'type'=>'err',
+        'title'=>"ERROR"
+      ];
+
+      $this_user=User::findOne(Yii::$app->user->identity->id);
+
+      $request = Yii::$app->request;
+      $user=(int)$request->post('user');
+      $status=(int)$request->post('status');
+
+      $favorites=Yii::$app->user->identity->favorites;
+      if(strlen($favorites)>0){
+        $favorites=explode(',',$favorites);
+        $i=array_search($user,$favorites);
+      }else{
+        $favorites=[];
+        $i=false;
+      }
+
+      if($status==0){
+        if($i===false){
+          $out['message']='The man was not found in the favorites.';
+        }else {
+          unset ($favorites[$i]);
+          $this_user->favorites = implode(',', $favorites);
+          $this_user->save();
+          $out = [
+            'message' => "Man removed from favorites.",
+            'type' => 'info'
+          ];
+        }
+      }
+
+      if($status==1){
+        if($i!==false){
+          $out['message']='Man already in favorites.';
+        }else {
+          $favorites[]=$user;
+          $this_user->favorites = implode(',', $favorites);
+          $this_user->save();
+          $out = [
+            'message' => "Man is added to the favorites.",
+            'type' => 'info'
+          ];
+        }
+
+      }
+      return json_encode($out);
+    }
     /**
      * Сброс пароля через электронную почту
      * @param $token - токен сброса пароля, высылаемый почтой

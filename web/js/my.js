@@ -280,6 +280,7 @@ var userChat = (function() {
 
     var my_id=false;
     var user=false;
+    var old_tot_fav=false;
 
     function _timer() {
         this.interval = setTimeout(this.update, 1000);
@@ -300,6 +301,15 @@ var userChat = (function() {
         render = false;
         t_user=[];
         tot_fav=0;
+
+        if(data.favorites.indexOf(this.user+'')<0) {
+            $('.add_fav').show();
+            $('.remove_fav').hide();
+        }else{
+            $('.add_fav').hide();
+            $('.remove_fav').show();
+        }
+
         if(data.users){
             user_out='';
             if($('.user_all .loading').length>0) {
@@ -321,10 +331,12 @@ var userChat = (function() {
                 if(user.fav)tot_fav++;
                 user_out+=templates.chat_user(user)
             }
+            if(old_tot_fav!=tot_fav)render=true;
+            old_tot_fav=tot_fav;
             if(render){
                 $('.user_all').html(user_out);
                 $('.count_user').text('('+data.users.length+')');
-                $('.count_user_fav').text('('+data.users.length+')');
+                $('.count_user_fav').text('('+tot_fav+')');
             }
         }
         if(data.chat) {
@@ -363,6 +375,13 @@ var userChat = (function() {
         console.log(data);
     }
 
+    function _add_fav(){
+        set_fav(this.user,1)
+    }
+    function _remove_fav(){
+        set_fav(this.user,0)
+    }
+
     function init(data){
         this.my_id=data.my_id;
         this.user=data.user;
@@ -371,8 +390,20 @@ var userChat = (function() {
         this.parce=_parce.bind(this);
         this.timer=_timer.bind(this);
         this.send=_send.bind(this);
+        this.add_fav=_add_fav.bind(this);
+        this.remove_fav=_remove_fav.bind(this);
         this.send_msg_ansv=_send_msg_ansv.bind(this);
         $('.send_chat [type=submit]').on('click',this.send);
+        $('.add_fav').on('click',this.add_fav).hide();
+        $('.remove_fav').on('click',this.remove_fav).hide();
+
+        $('.user_chat .user_add>span').on('click',function(){
+            if($(this).find('.count_user_fav').length>0){
+                $('.user_chat').addClass('show_fav')
+            }else{
+                $('.user_chat').removeClass('show_fav')
+            }
+        });
         this.update()
     }
 
@@ -388,4 +419,15 @@ function chat_user_sort(a, b) {
         return !a.in_new;
     else
         return a_time<b_time
+}
+
+function set_fav(user,s){
+    post={user:user,status:s};
+    $.post('/user/fav',post,function(data){
+        if(data.message){
+            popup.open(data)
+        }else{
+            popup.open({message:"Error to edit favorite.",type:'err',title:"ERROR"})
+        }
+    },'json')
 }

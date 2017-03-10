@@ -82,7 +82,7 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         return [
             [['last_name', 'first_name', 'phone'], 'required'],
-            [['email', 'last_name', 'first_name', 'password_hash'], 'string', 'max' => 100],
+            [['email', 'last_name', 'first_name', 'password_hash','favorites'], 'string', 'max' => 100],
             [['tariff_unit'], 'string', 'max' => 400],
             [['username'], 'string', 'max' => 25],
             ['username', 'match', 'pattern' => '/^[a-z]\w*$/i'],

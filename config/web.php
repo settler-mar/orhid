@@ -45,6 +45,7 @@ $config = [
                 'city/get/<id:\d+>' => 'city/get',
                 //Взаимодействия с пользователем на сайте
                 '<action:(online|registration|logout|confirm|reset|profile|resetpassword|return-to-admin)>' => 'user/user/<action>',
+                'user/<action:(fav)>' => 'user/user/<action>',
 
                 //закрываем прямой доступ к базовому контроллеру
                 'site'=>'404',

@@ -156,7 +156,8 @@ class DefaultController extends Controller
         ->andWhere(['user_to'=>$my_id])
         ->orWhere(['user_from'=>$my_id])
         ->andWhere(['>', 'created_at', $time])
-        ->andWhere(['>', 'created_at', time() - 30 * 24 * 60 * 60])
+        //->andWhere(['>', 'created_at', time() - 30 * 24 * 60 * 60])
+        ->andWhere(['>', 'created_at', time() - 15 * 60])
         ->asArray()
         ->all();
 
