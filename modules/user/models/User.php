@@ -227,6 +227,37 @@ class User extends ActiveRecord  implements IdentityInterface
         return $user;
     }
 
+    public static function findRandom($isOnline=false)
+    {
+
+      $where=array();
+      if(Yii::$app->user->isGuest){
+        $where['user.sex'] = 1;
+      }else {
+        $where['user.sex'] = (1 - Yii::$app->user->identity->sex);
+      }
+      $where['moderate']=1;
+
+      //ddd($where);
+      $user=User::find()->where($where);
+      if($isOnline){
+        $user=$user->andFilterWhere(['and',['>','last_online',time()-User::MAX_ONLINE_TIME]]);
+        $cnt=$user->count();
+        if($cnt<1){
+          $user=User::find()->where($where);
+          $cnt=$user->count();
+        }
+      }else{
+        $cnt=$user->count();
+      }
+
+      $cnt=rand(0,$cnt-1);
+      $user=$user->offset($cnt);
+      $user=$user->limit(1);
+      $user=$user->one();
+
+      return $user;
+    }
     /**
      * Поиск пользователя по Email
      * @param $email - электронная почта

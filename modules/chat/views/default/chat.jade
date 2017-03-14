@@ -46,7 +46,22 @@
           .loading
         .send_chat
           //!= \mervick\emojionearea\Widget::widget(['name' => 'chat','options'=>['filtersPosition'=>"bottom"]])
-          != app\components\emojione\Input::widget(['name' => '','options'=>['filtersPosition'=>"bottom"]])
+          -
+            echo app\components\emojione\Input::widget([
+                'name' => '',
+                'options'=>[
+                  'filtersPosition'=>"bottom"
+                ],
+                'pluginOptions'=>[
+                  'useSprite'=> false,
+                  'shortnames'=> true,
+                  'autoHideFilters'=> true,
+                  'recentEmojis'=>false,
+                  'imageType'=> "png",
+                  'useInternalCDN'=> false,
+                  'saveEmojisAs'=> "image",
+                ],
+                ])
           input.send_1(type='submit', value='Отправить', name='')
       // chat_block
       .user_chat

@@ -48,25 +48,14 @@ class DefaultController extends Controller
       if($id>0){
         $where['user.id']= $id;
         $tpl='chat';
+        $user=User::find()
+          ->joinWith(['profile','role','city_','country_']) //добавляем вывод из связвнных таблиц
+          ->where($where);
+        $user=$user->one();
       }else{
         $tpl='index';
-        $where['user.sex']=(1-Yii::$app->user->identity->sex);
-        $where['moderate']=1;
+        $user=User::findRandom();
       }
-
-      //ddd($where);
-      $user=User::find()
-        ->joinWith(['profile','role','city_','country_']) //добавляем вывод из связвнных таблиц
-        ->where($where);
-
-      if($id==0){
-        $cnt=$user->count();
-        $cnt=rand(0,$cnt-1);
-        $user=$user->offset($cnt);
-        $user=$user->limit(1);
-      };
-
-      $user=$user->one();//выводим все что получилось
 
       if(!$user || ($user->moderate!=1))
         throw new \yii\web\NotFoundHttpException('User not found or blocked');
@@ -74,6 +63,7 @@ class DefaultController extends Controller
       //d($user);
       //ddd(Yii::$app->user->identity);
       //if((($user['sex']==1)&&($user->canIdo('chatUnit')!=1)) && (!Yii::$app->user->identity->isManager()))
+
       if($user->sex==Yii::$app->user->identity->sex || (Yii::$app->user->identity->isManager()))
         throw new \yii\web\NotFoundHttpException('No rights for access to chat with the user. Contact your administrator.');
 
@@ -158,6 +148,9 @@ class DefaultController extends Controller
         ->andWhere(['>', 'created_at', $time])
         //->andWhere(['>', 'created_at', time() - 30 * 24 * 60 * 60])
         ->andWhere(['>', 'created_at', time() - 15 * 60])
+        ->orderBy([
+          'created_at' => SORT_ASC
+        ])
         ->asArray()
         ->all();
 
@@ -212,6 +205,7 @@ class DefaultController extends Controller
     $message->user_to = $request->post('to');
     $message->is_read = 0;
     $message->message = strip_tags($request->post('message'),'<img>');
+    $message->message = preg_replace("#[^0-9а-яА-ЯA-Za-z;:_.,?<>'\"/= -]+#u", '', $message->message);
     $message->created_at = time();
     $message->save();
 
