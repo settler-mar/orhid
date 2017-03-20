@@ -101,6 +101,13 @@ $('.us_on').click(function(){
         }));
     }
     $('a.photo_people,a.fancy,.one_img a').fancybox();
+    $('.girl_id_chose').on('change',function(){
+        a=$('.chouse_girl_form a.send_gift');
+        v=parseInt(this.value);
+        if(!v)v=0;
+        href=a.attr('base_href')+v+a.attr('dop_href');
+        a.attr('href',href)
+    })
 });
 
 function init_file_prev(obj){

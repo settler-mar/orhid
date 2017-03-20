@@ -11,6 +11,11 @@ $this->title = 'Shop items for '.$user->first_name.' '.date('Y',$user->profile['
     <div class="tovar">
       <a href="/user-gift/<?=$user_id;?>/<?=$item['id'];?>" class="pic">
         <img src="<?=$item['picture'];?>" alt="<?=$item['title'];?>">
+        <div class="description_anim">
+          <span>
+            <?=$item['description'];?>
+          </span>
+        </div>
       </a>
       <p><?=$item['title'];?></p>
       <span class="tov_price">$ <?=number_format($item['price'],2,'.',' ');?></span>

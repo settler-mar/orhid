@@ -15,6 +15,16 @@ use app\modules\user\models\User;
  */
 class DefaultController extends Controller
 {
+  public function beforeAction($action)
+  {
+    // ...set `$this->enableCsrfValidation` here based on some conditions...
+    // call parent method that will check CSRF if such property is true.
+    if ($action->id === 'user-gift2') {
+      # code...
+      $this->enableCsrfValidation = false;
+    }
+    return parent::beforeAction($action);
+  }
     /**
      * Renders the index view for the module
      * @return string
@@ -27,7 +37,7 @@ class DefaultController extends Controller
     public function actionUserGift($id)
     {
       $shop=ShopStore::find()->where(['active'=>1])->asArray()->all();
-      $user=User::findOne($id);
+      $user=User::find()->where(['id'=>$id,'sex'=>0])->one();
 
       return $this->render('UserGift',[
         "shop"=>$shop,
@@ -38,13 +48,24 @@ class DefaultController extends Controller
 
     public function actionUserGift2($id,$code)
     {
-      $shop=ShopStore::find()->where(['active'=>1])->asArray()->one();
-      $user=User::findOne($id);
+      $shop=ShopStore::find()->where(['active'=>1,'id'=>$code])->asArray()->one();
+
+      if(!$shop){
+        return $this->redirect(['/user-gift/'.(int)$id]);
+      };
+      $user=User::find()->where(['id'=>$id,'sex'=>0])->one();
+
+      $request=Yii::$app->request;
+
+      if($request->isPost){
+
+      }
 
       return $this->render('UserGift2',[
         "shop"=>$shop,
         "user_id"=>$id,
-        "user"=>$user
+        "user"=>$user,
+        "request"=>$request->post()
       ]);
     }
 }
