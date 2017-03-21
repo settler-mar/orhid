@@ -31,6 +31,8 @@ use PayPal\Rest\ApiContext;
 use PayPal\Api\ExecutePayment;
 use PayPal\Api\PaymentExecution;
 use PayPal\Api\PayerInfo;
+use app\modules\shop\models\ShopOrder;
+use app\modules\shop\models\ShopStore;
 
 /**
  * DefaultController implements the CRUD actions for Payments model.
@@ -171,11 +173,29 @@ class DefaultController extends Controller
       $pay->status = 1;
       $pay->pay_time = time();
       $pay->save();
-
+      //ddd($pay);
       return $this->applay_tariff($pay->type,$pay->pos_id,$pay->client_id);
     }
 
     throw new NotFoundHttpException('Error payment. Contact your administrator.');
+  }
+
+  public function actionShop($id){
+    $order = ShopOrder::findOne($id);
+    if(!$order || $order->status>0){
+      throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    $shop=ShopStore::find()->where(['active'=>1,'id'=>$order->item_id])->asArray()->one();
+    $user=User::find()->where(['id'=>$order->user_to,'sex'=>1])->one();
+    $name=$shop['title'].' for '.$user->first_name . ' ' . date('Y', $user->profile['birthday']);
+    $order=(object)[
+      'id'=>$order->id,
+      'type'=>2,
+      'price'=>$order->price,
+      'name'=>$name,
+    ];
+    return $this->payment_page($order);
   }
 
   public function actionTariff($id){
@@ -184,16 +204,26 @@ class DefaultController extends Controller
       throw new NotFoundHttpException('The requested page does not exist.');
     }
 
+    $order=(object)[
+      'id'=>$tarificatorTariffs->id,
+      'type'=>1,
+      'price'=>$tarificatorTariffs->price,
+      'name'=>$tarificatorTariffs->name.' package',
+    ];
+    return $this->payment_page($order);
+  }
+
+
+  public function payment_page($order){
     $request=Yii::$app->request;
     if($request->getIsPost()){
-
       if($request->post('method')==0){ //paypal
         $pay=new DoPayment('paypal');
         //$pay=new DoPayment();
 
         $pay->addItem(array(
-          'name'=>$tarificatorTariffs->name.' package',
-          'price'=>$tarificatorTariffs->price,
+          'name'=>$order->name,
+          'price'=>$order->price,
           'tax'=>0
         ));
         $payment= $pay->make_payment();
@@ -201,11 +231,11 @@ class DefaultController extends Controller
         //echo $payment->getId().'<br>';
 
         $customer = new Payments();
-        $customer->type = 1;
-        $customer->pos_id = $id;
+        $customer->type = $order->type;
+        $customer->pos_id = $order->id;
         $customer->method = 1;
         $customer->create_time = time();
-        $customer->price = $tarificatorTariffs->price;
+        $customer->price = $order->price;
         $customer->client_id = Yii::$app->user->getId();
         $customer->code = $payment->getId();
         $customer->save();
@@ -223,8 +253,8 @@ class DefaultController extends Controller
           $pay->addCardData($request->post());
 
           $pay->addItem(array(
-            'name'=>$tarificatorTariffs->name.' package',
-            'price'=>$tarificatorTariffs->price,
+            'name'=>$order->name,
+            'price'=>$order->price,
             'tax'=>0
           ));
           $payment= $pay->make_payment();
@@ -232,21 +262,21 @@ class DefaultController extends Controller
           //echo $payment->getId().'<br>';
           if($payment->getState()=='approved') {
             $customer = new Payments();
-            $customer->type = 1;
+            $customer->type = $order->type;
             $customer->status = 1;
-            $customer->pos_id = $id;
+            $customer->pos_id = $order->id;
             $customer->method = 2;
             $customer->create_time = time();
             $customer->pay_time = time();
-            $customer->price = $tarificatorTariffs->price;
+            $customer->price = $order->price;
             $customer->client_id = Yii::$app->user->getId();
             $customer->code = $payment->getId();
             $customer->save();
 
-            return $this->applay_tariff(1,$id,Yii::$app->user->getId());
+            return $this->applay_tariff($order->type,$order->id,Yii::$app->user->getId());
           }
 
-          ddd($payment);
+          //ddd($payment);
           return $payment;
         }
         $this->view->registerJsFile("/js/skeuocard.min.js");
@@ -254,7 +284,7 @@ class DefaultController extends Controller
         $this->view->registerCssFile('/css/skeuocard.css');
 
         return $this->render('card',[
-          'tarificator'=>$tarificatorTariffs,
+          'tarificator'=>$order,
           'post'=>$request->post(),
         ]);
       }
@@ -262,12 +292,13 @@ class DefaultController extends Controller
     }
 
     return $this->render('payment',[
-      'tarificator'=>$tarificatorTariffs,
+      'order'=>$order,
     ]);
   }
 
-  public function applay_tariff($type,$tarif,$user){
-    if($type==1) {
+  public function applay_tariff($type,$tarif,$user)
+  {
+    if ($type == 1) { //оплата тарифа
       //d($pay);
       $tariff = TarificatorTable::find()->where(['id' => $tarif])->one();
       //ddd($tariff);
@@ -282,9 +313,37 @@ class DefaultController extends Controller
       }
       $user->save();
 
+      $order=(object)[
+        'id'=>$tariff->id,
+        'type'=>1,
+        'price'=>$tariff->price,
+        'name'=>$tariff->name.' package',
+      ];
+
       return $this->render('payment_finish', [
         'user' => $user,
-        'tariff' => $tariff,
+        'order' => $order,
+      ]);
+    }
+
+    if ($type == 2) {
+      $order = ShopOrder::findOne($tarif);
+      $order->status = 2;
+      $order->save();
+
+      $shop=ShopStore::find()->where(['active'=>1,'id'=>$order->item_id])->asArray()->one();
+      $user=User::find()->where(['id'=>$order->user_to,'sex'=>1])->one();
+      $name=$shop['title'].' for '.$user->first_name . ' ' . date('Y', $user->profile['birthday']);
+      $order=(object)[
+        'id'=>$order->id,
+        'type'=>2,
+        'price'=>$order->price,
+        'name'=>$name,
+      ];
+
+      return $this->render('payment_finish', [
+        'user' => $user,
+        'order' => $order,
       ]);
     }
   }

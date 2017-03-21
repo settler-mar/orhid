@@ -63,7 +63,7 @@ $config = [
 
                 //оплаты
                 'payment/default/<action>/<id:\d+>' => 'payment/default/<action>',
-                'payment/<action:(tariff|shop|view|finish)>/<id:\d+>' => 'payment/default/<action>',
+                'payment/<action:(tariff|shop|view)>/<id:\d+>' => 'payment/default/<action>',
                 'payment/<action:(finish)>' => 'payment/default/<action>',
 
                 //магазин

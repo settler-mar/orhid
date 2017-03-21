@@ -10,13 +10,14 @@ use yii\widgets\ActiveForm;
 
 $this->title = 'Choice of payment method';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <p>
-  You select <?=$tarificator->name;?> package
+  You select <?=$order->name;?>
 </p>
 <p>
-  You may pay $<?=$tarificator->price;?>
+  You may pay $<?=number_format($order->price,2,'.',' ');?>
 </p>
 <?php $form = ActiveForm::begin(); ?>
   <label>

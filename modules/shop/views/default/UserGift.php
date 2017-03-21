@@ -1,7 +1,11 @@
 <?php
 use yii\helpers\Html;
 
-$this->title = 'Shop items for '.$user->first_name.' '.date('Y',$user->profile['birthday']);;
+if($user) {
+  $this->title = 'Shop items for ' . $user->first_name . ' ' . date('Y', $user->profile['birthday']);;
+}else{
+  $this->title = 'Shop items';
+}
 ?>
 
 <div class="shop_all">

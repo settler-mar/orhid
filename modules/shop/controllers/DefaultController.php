@@ -9,7 +9,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\modules\user\models\User;
-
+use app\modules\shop\models\ShopOrder;
 /**
  * Default controller for the `shop` module
  */
@@ -37,7 +37,7 @@ class DefaultController extends Controller
     public function actionUserGift($id)
     {
       $shop=ShopStore::find()->where(['active'=>1])->asArray()->all();
-      $user=User::find()->where(['id'=>$id,'sex'=>0])->one();
+      $user=User::find()->where(['id'=>$id,'sex'=>1])->one();
 
       return $this->render('UserGift',[
         "shop"=>$shop,
@@ -53,12 +53,20 @@ class DefaultController extends Controller
       if(!$shop){
         return $this->redirect(['/user-gift/'.(int)$id]);
       };
-      $user=User::find()->where(['id'=>$id,'sex'=>0])->one();
+      $user=User::find()->where(['id'=>$id,'sex'=>1])->one();
 
       $request=Yii::$app->request;
 
-      if($request->isPost){
-
+      if($request->isPost && $user){
+        $present = new ShopOrder();
+        $present->user_from=Yii::$app->user->getId();;
+        $present->user_to=$id;
+        $present->item_id=$code;
+        $present->price=$shop['price'];
+        $present->user_comment=$request->post('comments');
+        $present->created_at=time();
+        $present->save();
+        return $this->redirect(['/payment/shop/'.$present->id]);
       }
 
       return $this->render('UserGift2',[

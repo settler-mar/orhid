@@ -2,6 +2,19 @@
 use yii\helpers\Html;
 
 $this->title = 'Checkout';
+
+if(!$user){
+  ?>
+  <script type='text/javascript'>
+    $(document).ready(function() {
+      popup.open({
+        message: 'It is necessary to make a choice of the recipient of the gift.',
+        type: 'err',
+      });
+    });
+    </script>
+  <?php
+}
 ?>
 
 <form id="shop_order_select" method="post">
