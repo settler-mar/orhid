@@ -78,6 +78,8 @@ body {
 }
 
 @media (max-width: 1100px) {
+  .mes_block .mes_name {width:50%;}
+  .mes_block .mes_tit {width:64%;}
   .top_star .into dl:first-child {
     margin-right: 5%;
     width: 35%;
@@ -319,6 +321,27 @@ body {
     /* -webkit-appearance: none; */
   }
 }
+
+@media (max-width: 840px) {
+  .mes_block { padding:0px 6px; padding-left:64px;}
+  .mes_block .mes_icon {width:16px; height:16px; position:absolute; top:4px;  left:0px;}
+  .mes_block .mes_user { margin-right:0px;   width:100%;}
+  .mes_block .mes_img {width:50px; padding:6px; position:absolute; left:0;}
+  .mes_block .mes_name { font-size:17px; width:90%; }
+  .mes_block .mes_count {margin-right:4px; font-size: 15px; top:-1px; position:relative;}
+  .mes_block .mes_tit {width:96%; margin-bottom:6px; font-size:13px;}
+  .mes_block .mes_txt p {padding:0px 0px; color:#888;}
+  .mes_block .mes_date {height:27px; font-size:16px; font-weight:300; right:-6px;}
+  .mes_block .mes_img span {right:7px; bottom:2px;}
+  .mes_new .mes_txt p {color:#000;}
+  .in_mes {background:#fff; padding:0px; border:1px solid #edebeb; position:relative; overflow:hidden; margin-bottom:2px;}
+  .in_mes .in_mes_img {width:50px; padding:6px; position:relative;}
+  .in_mes .in_mes_tit {top:10px; left:64px; right:6px; font-size:17px;}
+  .in_mes .in_mes_data {font-size:16px !important; right:2px; top:0; text-align:right;}
+  .in_mes .in_mes_cont {padding:10px 10px 0 10px; border-top:1px solid #edeaea; margin-top:0px; }
+  .in_mes .in_mes_us {font-size:13px; margin-top:2px;}
+}
+
 
 @media (max-width: 800px) {
   .anketa_all {
@@ -872,17 +895,10 @@ body {
 
 @media (max-width: 400px) {
   .tarif {width: 80%; margin-left: 5%;}
-  .into {
-    padding: 0 14px 0 14px;
-  }
+  .into {padding: 0 14px 0 14px;}
+  .title_1 {font-size: 30px;}
+  .video_glav iframe {min-height: 190px;}
 
-  .title_1 {
-    font-size: 30px;
-  }
-
-  .video_glav iframe {
-    min-height: 190px;
-  }
 }
 
 @media (max-width: 360px) {
@@ -909,4 +925,5 @@ body {
     top: 3px;
   }
   .tarif {width: 90%; margin-left: 5%;}
+
 }

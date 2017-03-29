@@ -8,6 +8,8 @@ use app\modules\user\models\Profile;
 use app\modules\user\models\User;
 use app\modules\mail\models\Mail;
 use Yii;
+use app\modules\fileupload\models\Fileupload;
+
 /**
  * Default controller for the `mail` module
  */
@@ -99,10 +101,12 @@ class DefaultController extends Controller
     }
 
 
+    Yii::$app->view->registerJsFile('/js/redactor_plugin.js',  ['depends' => [\yii\imperavi\ImperaviRedactorAsset::className()]]);
     return $this->render($tpl,[
       'user'=>$user,
       'mails'=>$mails,
-      'model'=>new Mail()
+      'model'=>new Mail(),
+      'fileupload'=>new Fileupload(),
     ]);
   }
 }

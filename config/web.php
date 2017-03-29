@@ -182,6 +182,9 @@ $config = [
         'mail' => [
           'class' => 'app\modules\mail\Module',
         ],
+        'fileupload' => [
+          'class' => 'app\modules\fileupload\Module',
+        ],
     ],
 ];
 
