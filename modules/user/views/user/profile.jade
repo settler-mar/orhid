@@ -57,10 +57,13 @@
     != $form->field($model, 'password')->passwordInput(['placeholder' => 'Password']);
 
     - $sex_var = $model->getSexArray();
-    .form-group
-      label.control-label Sex
-      span= $sex_var[$model -> sex]
-
+      -if (!Yii::$app->user->can('userManager')){
+        .form-group
+          label.control-label Sex
+          span= $sex_var[$model -> sex]
+      -}else{
+        != Chosen::widget(['model'=>$model,'name' => 'sex','data' => $model->getSexArray(),'options' => ['placeholder' => 'Sex'],'template'=>$template_input,]);
+      -}
     -
       $countryOption=[
         'model'=>$model,

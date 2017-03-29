@@ -39,6 +39,7 @@ $config = [
                 'user/user/<action>'=>'404',
                 'user/user/<action>/<action2>'=>'404',
                 '/chat/default/<action>'=>'404',
+                '/mail/default/<action>'=>'404',
                // 'payment/default/<action>'=>'404',
                 //'payment/default/<action>/<action2>'=>'404',
                 //получение города по стране
@@ -60,6 +61,10 @@ $config = [
                 '<action:(chat)>/<id:\d+>' => 'chat/default/<action>',
                 'chat' => 'chat/default/index',
                 'chat/<action:(get|send)>' => 'chat/default/<action>',
+
+                '<action:(mail)>/<id:\d+>' => 'mail/default/<action>',
+                'mail' => 'mail/default/index',
+                'mail/<action:(send)>' => 'mail/default/<action>',
 
                 //оплаты
                 'payment/default/<action>/<id:\d+>' => 'payment/default/<action>',
@@ -173,6 +178,12 @@ $config = [
         ],
         'logs' => [
             'class' => 'app\modules\logs\Module',
+        ],
+        'mail' => [
+          'class' => 'app\modules\mail\Module',
+        ],
+        'fileupload' => [
+          'class' => 'app\modules\fileupload\Module',
         ],
     ],
 ];

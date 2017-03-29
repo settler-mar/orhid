@@ -30,12 +30,12 @@
         "2amigos/yii2-tinymce-widget": "~1.1",
         "johnitvn/yii2-rbac-plus": "*",
         "mervick/yii2-emojionearea": "*",
-        "2amigos/yii2-tinymce-widget": "~1.1",
-        "johnitvn/yii2-rbac-plus": "*",
         "thiagotalma/yii2-simplecolorpicker": "*",
         "kartik-v/yii2-widget-colorinput": "*",
         "paypal/rest-api-sdk-php": "^1.11",
-        "raveren/kint": "^1.0"
+        "raveren/kint": "^1.0",
+        "asofter/yii2-imperavi-redactor": "^0.0.3",
+        "2amigos/yii2-file-upload-widget": "~1.0"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",
