@@ -43,7 +43,7 @@ if(!$user){
         <div class="add_girl_info">
           <p class="g_name"><?=$user->first_name.' '.date('Y',$user->profile['birthday'])?></p>
           <p class="g_id">ID <?=$user->id;?></p>
-          <p class="g_old"><span><?=date('Y',time()-$model->profile['birthday'])-1970;;?></span>years old</p>
+          <p class="g_old"><span><?=date('Y',time()-$user->profile['birthday'])-1970;;?></span>years old</p>
           <p class="g_town"><?=$user->country_->name;?>/<?=$user->city_->city;?></p>
         </div>
         <?php
