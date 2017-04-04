@@ -5,8 +5,8 @@
         strong= $username
         a(href='logout') Logout!
 .top_mes
-    a(href='/chat' count=8) Chat
-    a(href='/mail') Mail
+    a.chat_cnt(href='/chat') Chat
+    a.mail_cnt(href='/mail') Mail
 .top_mes
 
 
@@ -16,4 +16,4 @@ if ($toAdmin)
 script(type='text/javascript').
     $(document).ready(function() {
         onlineTrace()
-    })
+    });

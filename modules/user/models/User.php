@@ -187,6 +187,16 @@ class User extends ActiveRecord  implements IdentityInterface
         return $this->last_name . ' ' . $this->first_name;
     }
 
+    /* Геттер для полного ника человека */
+    public function getFullNick() {
+      $proile=$this->getProfile()->one();
+      if($proile->birthday>0){
+        return $this->last_name . ' ' . date('Y',$proile->birthday);
+      }else{
+        return $this->last_name . ' ' . $this->first_name;
+      }
+    }
+
     public function getSexArray()
     {
         return array(0 => 'Men', 1 => 'Female');

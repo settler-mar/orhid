@@ -21,11 +21,6 @@ class DefaultController extends Controller
   public function actions()
   {
     return [
-      /*'upload' => [
-        'class' => 'troy\ImageUpload\UploadAction',
-        'successCallback' => [$this, 'successCallback'],
-        'beforeStoreCallback' => [$this,'beforeStoreCallback']
-      ],*/
     ];
   }
 
@@ -64,8 +59,25 @@ class DefaultController extends Controller
     return $response;
   }
 
-  public function successCallback($store,$file){
-  }
-  public function beforeStoreCallback($file){
+  public function actionGet(){
+    $path=\Yii::$app->user->identity->userDir.'upload/';
+    if (!file_exists($path)) {
+      mkdir($path, 0777, true);   // Создаем директорию при отсутствии
+    };
+
+    $file_list=[];
+    if ($handle = opendir($path)) {
+      while (false !== ($entry = readdir($handle))) {
+        if ($entry != "." && $entry != "..") {
+          $file_list[]= str_replace("//",'/','/'.$path.$entry);
+        }
+      }
+      closedir($handle);
+    }
+
+    Yii::$app->response->getHeaders()->set('Vary', 'Accept');
+    Yii::$app->response->format = Response::FORMAT_JSON;
+
+    return $file_list;
   }
 }

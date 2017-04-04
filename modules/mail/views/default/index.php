@@ -1,162 +1,60 @@
-<div class="content">
-    <div class="into">
-        <!--<div class="title_1"><span>Chat</span></div>-->
+<?php
+$this->title = 'Mail box';
+$this->params['breadcrumbs'][] = $this->title;
+//$this->params['hide_title']=true;
 
-        <a class="mes_block mes_new" href="#">
-            <div class="mes_user">
-                <div class="mes_icon"><span class="glyphicon glyphicon-share-alt"></span></div>
-                <div class="mes_img"><img src="img/man.jpg">
-                    <span class="glyphicon glyphicon-star"></span></div>
-                <div class="mes_name">
-                    <p>Vladimir_2017</p>
+?>
+<!--<div class="title_1"><span>Chat</span></div>-->
+<?php
+    if($mails_list) {
+        foreach ($mails_list as $mail) {
+            $user = $users[$mail['user_id']];
+            $detail = $mails_detail[$mail['msg_id']];
+            ?>
+            <a class="mes_block <?= $mail['not_read'] ? 'mes_new' : ''; ?>" href="/mail/<?=$mail['user_id'];?>">
+                <div class="mes_user">
+                    <div class="mes_icon">
+                        <?= $my_id == $detail->user_from ?
+                          '<span class="glyphicon glyphicon-share-alt"></span>' : ''; ?>
+                    </div>
+                    <div class="mes_img">
+                        <img src="<?= $user->getPhoto(); ?>">
+                        <?= in_array($user->id, $favorites) ?
+                          '<span class="glyphicon glyphicon-star"></span>' : ''; ?>
+                    </div>
+                    <div class="mes_name">
+                        <p><?= $user->getFullNick(); ?></p>
+                    </div>
                 </div>
-            </div>
-            <div class="mes_tit">
-                <div class="mes_count">2</div>
-                <div class="mes_txt">
-                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from Contrary to popular belief, Lorem Ipsum is not simply random text.</p>
+                <div class="mes_tit">
+                    <div class="mes_count">
+                        <?= $mail['cnt']; ?>
+                    </div>
+                    <div class="mes_txt">
+                        <p>
+                            <?= mb_substr(strip_tags($detail->message), 0, 300); ?>
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <div class="mes_date">
-                <span>25 mart</span>
-            </div>
-        </a>
-
-        <a class="mes_block mes_new" href="#">
-            <div class="mes_user">
-                <div class="mes_icon"></div>
-                <div class="mes_img"><img src="img/man.jpg"></div>
-                <div class="mes_name"><p>Vladimir_2017_name</p></div>
-            </div>
-            <div class="mes_tit">
-                <div class="mes_count">15</div>
-                <div class="mes_txt">
-                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45</p>
+                <div class="mes_date">
+                    <span>
+                        <?= date(strtotime("today") > $detail->created_at ? "d.m.Y" : 'H:i', $detail->created_at) ?>
+                    </span>
                 </div>
-            </div>
-            <div class="mes_date">
-                <span>25 mart</span>
-            </div>
-        </a>
-
-        <a class="mes_block" href="#">
-            <div class="mes_user">
-                <div class="mes_icon"><span class="glyphicon glyphicon-share-alt"></span></div>
-                <div class="mes_img"><img src="img/man.jpg">
-                    <span class="glyphicon glyphicon-star"></span></div>
-                <div class="mes_name">
-                    <p>Literature_2017</p>
-                </div>
-            </div>
-            <div class="mes_tit">
-                <div class="mes_count">1</div>
-                <div class="mes_txt">
-                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from Contrary to popular belief, Lorem Ipsum is not simply random text.</p>
-                </div>
-            </div>
-            <div class="mes_date">
-                <span>17:21</span>
-            </div>
-        </a>
-
-        <a class="mes_block" href="#">
-            <div class="mes_user">
-                <div class="mes_icon"></div>
-                <div class="mes_img"><img src="img/man.jpg"></div>
-                <div class="mes_name"><p>Literature_2017</p></div>
-            </div>
-            <div class="mes_tit">
-                <div class="mes_count">28</div>
-                <div class="mes_txt">
-                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45</p>
-                </div>
-            </div>
-            <div class="mes_date">
-                <span>25.03.17</span>
-            </div>
-        </a>
-
-        <a class="mes_block" href="#">
-            <div class="mes_user">
-                <div class="mes_icon"><span class="glyphicon glyphicon-share-alt"></span></div>
-                <div class="mes_img"><img src="img/man.jpg">
-                    <span class="glyphicon glyphicon-star"></span></div>
-                <div class="mes_name">
-                    <p>Vladimir_2017_nameName</p></div>
-            </div>
-            <div class="mes_tit">
-                <div class="mes_count">2</div>
-                <div class="mes_txt">
-                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from Contrary to popular belief, Lorem Ipsum is not simply random text.</p>
-                </div>
-            </div>
-            <div class="mes_date">
-                <span>25 mart</span>
-            </div>
-        </a>
-
-        <a class="mes_block" href="#">
-            <div class="mes_user">
-                <div class="mes_icon"></div>
-                <div class="mes_img"><img src="img/man.jpg"></div>
-                <div class="mes_name"><p>Vladimir_2017_name</p></div>
-            </div>
-            <div class="mes_tit">
-                <div class="mes_count">15</div>
-                <div class="mes_txt">
-                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45</p>
-                </div>
-            </div>
-            <div class="mes_date">
-                <span>25 mart</span>
-            </div>
-        </a>
-
-        <a class="mes_block" href="#">
-            <div class="mes_user">
-                <div class="mes_icon"></div>
-                <div class="mes_img"><img src="img/man.jpg"></div>
-                <div class="mes_name"><p>Literature_2017</p></div>
-            </div>
-            <div class="mes_tit">
-                <div class="mes_count">1</div>
-                <div class="mes_txt">
-                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from Contrary to popular belief, Lorem Ipsum is not simply random text.</p>
-                </div>
-            </div>
-            <div class="mes_date">
-                <span>17:21</span>
-            </div>
-        </a>
-
-        <a class="mes_block" href="#">
-            <div class="mes_user">
-                <div class="mes_icon"></div>
-                <div class="mes_img"><img src="img/man.jpg"></div>
-                <div class="mes_name"><p>Literature_2017</p></div>
-            </div>
-            <div class="mes_tit">
-                <div class="mes_count">28</div>
-                <div class="mes_txt">
-                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45</p>
-                </div>
-            </div>
-            <div class="mes_date">
-                <span>25.03.17</span>
-            </div>
-        </a>
+            </a>
+            <?php
+        }
+    }else{
+        ?>
+        <p>
+            You do not have any letters yet. To start a conversation, select the person you are talking to.
+        </p>
+        <?php
+    }
+?>
 
 
 
 
 
-
-
-
-
-        <div class="clear"></div>
-
-
-
-    </div>
-</div>
+<div class="clear"></div>

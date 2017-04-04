@@ -76,7 +76,6 @@
         var button = this.button.addAfter('format', 'inline', 'Style');
         button.html('<i class="re-icon re-icon-inline"></i>');
         this.button.addDropdown(button, dropdown);
-
       }
 
 
@@ -89,20 +88,6 @@
   $.Redactor.prototype.userimage = function()
   {
     return {
-      getTemplate: function()
-      {
-        return String()
-          + '<div class="modal-section" id="redactor-modal-advanced">'
-          + '<section>'
-          + '<label>Enter a text</label>'
-          + '<textarea id="mymodal-textarea" style="height: 200px;"></textarea>'
-          + '</section>'
-          + '<section>'
-          + '<button id="redactor-modal-button-action">Insert</button>'
-          + '<button id="redactor-modal-button-cancel">Cancel</button>'
-          + '</section>'
-          + '</div>';
-      },
       init: function()
       {
         var button = this.button.add('userimage', 'Insert image');
@@ -111,7 +96,19 @@
       },
       show: function()
       {
-        this.modal.addTemplate('userimage', this.userimage.getTemplate());
+        $('.photo_list').addClass('loading');
+        $('.photo_list>*').remove()
+        $('.file_insert_model_bg .title').hide();
+        $('.file_insert_model_bg').show();
+        $.post('/fileupload/default/get',function(data){
+          $('.photo_list').removeClass('loading');
+          if(data.length>0){
+            for(i=0;i<data.length;i++){
+              add_file_to_list(data[i])
+            }
+          }
+        },'json');
+        /*this.modal.addTemplate('userimage', this.userimage.getTemplate());
         this.modal.load('userimage', 'Select image', 600);
 
 
@@ -120,16 +117,16 @@
 
         this.modal.show();
 
-        $('#mymodal-textarea').focus();
+        $('#mymodal-textarea').focus();*/
       },
       insert: function()
       {
-        var html = $('#mymodal-textarea').val();
+        /*var html = $('#mymodal-textarea').val();
 
         this.modal.close();
 
         this.buffer.set(); // for undo action
-        this.insert.html(html);
+        this.insert.html(html);*/
       }
     };
   };

@@ -2263,7 +2263,8 @@ table [name="UserSearch[username]"] {
   position: fixed;
   top: 0;
   right: 0;
-  padding: 5px
+  padding: 5px;
+  z-index: 9999;
 }
 
 .notification_item {
@@ -2530,11 +2531,22 @@ table [name="UserSearch[username]"] {
 .in_mes .in_mes_us span {color:#b7b7b7}
 .in_mes .in_mes_us:after {content:'...'; position:absolute; right:0px; background:#fff; padding:0 6px;}
 .in_mes .in_mes_data { clear:both; color:#999; font-size:14px !important; position:absolute; right:6px; top:0;}
-.in_mes .in_mes_cont {font-size:15px !important; padding:10px; padding-bottom:0; padding-top:24px; border-top:1px solid #edeaea; margin-top:16px; display:none;}
+.in_mes .in_mes_cont {font-size:15px !important;padding:10px;padding-bottom:0;padding-top:24px;border-top:1px solid #edeaea;margin-top:16px;max-height: 100vh;overflow: auto;transition: all 0.3s;}
 .in_mes .in_mes_cont p {margin-bottom:14px; line-height:1.4;}
 .in_mes_new .in_mes_us {width:100%; min-height:17px; }
 .in_mes_new .in_mes_us:after {content: " "; position:absolute; right:0px; background:#fff; padding:0 6px;}
 .in_mes_new .glyphicon {font-size:13px; margin-right:6px; position:relative; top:7px; float:right;}
+
+.in_mes .in_mes_us span.anotation{
+  opacity: 0;
+  transition: all 0.3s;
+}
+.close_message .in_mes_cont{max-height: 0;padding: 0;border: #fff;}
+.close_message .anotation{opacity:1;}
+.in_mes  .glyphicon-chevron-up{
+  transform: rotate3d(0,0,1,180deg);
+}
+.close_message .glyphicon-chevron-up{transition: all 0.3s;transform: rotate3d(0,0,1,0deg);}
 
 .re-submit{background:#909;}
 .re-submit:before{content:"send";color:#fff}
@@ -2681,3 +2693,58 @@ table [name="UserSearch[username]"] {
 
 .re-icon-video:before {
   content: "\e927"; }
+
+.progress_bar{
+  position:relative;
+  display:block;
+  height: 20px;
+  border: 2px solid #4cae4c;
+  border-radius: 5px;
+  margin: 7px 3px;
+  display: none;
+}
+.progress_bar span{
+  background:  #5cb85c;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0;
+  transition: 1s ease-in-out;
+}
+.file_insert_model_bg{background: rgba(153, 153, 153, 0.58);position: fixed;top: 0;left: 0;height: 100vh;width: 100vw;z-index: 999;display: flex;}
+.file_insert_model{background: #fff;max-width: 600px;padding: 10px;margin: auto;min-width: 60vw;}
+.photo_list{position: relative;display: block;max-height: calc(90vh - 60px);overflow: auto;}
+.photo_list>div{
+  display: inline-block;
+  max-width: 300px;
+  position: relative;
+  margin: 5px;
+  border:3px solid #fff;
+  cursor: pointer;
+}
+.photo_list img{
+  max-width: 100%;
+}
+.photo_list>div:hover{
+  border:3px solid #999
+}
+.photo_list>div.select{
+  border:3px solid #999
+}
+.photo_list>div.select:before{
+  content:'\2228';
+  color:#fff;
+  background: #339225;
+  padding: 0px 11px;
+  border-radius:100%;
+  position: absolute;
+  right: 3px;
+  top: 3px;
+  font-size: 25px;
+  line-height: 40px;
+}
+#redactor-image-editter{
+  display:none;
+}
