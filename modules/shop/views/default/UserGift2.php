@@ -59,7 +59,7 @@ if(!$user){
   </div>
 
   <div class="add_gift_com">Comments</div>
-  <textarea class="add_gift_com_txt" name="comments"><?=$request['comments'];?></textarea>
+  <textarea class="add_gift_com_txt" name="comments"><?=isset($request['comments'])?$request['comments']:'';?></textarea>
   <input type="submit" class="send_gift s_gift" value="Send gift">
 
 </form>
