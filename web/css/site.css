@@ -2745,3 +2745,6 @@ table [name="UserSearch[username]"] {
   font-size: 25px;
   line-height: 40px;
 }
+#redactor-image-editter{
+  display:none;
+}

@@ -75,13 +75,14 @@ class DefaultController extends Controller
         return 'Only on Ajax';
       }
 
+      $request = Yii::$app->request;
+      $my_id=Yii::$app->user->identity->id;
+      $user_from=$request->post('user');
+
       $out = array(
-        'time' => time(),
+        'time' => (int)$request->post('last_msg'),
         'users' => array()
       );
-
-      $my_id=Yii::$app->user->identity->id;
-      $request = Yii::$app->request;
 
       $users_arr=array($request->post('user'));
       $users_data=array();
@@ -130,7 +131,7 @@ class DefaultController extends Controller
           'id' => $user->id,
           'photo' => $user->getPhoto(),
           'username' => $user->username,
-          'is_online' => ($out['time']-($user->last_online)<User::MAX_ONLINE_TIME),
+          'is_online' => (time()-($user->last_online)<User::MAX_ONLINE_TIME),
           'last_online'=>TimePassed::widget(['timeStart'=>$user->last_online]),
         );
         if($request->post('last_msg')==$user->id){
@@ -145,9 +146,11 @@ class DefaultController extends Controller
       $chat = Chat::find()
         ->andWhere(['user_to'=>$my_id])
         ->orWhere(['user_from'=>$my_id])
-        ->andWhere(['>', 'created_at', $time])
+        ->andWhere(['>', 'id', $time])
+        //->andWhere(['>', 'created_at', $time])
         //->andWhere(['>', 'created_at', time() - 30 * 24 * 60 * 60])
         ->andWhere(['>', 'created_at', time() - 15 * 60])
+        ->orWhere(['is_read'=>0,'user_to'=>$my_id,'user_from'=>$user_from])
         ->orderBy([
           'created_at' => SORT_ASC
         ])
@@ -156,15 +159,18 @@ class DefaultController extends Controller
 
       $out['chat']=array();
       $clear_new=false;
+      //ddd($chat);
       foreach($chat as $message) {
         $message['created_at_str']=date('H:i M j',$message['created_at']);
         $message['dop_class']='admin_'.($message['user_to']==$my_id?1:0);
         if($message['user_to']==$my_id)$clear_new=true;
+        if($message['id']>$out['time'])$out['time']=$message['id'];
         $out['chat'][] = $message;
       }
 
+      //ddd($clear_new);
       if($clear_new){
-        Chat::updateAll(array('is_read'=>'1'),'user_to='.$my_id.' AND user_from='.$request->post('user'));
+        Chat::updateAll(array('is_read'=>'1'),'user_to='.$my_id.' AND user_from='.$user_from);
       }
 
       if(strlen(Yii::$app->user->identity->favorites)>0){

@@ -258,7 +258,19 @@ var popup = (function() {
 }());
 
 function onlineTrace() {
-    $.get('/online');
+    $.get('/online',function(data){
+        if(data['chat']){
+            $('.chat_cnt').attr('count',data['chat']);
+        }else{
+            $('.chat_cnt').removeAttr('count');
+        }
+
+        if(data['mails']){
+            $('.mail_cnt').attr('count',data['mails']);
+        }else{
+            $('.mail_cnt').removeAttr('count');
+        }
+    },'json');
     setTimeout(onlineTrace, 60000)
 }
 
@@ -312,19 +324,27 @@ var userChat = (function() {
 
         if(data.users){
             user_out='';
+            msg_cnt=[];
+            tot_new=0;
             if($('.user_all .loading').length>0) {
                 render = true;
             }else{
                 els=$('.user_all>*');
                 for(var i=0;i<els.length;i++){
                     t_user.push($(els[i]).attr('user'));
+                    msg_cnt.push(els.eq(i).find('b'));
                 }
                 if(els.length!=data.users.length)render = true
             }
             data.users.sort(chat_user_sort);
             for(var i=0;i<data.users.length;i++){
                 user=data.users[i];
-                if(!render && user.id!=t_user[i])render = true;
+                if(!render){
+                    if(user.id!=t_user[i])render = true;
+                    if(user.in_new && msg_cnt[i].hasClass('new_mes'))render = true;
+                    if(!user.in_new && msg_cnt[i].text()!=user.out)render = true;
+                }
+                if(user.in_new)tot_new+=user.in_new;
                 user['this_user']=(user.id==this.user);
 
                 user.fav=(data.favorites.indexOf(user.id+'')>=0);
@@ -337,6 +357,11 @@ var userChat = (function() {
                 $('.user_all').html(user_out);
                 $('.count_user').text('('+data.users.length+')');
                 $('.count_user_fav').text('('+tot_fav+')');
+            }
+            if(tot_new){
+                $('.chat_cnt ').attr('count',tot_new);
+            }else {
+                $('.chat_cnt ').removeAttr('count');
             }
         }
         if(data.chat) {

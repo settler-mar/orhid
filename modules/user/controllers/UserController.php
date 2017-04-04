@@ -17,7 +17,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-
+use app\modules\mail\models\Mail;
+use app\modules\chat\models\Chat;
 
 class UserController extends Controller
 {
@@ -206,12 +207,22 @@ class UserController extends Controller
     }
 
     public function actionOnline(){
-        if(Yii::$app->user->isGuest)return;
+      if(Yii::$app->user->isGuest)return;
 
-        User::getDb()->createCommand()->update(User::tableName(), [
+      User::getDb()->createCommand()->update(User::tableName(), [
             'last_online'=> time(),
         ], ['id' => Yii::$app->user->id])->execute();
-        return 'is online';
+
+      $mails=Mail::find()
+        ->where(['is_read'=>0,'user_to'=>Yii::$app->user->identity->id])->asArray()->all();
+
+      $chat=Chat::find()
+        ->where(['is_read'=>0,'user_to'=>Yii::$app->user->identity->id])->asArray()->all();
+
+      return json_encode([
+        'mails'=>count($mails),
+        'chat'=>count($chat),
+      ]);
     }
 
   public function actionReturnToAdmin(){
