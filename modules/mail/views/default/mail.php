@@ -18,7 +18,7 @@
   $online = (time()-($user->last_online)<User::MAX_ONLINE_TIME);
 ?>
 
-  <?php $form = ActiveForm::begin([id=>"msg_form"]); ?>
+  <?php $form = ActiveForm::begin(['id'=>"msg_form"]); ?>
 
   <?=yii\imperavi\Widget::widget([
     // You can either use it for model attribute
