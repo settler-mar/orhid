@@ -51,3 +51,4 @@ params.php
 /web/img/shop_item/
 /web/uploads_thumbs/
 /web/uploads/
+/composer.lock

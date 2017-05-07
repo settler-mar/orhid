@@ -1,12 +1,13 @@
 @charset "utf-8";
 
 /* CSS Document */
+.admin_top_menu ~ .content {padding-top:70px;}
 
 .admin_top_menu {
   width: 100%;
   height: 30px;
   position: absolute;
-  top: 64px;
+  top: 70px;
   z-index: 1;
 }
 
@@ -30,22 +31,22 @@
 }
 
 .admin_top_menu a {
-  padding: 6px 18px;
+  padding: 8px 18px;
   display: block;
   background: #ac3b3f;
   color: #f5e3d5;
   text-decoration: none;
 }
 
-.admin_top_menu a:hover {
+.admin_top_menu a:hover, .admin_top_menu .active {
   background: #4f272a;
 }
 
 .admin_top_menu ul ul {
-  display: none;
+  display:none;
   position: absolute;
   z-index: 9;
-  top: 30px;
+  top: 34px;
   left: -1px;
 }
 
@@ -65,7 +66,7 @@
 .table-striped {
   width: 100%;
   border-spacing: 0px 6px;
-  font-size: 17px;
+  font-size: 16px; text-align:center;
 }
 
 .table-striped a {
@@ -81,7 +82,7 @@
 }
 
 .table-striped th {
-  text-align: left;
+  text-align: center;
   background: none;
 }
 
