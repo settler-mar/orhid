@@ -26,6 +26,13 @@ $config = [
                 app\modules\user\models\User::afterLogin($event->identity->id);
             }
         ],
+        'assetManager'=>[
+          'bundles'=>[
+            'yii\bootstrap\BootstrapAsset' => [
+              'css' => [],
+            ],
+          ]
+        ],
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
             //'cache' => 'yii\caching\FileCache',
