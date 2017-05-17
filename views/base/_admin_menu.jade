@@ -13,6 +13,7 @@ if (Yii::$app->user->can('serviceCommands'))
     -
         $service =[];
         $service[]=['label' => 'Clear admins rule cash', 'url' => '/service/auth_cash_clean'];
+        $service[]=['label' => 'Bd Codinf Fix', 'url' => '/service/bd-codinf-fix'];
         $menuItems[] = ['label' => 'Service', 'url' => false, 'child' => $service];
 
 if (Yii::$app->user->can('tariffView'))

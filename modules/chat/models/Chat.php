@@ -32,7 +32,7 @@ class Chat extends \yii\db\ActiveRecord
         return [
             [['user_from', 'user_to', 'is_read', 'created_at'], 'integer'],
             [['message', 'created_at'], 'required'],
-            [['message'], 'string', 'max' => 255],
+            [['message'], 'string', 'max' => 1000],
         ];
     }
 

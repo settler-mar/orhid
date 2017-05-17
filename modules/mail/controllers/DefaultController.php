@@ -143,6 +143,7 @@ class DefaultController extends Controller
         if($model->save()) {
 
         }
+        return $this->redirect(['/mail/'.$id]);
       }
 
       Mail::updateAll(

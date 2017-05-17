@@ -300,6 +300,7 @@ var userChat = (function() {
     var my_id=false;
     var user=false;
     var old_tot_fav=false;
+    var max_text=255;
 
     function _timer() {
         this.interval = setTimeout(this.update, 1000);
@@ -395,16 +396,18 @@ var userChat = (function() {
 
     function _send(){
         post={};
+        if(!this.calck_char())return false;
         $('.send_chat .emojionearea-editor img').removeAttr('alt');
         post["message"]=$('.send_chat .emojionearea-editor').html();
         if(post["message"].length<1) return;
         post["to"]=this.user;
         $('.send_chat .emojionearea-editor').html('');
+        this.calck_char();
         $.post('/chat/send',post,this.send_msg_ansv,'json')
     }
 
     function _send_msg_ansv(data){
-        console.log(data);
+        //console.log(data);
     }
 
     function _add_fav(){
@@ -412,6 +415,27 @@ var userChat = (function() {
     }
     function _remove_fav(){
         set_fav(this.user,0)
+    }
+
+    function _calck_char(){
+        el=$('.emojionearea-editor');
+        l=el.text().length;
+        ost=max_text-l;
+        el=el.parent();
+        if(l>10) {
+            if (ost < 0) {
+                el.addClass('err');
+                el.removeAttr('counter')
+                return false;
+            } else {
+                el.removeClass('err');
+                el.attr('counter', l + ' / ' + max_text)
+            }
+        }else{
+            el.removeAttr('counter')
+            el.removeClass('err');
+        }
+        return true;
     }
 
     function init(data){
@@ -425,6 +449,7 @@ var userChat = (function() {
         this.add_fav=_add_fav.bind(this);
         this.remove_fav=_remove_fav.bind(this);
         this.send_msg_ansv=_send_msg_ansv.bind(this);
+        this.calck_char=_calck_char.bind(this);
         $('.send_chat [type=submit]').on('click',this.send);
         $('.add_fav').on('click',this.add_fav).hide();
         $('.remove_fav').on('click',this.remove_fav).hide();
@@ -437,6 +462,8 @@ var userChat = (function() {
             }
         });
         this.update()
+
+        $('body').on('keyup','.emojionearea-editor',this.calck_char)
     }
 
     return {

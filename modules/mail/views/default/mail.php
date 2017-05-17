@@ -123,9 +123,7 @@
               <div class="in_mes_data"><?=date($dt>$mail['created_at']?"d.m.Y":'H:i',$mail['created_at'])?></div>
               <div class="in_mes_us">
                 <span class="glyphicon glyphicon-chevron-up"></span>
-                <span class="anotation">
-                  <?=mb_substr(strip_tags($mail['message']),0,300);?>
-                </span>
+                <span class="anotation"><?=trim(mb_substr(strip_tags($mail['message']),0,300));?></span>
               </div>
 
             </div>
