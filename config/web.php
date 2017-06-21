@@ -82,9 +82,9 @@ $config = [
                 '<action:user-gift>/<id:\d+>'=>'shop/default/<action>', //выбор подарка для пользователя
                 'user-gift/<id:\d+>/<code:\d+>'=>'shop/default/user-gift2', //выбор подарка для пользователя
 
-                [ // правило для роутинга по статическим страницам с именами ЧПУ из БД
-                  'class' => 'app\components\staticPagesRules',
-                ],
+              [ // правило для роутинга по статическим страницам с именами ЧПУ из БД
+                'class' => 'app\components\staticPagesRules',
+              ],
             ],
         ],
         'errorHandler'=>[

@@ -1,12 +1,29 @@
 /*!
- * EmojioneArea v3.1.5
+ * EmojioneArea v3.1.8
  * https://github.com/mervick/emojionearea
  * Copyright Andrey Izman and other contributors
  * Released under the MIT license
- * Date: 2016-09-27T09:32Z
+ * Date: 2017-03-06T21:02Z
  */
-(function(document, window, $) {
-    'use strict';
+window = ( typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {} );
+document = window.document || {};
+
+; ( function ( factory, global ) {
+    if ( typeof require === "function" && typeof exports === "object" && typeof module === "object" ) {
+
+        // CommonJS
+        factory( require( "jquery" ) );
+    } else if ( typeof define === "function" && define.amd ) {
+
+        // AMD
+        define( [ "jquery" ], factory );
+    } else {
+
+        // Normal script tag
+        factory( global.jQuery );
+    }
+}( function ( $ ) {
+    "use strict";
 
     var unique = 0;
     var eventStorage = {};
@@ -45,7 +62,7 @@
         $.each(events, function(event, link) {
             event = $.isArray(events) ? link : event;
             (possibleEvents[self.id][link] || (possibleEvents[self.id][link] = []))
-                .push([element, event, target]);
+              .push([element, event, target]);
         });
     }
     function getTemplate(template, unicode, shortname) {
@@ -55,11 +72,16 @@
         } else {
             imagePath = emojione.imagePathPNG;
         }
+        var friendlyName = '';
+        if (shortname) {
+            friendlyName = shortname.substr(1, shortname.length - 2).replace(/_/g, ' ').replace(/\w\S*/g, function(txt) { return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+        }
         return template
-            .replace('{name}', shortname || '')
-            .replace('{img}', imagePath + (emojioneSupportMode < 2 ? unicode.toUpperCase() : unicode) + '.' + imageType)
-            .replace('{uni}', unicode)
-            .replace('{alt}', emojione.convert(unicode));
+          .replace('{name}', shortname || '')
+          .replace('{friendlyName}', friendlyName)
+          .replace('{img}', imagePath + (emojioneSupportMode < 2 ? unicode.toUpperCase() : unicode) + '.' + imageType)
+          .replace('{uni}', unicode)
+          .replace('{alt}', emojione.convert(unicode));
     };
     function shortnameTo(str, template, clear) {
         return str.replace(/:?\+?[\w_\-]+:?/g, function(shortname) {
@@ -333,36 +355,14 @@
         saveSelection = function(el) {
             var sel = window.getSelection && window.getSelection();
             if (sel && sel.rangeCount > 0) {
-                var range = sel.getRangeAt(0);
-                var preSelectionRange = range.cloneRange();
-                preSelectionRange.selectNodeContents(el);
-                preSelectionRange.setEnd(range.startContainer, range.startOffset);
-                return preSelectionRange.toString().length;
+                return sel.getRangeAt(0);
             }
         };
 
         restoreSelection = function(el, sel) {
-            var charIndex = 0, range = document.createRange();
-            range.setStart(el, 0);
-            range.collapse(true);
-            var nodeStack = [el], node, foundStart = false, stop = false;
-
-            while (!stop && (node = nodeStack.pop())) {
-                if (node.nodeType == 3) {
-                    var nextCharIndex = charIndex + node.length;
-                    if (!foundStart && sel >= charIndex && sel <= nextCharIndex) {
-                        range.setStart(node, sel - charIndex);
-                        range.setEnd(node, sel - charIndex);
-                        stop = true;
-                    }
-                    charIndex = nextCharIndex;
-                } else {
-                    var i = node.childNodes.length;
-                    while (i--) {
-                        nodeStack.push(node.childNodes[i]);
-                    }
-                }
-            }
+            var range = document.createRange();
+            range.setStart(sel.startContainer, sel.startOffset);
+            range.setEnd(sel.endContainer, sel.endOffset)
 
             sel = window.getSelection();
             sel.removeAllRanges();
@@ -370,20 +370,14 @@
         }
     } else if (document.selection && document.body.createTextRange) {
         saveSelection = function(el) {
-            var selectedTextRange = document.selection.createRange(),
-                preSelectionTextRange = document.body.createTextRange();
-            preSelectionTextRange.moveToElementText(el);
-            preSelectionTextRange.setEndPoint("EndToStart", selectedTextRange);
-            var start = preSelectionTextRange.text.length;
-            return start + selectedTextRange.text.length;
+            return document.selection.createRange();
         };
 
         restoreSelection = function(el, sel) {
             var textRange = document.body.createTextRange();
             textRange.moveToElementText(el);
-            textRange.collapse(true);
-            textRange.moveEnd("character", sel);
-            textRange.moveStart("character", sel);
+            textRange.setStart(sel.startContanier, sel.startOffset);
+            textRange.setEnd(sel.endContainer, sel.endOffset);
             textRange.select();
         };
     }
@@ -401,49 +395,49 @@
     }
     function htmlFromText(str, self) {
         str = str
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#x27;')
-            .replace(/`/g, '&#x60;')
-            .replace(/(?:\r\n|\r|\n)/g, '\n')
-            .replace(/(\n+)/g, '<div>$1</div>')
-            .replace(/\n/g, '<br/>')
-            .replace(/<br\/><\/div>/g, '</div>');
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#x27;')
+          .replace(/`/g, '&#x60;')
+          .replace(/(?:\r\n|\r|\n)/g, '\n')
+          .replace(/(\n+)/g, '<div>$1</div>')
+          .replace(/\n/g, '<br/>')
+          .replace(/<br\/><\/div>/g, '</div>');
         if (self.shortnames) {
             str = emojione.shortnameToUnicode(str);
         }
         return unicodeTo(str, self.emojiTemplate)
-            .replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;')
-            .replace(/  /g, '&nbsp;&nbsp;');
+          .replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;')
+          .replace(/  /g, '&nbsp;&nbsp;');
     }
     function textFromHtml(str, self) {
         str = str
-            .replace(/<img[^>]*alt="([^"]+)"[^>]*>/ig, '$1')
-            .replace(/\n|\r/g, '')
-            .replace(/<br[^>]*>/ig, '\n')
-            .replace(/(?:<(?:div|p|ol|ul|li|pre|code|object)[^>]*>)+/ig, '<div>')
-            .replace(/(?:<\/(?:div|p|ol|ul|li|pre|code|object)>)+/ig, '</div>')
-            .replace(/\n<div><\/div>/ig, '\n')
-            .replace(/<div><\/div>\n/ig, '\n')
-            .replace(/(?:<div>)+<\/div>/ig, '\n')
-            .replace(/([^\n])<\/div><div>/ig, '$1\n')
-            .replace(/(?:<\/div>)+/ig, '</div>')
-            .replace(/([^\n])<\/div>([^\n])/ig, '$1\n$2')
-            .replace(/<\/div>/ig, '')
-            .replace(/([^\n])<div>/ig, '$1\n')
-            .replace(/\n<div>/ig, '\n')
-            .replace(/<div>\n/ig, '\n\n')
-            .replace(/<(?:[^>]+)?>/g, '')
-            .replace(new RegExp(invisibleChar, 'g'), '')
-            .replace(/&nbsp;/g, ' ')
-            .replace(/&lt;/g, '<')
-            .replace(/&gt;/g, '>')
-            .replace(/&quot;/g, '"')
-            .replace(/&#x27;/g, "'")
-            .replace(/&#x60;/g, '`')
-            .replace(/&amp;/g, '&');
+          .replace(/<img[^>]*alt="([^"]+)"[^>]*>/ig, '$1')
+          .replace(/\n|\r/g, '')
+          .replace(/<br[^>]*>/ig, '\n')
+          .replace(/(?:<(?:div|p|ol|ul|li|pre|code|object)[^>]*>)+/ig, '<div>')
+          .replace(/(?:<\/(?:div|p|ol|ul|li|pre|code|object)>)+/ig, '</div>')
+          .replace(/\n<div><\/div>/ig, '\n')
+          .replace(/<div><\/div>\n/ig, '\n')
+          .replace(/(?:<div>)+<\/div>/ig, '\n')
+          .replace(/([^\n])<\/div><div>/ig, '$1\n')
+          .replace(/(?:<\/div>)+/ig, '</div>')
+          .replace(/([^\n])<\/div>([^\n])/ig, '$1\n$2')
+          .replace(/<\/div>/ig, '')
+          .replace(/([^\n])<div>/ig, '$1\n')
+          .replace(/\n<div>/ig, '\n')
+          .replace(/<div>\n/ig, '\n\n')
+          .replace(/<(?:[^>]+)?>/g, '')
+          .replace(new RegExp(invisibleChar, 'g'), '')
+          .replace(/&nbsp;/g, ' ')
+          .replace(/&lt;/g, '<')
+          .replace(/&gt;/g, '>')
+          .replace(/&quot;/g, '"')
+          .replace(/&#x27;/g, "'")
+          .replace(/&#x60;/g, '`')
+          .replace(/&amp;/g, '&');
 
         switch (self.saveEmojisAs) {
             case 'image':
@@ -456,8 +450,8 @@
     }
     function calcButtonPosition() {
         var self = this,
-            offset = self.editor[0].offsetWidth - self.editor[0].clientWidth,
-            current = parseInt(self.button.css('marginRight'));
+          offset = self.editor[0].offsetWidth - self.editor[0].clientWidth,
+          current = parseInt(self.button.css('marginRight'));
         if (current !== offset) {
             self.button.css({marginRight: offset});
             if (self.floatingPicker) {
@@ -469,7 +463,7 @@
         var self = this;
         if (!self.sprite && self.lasyEmoji[0]) {
             var pickerTop = self.picker.offset().top,
-                pickerBottom = pickerTop + self.picker.height() + 20;
+              pickerBottom = pickerTop + self.picker.height() + 20;
             self.lasyEmoji.each(function() {
                 var e = $(this), top = e.offset().top;
                 if (top > pickerTop && top < pickerBottom) {
@@ -502,7 +496,7 @@
         if (!self.recent || self.recent !== emojis) {
             if (emojis.length) {
                 var skinnable = self.scrollArea.is(".skinnable"),
-                    scrollTop, height;
+                  scrollTop, height;
 
                 if (!skinnable) {
                     scrollTop = self.scrollArea.scrollTop();
@@ -578,15 +572,15 @@
         self.standalone = options.standalone;
         self.emojiTemplate = '<img alt="{alt}" class="emojione' + (self.sprite ? '-{uni}" src="' + blankImg + '"/>' : 'emoji" src="{img}"/>');
         self.emojiTemplateAlt = self.sprite ? '<i class="emojione-{uni}"/>' : '<img class="emojioneemoji" src="{img}"/>';
-        self.emojiBtnTemplate = '<i class="emojibtn" role="button" data-name="{name}">' + self.emojiTemplateAlt + '</i>';
+        self.emojiBtnTemplate = '<i class="emojibtn" role="button" data-name="{name}" title="{friendlyName}">' + self.emojiTemplateAlt + '</i>';
         self.recentEmojis = options.recentEmojis && supportsLocalStorage();
 
         var pickerPosition = options.pickerPosition;
         self.floatingPicker = pickerPosition === 'top' || pickerPosition === 'bottom';
 
         var sourceValFunc = source.is("TEXTAREA") || source.is("INPUT") ? "val" : "text",
-            editor, button, picker, tones, filters, filtersBtns, emojisList, categories, scrollArea,
-            app = div({
+          editor, button, picker, tones, filters, filtersBtns, search, emojisList, categories, scrollArea,
+          app = div({
                 "class" : css_class + ((self.standalone) ? " " + css_class + "-standalone " : " ") + (source.attr("class") || ""),
                 role: "application"
             },
@@ -596,34 +590,46 @@
                 tabindex: 0
             }),
             button = self.button = div('button',
-                div('button-open'),
-                div('button-close')
+              div('button-open'),
+              div('button-close')
             ).attr('title', options.buttonTitle),
             picker = self.picker = div('picker',
-                div('wrapper',
-                    filters = div('filters'),
-                    scrollArea = div('scroll-area',
-                        emojisList = div('emojis-list'),
-                        tones = div('tones',
-                            function() {
-                                if (options.tones) {
-                                    this.addClass(selector('tones-' + options.tonesStyle, true));
-                                    for (var i = 0; i <= 5; i++) {
-                                        this.append($("<i/>", {
-                                            "class": "btn-tone btn-tone-" + i + (!i ? " active" : ""),
-                                            "data-skin": i,
-                                            role: "button"
-                                        }));
-                                    }
-                                }
-                            }
-                        )
-                    )
+              div('wrapper',
+                filters = div('filters'),
+                search = div('search',
+                  function() {
+                      self.search = $("<input/>", {
+                          "placeholder": "SEARCH",
+                          "type": "text",
+                          "class": "search"
+                      });
+                      this.append(self.search);
+                  }
+                ),
+                tones = div('tones',
+                  function() {
+                      if (options.tones) {
+                          this.addClass(selector('tones-' + options.tonesStyle, true));
+                          for (var i = 0; i <= 5; i++) {
+                              this.append($("<i/>", {
+                                  "class": "btn-tone btn-tone-" + i + (!i ? " active" : ""),
+                                  "data-skin": i,
+                                  role: "button"
+                              }));
+                          }
+                      }
+                  }
+                ),
+                scrollArea = div('scroll-area',
+                  emojisList = div('emojis-list')
                 )
+              )
             ).addClass(selector('picker-position-' + options.pickerPosition, true))
-             .addClass(selector('filters-position-' + options.filtersPosition, true))
-             .addClass('hidden')
-        );
+              .addClass(selector('filters-position-' + options.filtersPosition, true))
+              .addClass('hidden')
+          );
+
+        self.searchSel = null;
 
         editor.data(source.data());
 
@@ -642,8 +648,8 @@
                     "data-filter": filter,
                     title: params.title
                 })
-                .wrapInner(shortnameTo(params.icon, self.emojiTemplateAlt))
-                .appendTo(filters);
+                  .wrapInner(shortnameTo(params.icon, self.emojiTemplateAlt))
+                  .appendTo(filters);
             } else if (options.tones) {
                 skin = 5;
             } else {
@@ -651,7 +657,7 @@
             }
             do {
                 var category = div('category').attr({name: filter, "data-tone": skin}).appendTo(emojisList),
-                    items = params.emoji.replace(/[\s,;]+/g, '|');
+                  items = params.emoji.replace(/[\s,;]+/g, '|');
                 if (skin > 0) {
                     category.hide();
                     items = items.split('|').join('_tone' + skin + '|') + '_tone' + skin;
@@ -662,10 +668,10 @@
                 }
 
                 items = shortnameTo(items,
-                    self.sprite ?
-                        '<i class="emojibtn" role="button" data-name="{name}"><i class="emojione-{uni}"></i></i>' :
-                        '<i class="emojibtn" role="button" data-name="{name}"><img class="emojioneemoji lazy-emoji" data-src="{img}"/></i>',
-                    true).split('|').join('');
+                  self.sprite ?
+                    '<i class="emojibtn" role="button" data-name="{name}" title="{friendlyName}"><i class="emojione-{uni}"></i></i>' :
+                    '<i class="emojibtn" role="button" data-name="{name}" title="{friendlyName}"><img class="emojioneemoji lazy-emoji" data-src="{img}"/></i>',
+                  true).split('|').join('');
 
                 category.html(items);
                 $('<h1/>').text(params.title).prependTo(category);
@@ -720,11 +726,12 @@
         attach(self, [picker, button], {mousedown: "!mousedown"}, editor);
         attach(self, button, {click: "button.click"});
         attach(self, editor, {paste :"!paste"}, editor);
-        attach(self, editor, ["focus", "blur"], function() { return self.stayFocused ? false : editor; });
+        attach(self, editor, ["focus", "blur"], function() { return self.stayFocused ? false : editor } );
         attach(self, picker, {mousedown: "picker.mousedown", mouseup: "picker.mouseup", click: "picker.click",
             keyup: "picker.keyup", keydown: "picker.keydown", keypress: "picker.keypress"});
         attach(self, editor, ["mousedown", "mouseup", "click", "keyup", "keydown", "keypress"]);
         attach(self, picker.find(".emojionearea-filter"), {click: "filter.click"});
+        attach(self, self.search, {keyup: "search.keypress", focus: "search.focus", blur: "search.blur"});
 
         var noListenScroll = false;
         scrollArea.on('scroll', function () {
@@ -759,8 +766,8 @@
                 filter.addClass("active");
             }
             var headerOffset = categories.filter('[name="' + filter.data('filter') + '"]').offset().top,
-                scroll = scrollArea.scrollTop(),
-                offsetTop = scrollArea.offset().top;
+              scroll = scrollArea.scrollTop(),
+              offsetTop = scrollArea.offset().top;
             scrollArea.stop().animate({
                 scrollTop: headerOffset + scroll - offsetTop - 2
             }, 200, 'swing', function () {
@@ -769,150 +776,212 @@
             });
         })
 
-        .on("@picker.show", function() {
-            if (self.recentEmojis) {
-                updateRecent(self);
-            }
-            lazyLoading.call(this);
-        })
+          .on("@picker.show", function() {
+              if (self.recentEmojis) {
+                  updateRecent(self);
+              }
+              lazyLoading.call(self);
+          })
 
-        .on("@tone.click", function(tone) {
-            tones.children().removeClass("active");
-            var skin = tone.addClass("active").data("skin");
-            if (skin) {
-                scrollArea.addClass("skinnable");
-                categories.hide().filter("[data-tone=" + skin + "]").show();
-                if (filtersBtns.eq(0).is('.active[data-filter="recent"]')) {
-                    filtersBtns.eq(0).removeClass("active").next().addClass("active");
-                }
-            } else {
-                scrollArea.removeClass("skinnable");
-                categories.hide().filter("[data-tone=0]").show();
-                filtersBtns.eq(0).click();
-            }
-            lazyLoading.call(self);
-        })
+          .on("@tone.click", function(tone) {
+              tones.children().removeClass("active");
+              var skin = tone.addClass("active").data("skin");
+              if (skin) {
+                  scrollArea.addClass("skinnable");
+                  categories.hide().filter("[data-tone=" + skin + "]").show();
+                  if (filtersBtns.eq(0).is('.active[data-filter="recent"]')) {
+                      filtersBtns.eq(0).removeClass("active").next().addClass("active");
+                  }
+              } else {
+                  scrollArea.removeClass("skinnable");
+                  categories.hide().filter("[data-tone=0]").show();
+                  filtersBtns.eq(0).click();
+              }
+              lazyLoading.call(self);
+          })
 
-        .on("@button.click", function(button) {
-            if (button.is(".active")) {
-                self.hidePicker();
-            } else {
-                self.showPicker();
-            }
-        })
+          .on("@button.click", function(button) {
+              if (button.is(".active")) {
+                  self.hidePicker();
+              } else {
+                  self.showPicker();
+                  self.searchSel = null;
+              }
+          })
 
-        .on("@!paste", function(editor, event) {
+          .on("@!paste", function(editor, event) {
 
-            var pasteText = function(text) {
-                var caretID = "caret-" + (new Date()).getTime();
-                var html = htmlFromText(text, self);
-                pasteHtmlAtCaret(html);
-                pasteHtmlAtCaret('<i id="' + caretID +'"></i>');
-                editor.scrollTop(editorScrollTop);
-                var caret = $("#" + caretID),
+              var pasteText = function(text) {
+                  var caretID = "caret-" + (new Date()).getTime();
+                  var html = htmlFromText(text, self);
+                  pasteHtmlAtCaret(html);
+                  pasteHtmlAtCaret('<i id="' + caretID +'"></i>');
+                  editor.scrollTop(editorScrollTop);
+                  var caret = $("#" + caretID),
                     top = caret.offset().top - editor.offset().top,
                     height = editor.height();
-                if (editorScrollTop + top >= height || editorScrollTop > top) {
-                    editor.scrollTop(editorScrollTop + top - 2 * height/3);
-                }
-                caret.remove();
-                self.stayFocused = false;
-                calcButtonPosition.apply(self);
-                trigger(self, 'paste', [editor, text, html]);
-            }
+                  if (editorScrollTop + top >= height || editorScrollTop > top) {
+                      editor.scrollTop(editorScrollTop + top - 2 * height/3);
+                  }
+                  caret.remove();
+                  self.stayFocused = false;
+                  calcButtonPosition.apply(self);
+                  trigger(self, 'paste', [editor, text, html]);
+              }
 
-            if (event.originalEvent.clipboardData) {
-                var text = event.originalEvent.clipboardData.getData('text/plain');
-                pasteText(text);
+              if (event.originalEvent.clipboardData) {
+                  var text = event.originalEvent.clipboardData.getData('text/plain');
+                  pasteText(text);
 
-                if (event.preventDefault){
-                    event.preventDefault();
-                } else {
-                    event.stop();
-                };
+                  if (event.preventDefault){
+                      event.preventDefault();
+                  } else {
+                      event.stop();
+                  };
 
-                event.returnValue = false;
-                event.stopPropagation();
-                return false;
-            }
+                  event.returnValue = false;
+                  event.stopPropagation();
+                  return false;
+              }
 
-            self.stayFocused = true;
-            // insert invisible character for fix caret position
-            pasteHtmlAtCaret('<span>' + invisibleChar + '</span>');
+              self.stayFocused = true;
+              // insert invisible character for fix caret position
+              pasteHtmlAtCaret('<span>' + invisibleChar + '</span>');
 
-            var sel = saveSelection(editor[0]),
+              var sel = saveSelection(editor[0]),
                 editorScrollTop = editor.scrollTop(),
                 clipboard = $("<div/>", {contenteditable: true})
-                    .css({position: "fixed", left: "-999px", width: "1px", height: "1px", top: "20px", overflow: "hidden"})
-                    .appendTo($("BODY"))
-                    .focus();
+                  .css({position: "fixed", left: "-999px", width: "1px", height: "1px", top: "20px", overflow: "hidden"})
+                  .appendTo($("BODY"))
+                  .focus();
 
-            window.setTimeout(function() {
-                editor.focus();
-                restoreSelection(editor[0], sel);
-                var text = textFromHtml(clipboard.html().replace(/\r\n|\n|\r/g, '<br>'), self);
-                clipboard.remove();
-                pasteText(text);
-            }, 200);
-        })
+              window.setTimeout(function() {
+                  editor.focus();
+                  restoreSelection(editor[0], sel);
+                  var text = textFromHtml(clipboard.html().replace(/\r\n|\n|\r/g, '<br>'), self);
+                  clipboard.remove();
+                  pasteText(text);
+              }, 200);
+          })
 
-        .on("@emojibtn.click", function(emojibtn) {
-            editor.removeClass("has-placeholder");
-            if (!app.is(".focused")) {
-                editor.focus();
-            }
-            if (self.standalone) {
-                editor.html(shortnameTo(emojibtn.data("name"), self.emojiTemplate));
-                self.trigger("blur");
-            } else {
-                saveSelection(editor[0]);
-                pasteHtmlAtCaret(shortnameTo(emojibtn.data("name"), self.emojiTemplate));
-            }
+          .on("@emojibtn.click", function(emojibtn) {
+              editor.removeClass("has-placeholder");
 
-            if (self.recentEmojis) {
-                setRecent(self, emojibtn.data("name"));
-            }
-        })
+              if (self.searchSel !== null) {
+                  editor.focus();
+                  restoreSelection(editor[0], self.searchSel);
+                  self.searchSel = null;
+              }
 
-        .on("@!resize @keyup @emojibtn.click", calcButtonPosition)
+              if (self.standalone) {
+                  editor.html(shortnameTo(emojibtn.data("name"), self.emojiTemplate));
+                  self.trigger("blur");
+              } else {
+                  saveSelection(editor[0]);
+                  pasteHtmlAtCaret(shortnameTo(emojibtn.data("name"), self.emojiTemplate));
+              }
 
-        .on("@!mousedown", function(editor, event) {
-            if (!app.is(".focused")) {
-                editor.focus();
-            }
-            event.preventDefault();
-            return false;
-        })
+              if (self.recentEmojis) {
+                  setRecent(self, emojibtn.data("name"));
+              }
 
-        .on("@change", function() {
-            var html = self.editor.html().replace(/<\/?(?:div|span|p)[^>]*>/ig, '');
-            // clear input: chrome adds <br> when contenteditable is empty
-            if (!html.length || /^<br[^>]*>$/i.test(html)) {
-                self.editor.html(self.content = '');
-            }
-            source[sourceValFunc](self.getText());
-        })
+              self.search.val('');
+              self.trigger('search.keypress');
+          })
 
-        .on("@focus", function() {
-            app.addClass("focused");
-        })
+          .on("@!resize @keyup @emojibtn.click", calcButtonPosition)
 
-        .on("@blur", function() {
-            app.removeClass("focused");
+          .on("@!mousedown", function(editor, event) {
+              if ($(event.target).hasClass('search')) {
+                  // Allow search clicks
+                  self.stayFocused = true;
+                  if (self.searchSel == null) {
+                      self.searchSel = saveSelection(editor[0]);
+                  }
+              } else {
+                  if (!app.is(".focused")) {
+                      editor.focus();
+                  }
+                  event.preventDefault();
+              }
+              return false;
+          })
 
-            if (options.hidePickerOnBlur) {
-                self.hidePicker();
-            }
+          .on("@change", function() {
+              var html = self.editor.html().replace(/<\/?(?:div|span|p)[^>]*>/ig, '');
+              // clear input: chrome adds <br> when contenteditable is empty
+              if (!html.length || /^<br[^>]*>$/i.test(html)) {
+                  self.editor.html(self.content = '');
+              }
+              source[sourceValFunc](self.getText());
+          })
 
-            var content = self.editor.html();
-            if (self.content !== content) {
-                self.content = content;
-                trigger(self, 'change', [self.editor]);
-                source.blur().trigger("change");
-            } else {
-                source.blur();
-            }
-        });
+          .on("@focus", function() {
+              app.addClass("focused");
+          })
+
+          .on("@blur", function() {
+              app.removeClass("focused");
+
+              if (options.hidePickerOnBlur) {
+                  self.hidePicker();
+              }
+
+              var content = self.editor.html();
+              if (self.content !== content) {
+                  self.content = content;
+                  trigger(self, 'change', [self.editor]);
+                  source.blur().trigger("change");
+              } else {
+                  source.blur();
+              }
+
+              self.search.val('');
+              self.trigger('search.keypress');
+          })
+
+          .on("@search.focus", function() {
+              self.stayFocused = true;
+              self.search.addClass("focused");
+          })
+
+          .on("@search.keypress", function() {
+              var filterBtns = picker.find(".emojionearea-filter");
+
+              var term = self.search.val().replace( / /g, "_" ).replace(/"/g, "\\\"");
+              if (term !== "") {
+                  categories.filter('[data-tone="' + tones.find("i.active").data("skin") + '"]:not([name="recent"])').each(function() {
+                      var $category = $(this);
+                      var $matched = $category.find('.emojibtn[data-name*="' + term + '"]');
+                      if ($matched.length === 0) {
+                          $category.hide();
+                          filterBtns.filter('[data-filter="' + $category.attr('name') + '"]').hide();
+                      } else {
+                          var $notMatched = $category.find('.emojibtn:not([data-name*="' + term + '"])')
+                          $notMatched.hide();
+
+                          $matched.show();
+                          $category.show();
+                          filterBtns.filter('[data-filter="' + $category.attr('name') + '"]').show();
+                      }
+                  });
+                  if (!noListenScroll) {
+                      scrollArea.trigger('scroll');
+                  } else {
+                      lazyLoading.call(self);
+                  }
+              } else {
+                  categories.filter('[data-tone="' + tones.find("i.active").data("skin") + '"]:not([name="recent"])').show();
+                  $('.emojibtn', categories).show();
+                  filterBtns.show();
+              }
+          })
+
+          .on("@search.blur", function() {
+              self.stayFocused = false;
+              self.search.removeClass("focused");
+              self.trigger("blur");
+          });
 
         if (options.shortcuts) {
             self.on("@keydown", function(_, e) {
@@ -987,7 +1056,7 @@
                 autocomplete();
             } else {
                 $.getScript("https://cdn.rawgit.com/yuku-t/jquery-textcomplete/v1.3.4/dist/jquery.textcomplete.js",
-                    autocomplete);
+                  autocomplete);
             }
         }
 
@@ -1008,7 +1077,7 @@
         //}, self.id === 1); // calcElapsedTime()
     };
     var emojioneVersion = window.emojioneVersion || '2.1.4';
-    var cdn = { 
+    var cdn = {
         defaultBase: "https://cdnjs.cloudflare.com/ajax/libs/emojione/",
         base: null,
         isLoading: false
@@ -1024,7 +1093,8 @@
             if (version === "?v=2.1.2") return '2.1.2';
             if (version === "?v=2.1.3") return '2.1.3';
             if (version === "?v=2.1.4") return '2.1.4';
-            return '2.1.4';
+            if (version === "?v=2.2.7") return '2.2.7';
+            return '2.2.7';
         }
 
         function getSupportMode(version) {
@@ -1036,6 +1106,7 @@
                 case '2.1.2': return 3;
                 case '2.1.3':
                 case '2.1.4':
+                case '2.2.7':
                 default: return 4;
             }
         }
@@ -1100,7 +1171,7 @@
                 $.each($.isArray(ev[0]) ? ev[0] : [ev[0]], function(i, el) {
                     $(el).on(ev[1], function() {
                         var args = slice.call(arguments),
-                            target = $.isFunction(ev[2]) ? ev[2].apply(self, [event].concat(args)) : ev[2];
+                          target = $.isFunction(ev[2]) ? ev[2].apply(self, [event].concat(args)) : ev[2];
                         if (target) {
                             trigger(self, event, [target].concat(args));
                         }
@@ -1144,7 +1215,7 @@
 
     EmojioneArea.prototype.trigger = function() {
         var args = slice.call(arguments),
-            call_args = [this].concat(args.slice(0,1));
+          call_args = [this].concat(args.slice(0,1));
         call_args.push(args.slice(1));
         return trigger.apply(this, call_args);
     };
@@ -1198,6 +1269,25 @@
         return self;
     }
 
+    EmojioneArea.prototype.enable = function () {
+        var self = this;
+        emojioneReady(function () {
+            self.editor.prop('contenteditable', true);
+            self.button.show();
+        });
+        return self;
+    }
+
+    EmojioneArea.prototype.disable = function () {
+        var self = this;
+        emojioneReady(function () {
+            self.editor.prop('contenteditable', false);
+            self.hidePicker();
+            self.button.hide();
+        });
+        return self;
+    }
+
     $.fn.emojioneArea = function(options) {
         return this.each(function() {
             if (!!this.emojioneArea) return this.emojioneArea;
@@ -1208,4 +1298,24 @@
 
     $.fn.emojioneArea.defaults = getDefaultOptions();
 
-}) (document, window, jQuery);
+    $.fn.emojioneAreaText = function(options) {
+        var self = this, pseudoSelf = {
+            shortnames: (options && typeof options.shortnames !== 'undefined' ? options.shortnames : true),
+            emojiTemplate: '<img alt="{alt}" class="emojione' + (options && options.sprite && emojioneSupportMode < 3 ? '-{uni}" src="' + blankImg : 'emoji" src="{img}') + '"/>'
+        };
+
+        loadEmojione(options);
+        emojioneReady(function() {
+            self.each(function() {
+                var $this = $(this);
+                if (!$this.hasClass('emojionearea-text')) {
+                    $this.addClass('emojionearea-text').html(htmlFromText(($this.is('TEXTAREA') || $this.is('INPUT') ? $this.val() : $this.text()), pseudoSelf));
+                }
+                return $this;
+            });
+        });
+
+        return this;
+    };
+
+}, window ) );

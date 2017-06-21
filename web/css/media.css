@@ -78,6 +78,7 @@ body {
 }
 
 @media (max-width: 1100px) {
+  .text_legend {margin-top:0px;}
   .mes_block .mes_name {width:50%;}
   .mes_block .mes_tit {width:64%;}
   .top_star .into dl:first-child {
@@ -150,12 +151,6 @@ body {
 }
 
 @media (max-width: 1000px) {
-
-  .legend_block {
-    width: 32.0%;
-    margin-right: 1%;
-    margin-bottom: 12px;
-  }
 
   .top_slogan {
     display: none;
@@ -284,6 +279,12 @@ body {
 }
 
 @media (max-width: 900px) {
+
+   .legend_block {
+    width: 31.9%;
+    margin-right: 1%;
+    margin-bottom: 12px;
+  }
   .video_block {
     float: none;
     width: 100%;
@@ -317,9 +318,7 @@ body {
     width: 28%;
   }
 
-  input {
-    /* -webkit-appearance: none; */
-  }
+  .all_chat {width:100% !important;}
 }
 
 @media (max-width: 840px) {
@@ -387,12 +386,7 @@ body {
 }
 
 @media (max-width: 700px) {
-  .legend_block {
-    width: 47.6%;
-    margin-right: 2%;
-    margin-bottom: 12px;
-  }
-
+ .text_legend {margin-bottom:30px;}
   .header {
     background: url(../img/bg_top.jpg) no-repeat top center;
     width: 100%;
@@ -588,6 +582,9 @@ body {
 }
 
 @media (max-width: 670px) {
+.modal_in {padding:5px 0 5px 0;}
+.okno {max-width: 100%;   width:calc(100% - 10px); margin:auto;}
+
   .tarif {width: 60%; margin-left: 5%;}
   .content .anketa {
     width: 30%;
@@ -609,26 +606,29 @@ body {
   }
 
   .us_on {
-    width: 95%;
-    padding: 8px 8px;
-  }
+  display:block;
+  width: 100%;
+  overflow: hidden;
+  padding:8px 0;
+ 
+  cursor: pointer;
+  border-bottom: 1px solid rgb(245, 227, 213);;
+}
 
-  .us_on img {
-    width: 50px;
-    height: 50px;
-    float: left;
-    margin-right: 10px;
-  }
+.us_on img {
+  width: 40px;
+  height: 40px;
+display:inline-block;
+  margin-right: 8px; 
+  border-radius: 50%; vertical-align:middle; margin-left:10px;
+}
 
-  .us_on span {
-    margin-top: 15px;
-    display: inline-block;
-    font-size: 15px;
-    font-weight: 600;
-  }
-
+.us_on span {
+   font-weight:bold;   width:calc(100% - 86px);
+  display: inline-block; vertical-align:middle; 
+}
   .user_add {
-    margin-bottom: 14px;
+    margin-bottom: 2px;
   }
 
   .user_add span {
@@ -636,13 +636,7 @@ body {
     font-size: 14px;
   }
 
-  .us_on b {
-    top: 15px;
-    margin-right: 8px;
-    padding: 0px 0 0 0;
-    width: 17px;
-    height: 17px;
-  }
+ 
 
   .users {
     display: block;
@@ -744,8 +738,29 @@ body {
     height: 30vw;
   }
 }
+@media (max-width: 540px) {
+.legend_block {
+    width: 47.4%;
+    margin-right: 2%;
+    margin-bottom: 2%;
+  } 
+.leg_tit {
+  font-size: 15px; 
+  margin-bottom: 0px;
+  padding: 0 6px;
+}  
+.legend_block img {cursor:pointer;
+  width: 100%;
+  margin-bottom: -8px;
+}
+
+.legend_icon {position:relative; margin:-16px 0 14px 10px; }
+.all_legend {width:102%;}
+}
 
 @media (max-width: 500px) {
+  .leg_okno { margin:20px auto; width:calc(96% - 30px); }
+  .photo_leg a {width:30%;  display:inline-block; margin:0px 1% 1% 0;}
   .users img {
     width: 40px;
     height: 31px;
@@ -780,11 +795,7 @@ body {
 }
 
 @media (max-width: 450px) {
-  .legend_block {
-    width: 100%;
-    margin-right: 0;
-    margin-bottom: 12px;
-  }
+  
 
   .control-label {
     width: 70px;
@@ -902,10 +913,22 @@ body {
   .into {padding: 0 14px 0 14px;}
   .title_1 {font-size: 30px;}
   .video_glav iframe {min-height: 190px;}
+ 
+
+}
+
+@media (max-width: 380px) {
 
 }
 
 @media (max-width: 360px) {
+.icon_legend div {width:50px; height:50px; margin-right:6px;}
+.icon_legend p {top:12px; font-size:16px; }
+.icon_legend { padding:10px 10px; }
+.content_legend {padding:10px; padding-top:0px;}
+.leg_close {position:absolute; right:-10px; top:-2px; font-size:34px; font-weight:300;}
+.content_legend iframe {width:100%; height:160px; margin-bottom:14px;}
+
   .into {
     padding: 0 10px 0 10px;
   }
