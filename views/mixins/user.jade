@@ -14,6 +14,6 @@ mixin userMiniCard(users,max_online_time)
                         p
                             if ($user['profile']['birthday']!=0)
                                 != $old
-                            span= $user['city']['city']
+                            span= $user->relatedRecords['city']['city']
                         if ($online)
                             i

@@ -185,6 +185,9 @@ class SiteController extends Controller
 
             //->asArray()
             ->all(); //выводим все что получилось
+    //  foreach ($user as $qqq){
+      //  ddd($qqq->relatedRecords['city']['city']);}
+
         $page=StaticPages::find()->where(['id' => 3])->asArray()->one();
         return $this->render('top',['user'=>$user,'page'=>$page]);
     }
