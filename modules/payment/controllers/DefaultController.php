@@ -247,11 +247,10 @@ class DefaultController extends Controller
 
       if($request->post('method')==1){
 
-        if($request->post('cc_type')){
+        if($request->post('cc_type', null) != null){
           $pay=new DoPayment('credit_card');
 
           $pay->addCardData($request->post());
-
           $pay->addItem(array(
             'name'=>$order->name,
             'price'=>$order->price,
