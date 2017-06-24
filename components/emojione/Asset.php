@@ -12,7 +12,7 @@ class Asset extends \yii\web\AssetBundle
 
   public $depends = [
     'yii\web\JqueryAsset',
-    'app\components\emojione\EmojiOneAsset',
+    //'app\components\emojione\EmojiOneAsset',
   ];
 
   /**

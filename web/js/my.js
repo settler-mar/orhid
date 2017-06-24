@@ -1,4 +1,4 @@
-﻿var file_api = ( window.File && window.FileReader && window.FileList && window.Blob ) ? true : false;
+var file_api = ( window.File && window.FileReader && window.FileList && window.Blob ) ? true : false;
 
 $(document).ready(function() {
 // checkbox when create tarificatorTable row
@@ -490,3 +490,29 @@ function set_fav(user,s){
         }
     },'json')
 }
+
+/*LEGEND*/
+
+
+
+$('.legend_block').click(function(){
+    if ($('.modal').is(":hidden")) {
+					$('.modal').show();
+					$("body").addClass("lock");	
+
+			 } else {
+				
+				$('.modal').hide;
+	            $("body").removeClass("lock");	
+				
+}
+	 return false;
+});
+
+
+
+$('.leg_close').click(function(){
+	$('.modal').hide();
+	$("body").removeClass("lock");	
+    return false;
+});

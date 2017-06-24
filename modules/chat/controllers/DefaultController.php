@@ -210,7 +210,7 @@ class DefaultController extends Controller
     $message->user_from = $my_id;
     $message->user_to = $request->post('to');
     $message->is_read = 0;
-    $message->message = strip_tags($request->post('message'),'<img>');
+    $message->message = strip_tags($request->post('message'),'<img><div>');
     $message->message = preg_replace("#[^0-9а-яА-ЯA-Za-z;:_.,?<>'\"/= -]+#u", '', $message->message);
     $message->created_at = time();
     $message->save();

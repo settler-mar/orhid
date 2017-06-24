@@ -13,20 +13,25 @@ $this->params['breadcrumbs'][] = $this->title;
 
 ?>
 
-<p>
-  You select <?=$order->name;?>
-</p>
-<p>
-  You may pay $<?=number_format($order->price,2,'.',' ');?>
-</p>
-<?php $form = ActiveForm::begin(); ?>
-  <label>
-    <input type="radio" value="0" name="method" checked>PayPal
-  </label>
-  <br>
-  <label>
-    <input type="radio" value="1" name="method">Visa/Mastercard
-  </label>
-  <hr>
-  <input type="submit">
-<?php ActiveForm::end(); ?>
+<div class="gift_for">
+  You select <span><?=$order->name;?></span>
+</div>
+<div class="gift_for">
+  You may pay <span>$<?=number_format($order->price,2,'.',' ');?></span>
+</div>
+
+<div class="form_gift_1">
+  <?php $form = ActiveForm::begin(); ?>
+  <div class="pay_block">
+    <label class="paypal_1">
+      <input type="radio" value="0" name="method" checked>
+    </label>
+
+    <label class="visa_1">
+      <input type="radio" value="1" name="method">
+    </label>
+  </div>
+
+  <input class="send_g" type="submit" value="Send">
+  <?php ActiveForm::end(); ?>
+</div>
