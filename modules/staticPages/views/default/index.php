@@ -32,19 +32,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'name',
+            'url',
             [
                 'attribute'=>'text',
                 'value' => function($data){return crop_str(strip_tags($data->text),150,'...');},
               // 'value' => function($data){return strip_tags($data->text);},
               //  'format'=>'html',
             ],
-            [
-                'attribute'=>'language',
-                'value' => function($data){return ($data->language==0)?'English':'Русский';},
-                'filter' => array('' => 'All',0 => 'English', 1 => 'Русский'),
-               ],
             ['class' => 'yii\grid\ActionColumn',
              'template' => $actionTemplate,],
         ],

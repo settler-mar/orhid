@@ -100,7 +100,7 @@ class SiteController extends Controller
     public function actionLegends()
     {
       $page=StaticPages::find()->where(['id' => 9])->asArray()->one();
-      return $this->render('legends.jade',['page'=>$page]);
+      return $this->render('legends.php',['page'=>$page]);
     }
 
 

@@ -15,6 +15,7 @@ use dosamigos\tinymce\TinyMce;
      <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'url')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'meta_title')->textInput(['maxlength' => true])->label("Мета тайтл") ?>
     <?= $form->field($model, 'keywords')->textInput(['maxlength' => true])->label("Ключевые слова") ?>
@@ -43,8 +44,6 @@ use dosamigos\tinymce\TinyMce;
             ],
         ]
     ]);?>
-
-    <?= $form->field($model, 'language')->dropDownList(['0' => 'English','1' => 'Русский']) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
