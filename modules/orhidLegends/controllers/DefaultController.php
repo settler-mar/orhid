@@ -48,12 +48,10 @@ class DefaultController extends Controller
     {
         if (!is_dir('image/uploads/')) mkdir('image/uploads/');
         if (!is_dir('image/uploads_thumbs/')) mkdir('image/uploads_thumbs/');
-        $searchModel = new OrhidLegendsSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+      $legends = OrhidLegends::find()->all();
+        return $this->render('legends', [
+            'legends' => $legends,
             'canCreate' => Yii::$app->user->can('legendCreate'),
             'canUpdate' => Yii::$app->user->can('legendUpdate'),
             'canDelete' => Yii::$app->user->can('legendDelete'),
