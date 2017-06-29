@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use dosamigos\tinymce\TinyMce;
+use app\components\fileImageInput\FileInput;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\orhidLegends\models\OrhidLegends */
@@ -38,7 +39,11 @@ use dosamigos\tinymce\TinyMce;
         ]
     ]);?>
 
-    <?= $form->field($model, 'image')->fileInput() ?>
+    <?= $form->field($model, 'cover')->fileInput() ?>
+
+    <?= $form->field($model, 'video')->widget(FileInput::classname(),['type'=>'video']); ?>
+
+    <?= $form->field($model, 'image')->widget(FileInput::classname(),['hasDelate'=>true]); ?>
 
     <?= $form->field($model, 'language')->dropDownList(['0' => 'English','1' => 'Русский']) ?>
 
