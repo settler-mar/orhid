@@ -75,7 +75,7 @@
         <?= FileUpload::widget([
           'model'=>$fileupload,
           'attribute' => 'image',
-          'url' => ['/fileupload/default/upload'], // your url, this is just for demo purposes,
+          'url' => '/fileupload/default/upload', // your url, this is just for demo purposes,
           'options' => ['accept' => 'image/*'],
           'clientOptions' => [
             'maxFileSize' => 2000
