@@ -4,6 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use dosamigos\tinymce\TinyMce;
 use app\components\fileImageInput\FileInput;
+use karpoff\icrop\CropImageUpload;
+use dosamigos\fileupload\FileUpload;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\orhidLegends\models\OrhidLegends */
@@ -39,11 +41,11 @@ use app\components\fileImageInput\FileInput;
         ]
     ]);?>
 
-    <?= $form->field($model, 'cover')->fileInput() ?>
+    <?= $form->field($model, 'cover')->widget(CropImageUpload::className(),['options'=>['accept'=>'image/jpeg']]);?>
 
     <?= $form->field($model, 'video')->widget(FileInput::classname(),['type'=>'video']); ?>
 
-    <?= $form->field($model, 'image')->widget(FileInput::classname(),['hasDelate'=>true]); ?>
+    <button class="multiload">Add images</button>
 
     <?= $form->field($model, 'language')->dropDownList(['0' => 'English','1' => 'Русский']) ?>
 
@@ -56,3 +58,59 @@ use app\components\fileImageInput\FileInput;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<div class="file_insert_model_bg">
+  <div class="file_insert_model">
+    <div class="close">X</div>
+    <div class="title">Select photo</div>
+    <div class="photo_list">
+
+    </div>
+
+    <div>
+      <div>
+        You can upload new file from your PC.
+      </div>
+      <div class="progress_bar">
+        <span></span>
+      </div>
+      <?= FileUpload::widget([
+        'model'=>$model,
+        'attribute' => 'image',
+        'url' => ['/fileupload/default/upload'], // your url, this is just for demo purposes,
+        'options' => ['accept' => 'image/*'],
+        'clientOptions' => [
+          'maxFileSize' => 2000
+        ], // Also, you can specify jQuery-File-Upload events
+        //// see: https://github.com/blueimp/jQuery-File-Upload/wiki/Options#processing-callback-options
+        'clientEvents' => [
+          'fileuploaddone' => 'fileuploaddone',
+          'fileuploadfail' => 'fileuploadfail',
+          'fileuploadprogress' => 'fileuploadprogress',
+          'fileuploadstart' => 'fileuploadstart',
+        ],
+      ]);?>
+    </div>
+    <a class="insert_photo">Insert photo</a>
+  </div>
+</div>
+
+
+<script>
+  $(document).ready(function() {
+    $('.multiload').on('click',function() {
+      $('.photo_list').addClass('loading');
+      $('.photo_list>*').remove()
+      $('.file_insert_model_bg .title').hide();
+      $('.file_insert_model_bg').show();
+      $.post('/fileupload/default/get', function (data) {
+        $('.photo_list').removeClass('loading');
+        if (data.length > 0) {
+          for (i = 0; i < data.length; i++) {
+            add_file_to_list(data[i])
+          }
+        }
+      }, 'json');
+    });
+  });
+</script>

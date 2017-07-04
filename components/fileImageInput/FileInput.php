@@ -75,7 +75,7 @@ class FileInput extends InputWidget
     {
         $view = $this->getView();
         FileInputAsset::register($view);
-        $view->registerJs("init_file_prev(jQuery('[name=\"{$this->name}\"][type=file]'));");
+        $view->registerJs(" init_file_prev(jQuery('[name=\"{$this->name}\"][type=file]'));");
         /*$id = $this->options['id'];
 
         $view->registerJs("jQuery('#{$id}').cropImageUpload(".json_encode($options).");");*/

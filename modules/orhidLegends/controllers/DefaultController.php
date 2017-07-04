@@ -83,6 +83,8 @@ class DefaultController extends Controller
             return $this->redirect(['index']);
         } else {
                 if (Yii::$app->user->can('legendCreate')) {
+                  Yii::$app->view->registerJsFile('/js/mail.js');
+
                     return $this->render('create', ['model' => $model,]);
                 }
                 else {

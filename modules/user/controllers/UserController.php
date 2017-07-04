@@ -105,7 +105,6 @@ class UserController extends Controller
         return $this->render('registration.jade', [
             'model' => $model,
         ]);
-
     }
     /**
      * Сброс пароля

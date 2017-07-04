@@ -17,7 +17,7 @@ $this->title = 'Legends orhid';
   <?php foreach ($legends as $legend){ ?>
     <div class="legend_block">
       <div class="image_legend">
-        <img src=<?= $legend->image ?> >
+        <img src=<?= $legend->cover ?> >
       </div>
 
       <div class="legend_icon">
