@@ -123,6 +123,7 @@
             ]);
           },'login' => function ($url, $model) {
             if (!$model->role){
+              $url='/user/admin/login?id='.$model->id;
               return Html::a('<span class="glyphicon glyphicon-log-in"></span>', $url, [
               'title' => 'Enter',
               ]);
