@@ -47,7 +47,7 @@ class OrhidLegends extends \yii\db\ActiveRecord
             [['language', 'state'], 'integer'],
             [['title'], 'string', 'max' => 64],
             [['text'], 'string'],
-            [['image','cover'], 'file'],
+      //      [['image','cover'], 'file'],
             ['crop_info', 'safe'],
         ];
     }

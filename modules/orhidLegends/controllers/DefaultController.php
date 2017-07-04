@@ -9,6 +9,8 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use yii\widgets\InputWidget;
+use app\modules\user\models\forms\RegistrationForm;
 
 /**
  * DefaultController implements the CRUD actions for OrhidLegends model.
@@ -78,13 +80,14 @@ class DefaultController extends Controller
     public function actionCreate()
     {
         $model = new OrhidLegends();
-
+      $model2 = new RegistrationForm();
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index']);
         } else {
                 if (Yii::$app->user->can('legendCreate')) {
                   Yii::$app->view->registerJsFile('/js/mail.js');
 
+                    //return $this->render('@app/modules/user/views/user/registration.jade', ['model' => $model2,]);
                     return $this->render('create', ['model' => $model,]);
                 }
                 else {

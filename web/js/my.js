@@ -111,7 +111,6 @@ $('.us_on').click(function(){
 });
 
 function init_file_prev(obj){
-    console.log(11111);
     el=obj.parent();
     obj.on('change',function(){
         var file_name;
