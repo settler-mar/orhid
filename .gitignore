@@ -39,6 +39,7 @@ params.php
 /web/assets/*
 # ignoring slider pictures
 /web/img/slider/
+/web/img/orhidLegends/
 # ignoring tinyMce redactor pictures
 /web/image/
 
