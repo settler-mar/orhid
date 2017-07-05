@@ -125,8 +125,8 @@ class DefaultController extends Controller
     //ddd(Yii::$app->user->identity);
     //if((($user['sex']==1)&&($user->canIdo('chatUnit')!=1)) && (!Yii::$app->user->identity->isManager()))
 
-    if($user->sex==Yii::$app->user->identity->sex || (Yii::$app->user->identity->isManager()))
-      throw new \yii\web\NotFoundHttpException('No rights for access to chat with the user. Contact your administrator.');
+ //   if($user->sex==Yii::$app->user->identity->sex || (Yii::$app->user->identity->isManager()))
+  //    throw new \yii\web\NotFoundHttpException('No rights for access to chat with the user. Contact your administrator.');
 
 
     if($id>0){
