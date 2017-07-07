@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\widgets\InputWidget;
 use app\modules\user\models\forms\RegistrationForm;
+use app\modules\fileupload\models\Fileupload;
 
 /**
  * DefaultController implements the CRUD actions for OrhidLegends model.
@@ -88,7 +89,7 @@ class DefaultController extends Controller
                   Yii::$app->view->registerJsFile('/js/mail.js');
 
                     //return $this->render('@app/modules/user/views/user/registration.jade', ['model' => $model2,]);
-                    return $this->render('create', ['model' => $model,]);
+                    return $this->render('create', ['model' => $model, 'fileUpload' => new Fileupload(),]);
                 }
                 else {
                     return $this->redirect(['index']);

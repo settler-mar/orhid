@@ -33,11 +33,12 @@ class DefaultController extends Controller
     $model = new Fileupload();
     $response = [];
     if ($request->isPost) {
-
+//return var_dump(UploadedFile::getInstance($model, 'image'));
       Yii::$app->response->getHeaders()->set('Vary', 'Accept');
       Yii::$app->response->format = Response::FORMAT_JSON;
 
       $model->image = UploadedFile::getInstance($model, 'image');
+      return $response[] = ['error' => 'fsefs'];
       if ($model->upload()) {
         $response['files'][] =
           [

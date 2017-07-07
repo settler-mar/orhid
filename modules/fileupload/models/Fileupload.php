@@ -25,6 +25,7 @@ class Fileupload extends Model
   {
     if ($this->validate()) {
       $path=\Yii::$app->user->identity->userDir.'upload/';
+      //return $path;
       if (!file_exists($path)) {
         mkdir($path, 0777, true);   // Создаем директорию при отсутствии
       }

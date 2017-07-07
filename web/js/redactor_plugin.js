@@ -97,7 +97,7 @@
       show: function()
       {
         $('.photo_list').addClass('loading');
-        $('.photo_list>*').remove()
+        $('.photo_list>*').remove();
         $('.file_insert_model_bg .title').hide();
         $('.file_insert_model_bg').show();
         $.post('/fileupload/default/get',function(data){

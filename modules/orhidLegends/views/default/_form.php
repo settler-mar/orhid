@@ -75,7 +75,7 @@ use dosamigos\fileupload\FileUpload;
         <span></span>
       </div>
       <?= FileUpload::widget([
-        'model'=>$model,
+        'model'=>$fileUpload,
         'attribute' => 'image',
         'url' => '/fileupload/default/upload', // your url, this is just for demo purposes,
         'options' => ['accept' => 'image/*'],
@@ -104,6 +104,7 @@ use dosamigos\fileupload\FileUpload;
       $('.file_insert_model_bg .title').hide();
       $('.file_insert_model_bg').show();
       $.post('/fileupload/default/get', function (data) {
+        console.log(data);
         $('.photo_list').removeClass('loading');
         if (data.length > 0) {
           for (i = 0; i < data.length; i++) {
