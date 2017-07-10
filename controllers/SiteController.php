@@ -67,7 +67,28 @@ class SiteController extends Controller
     public function actionIndex()
     {
       $page=StaticPages::find()->where(['id' => 1])->asArray()->one();
-      return $this->render('index.jade',['page'=>$page]);
+
+      $user=User::find()
+        ->joinWith(['profile','city','role']) //добавляем вывод из связвнных таблиц
+        ->where([
+          'auth_assignment.user_id'=>null, //убераем с выборки всех пользователей с ролями
+          'user.sex' => 1, //Только женщины
+          'moderate'=>1, //только прошедшие модерацию
+          'user.id'=>[5, 6, 7, 8, 21, 23],
+        ])
+      /*$cnt=$user->count();
+      if($cnt>6){
+        $offset=random_int(0,$cnt-6);
+      }else{
+        $offset=0;
+      };
+      $user=$user*/
+      //  ->offset($offset)
+        ->limit(6)
+        ->all();
+        //->all(); //выводим все что получилось
+
+      return $this->render('index.jade',['page'=>$page,'user'=>$user]);
     }
 
     public function actionServices()
@@ -97,10 +118,10 @@ class SiteController extends Controller
       ]);
     }
 
-    public function actionLegends()
+    public function actionStories()
     {
       $page=StaticPages::find()->where(['id' => 9])->asArray()->one();
-      return $this->render('legends.php',['page'=>$page]);
+      return $this->render('stories.jade',['page'=>$page]);
     }
 
 
@@ -182,8 +203,6 @@ class SiteController extends Controller
                 'user.sex' => 1, //Только женщины
                 'moderate'=>1, //только прошедшие модерацию
             ])
-
-            //->asArray()
             ->all(); //выводим все что получилось
     //  foreach ($user as $qqq){
       //  ddd($qqq->relatedRecords['city']['city']);}
