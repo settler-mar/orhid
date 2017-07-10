@@ -11,7 +11,7 @@ use dosamigos\fileupload\FileUpload;
 /* @var $model app\modules\orhidLegends\models\OrhidLegends */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
+<h1> <?= $model->id ?></h1>
 <div class="orhid-legends-form">
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
@@ -77,10 +77,10 @@ use dosamigos\fileupload\FileUpload;
       <?= FileUpload::widget([
         'model'=>$fileUpload,
         'attribute' => 'image',
-        'url' => '/fileupload/default/upload', // your url, this is just for demo purposes,
+        'url' =>'/fileupload/default/upload/?id='.$model->id, // your url, this is just for demo purposes,
         'options' => ['accept' => 'image/*'],
         'clientOptions' => [
-          'maxFileSize' => 2000
+          'maxFileSize' => 2000,
         ], // Also, you can specify jQuery-File-Upload events
         //// see: https://github.com/blueimp/jQuery-File-Upload/wiki/Options#processing-callback-options
         'clientEvents' => [
@@ -95,15 +95,19 @@ use dosamigos\fileupload\FileUpload;
   </div>
 </div>
 
-
+<?php echo "
 <script>
   $(document).ready(function() {
     $('.multiload').on('click',function() {
       $('.photo_list').addClass('loading');
-      $('.photo_list>*').remove()
+      $('.photo_list>*').remove();
       $('.file_insert_model_bg .title').hide();
       $('.file_insert_model_bg').show();
-      $.post('/fileupload/default/get', function (data) {
+      $('.insert_photo').hide();
+      data={
+        legend:  ".$model->id."
+      };
+      $.post('/fileupload/default/get', data, function (data) {
         console.log(data);
         $('.photo_list').removeClass('loading');
         if (data.length > 0) {
@@ -115,3 +119,4 @@ use dosamigos\fileupload\FileUpload;
     });
   });
 </script>
+"; ?>

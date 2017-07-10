@@ -80,21 +80,27 @@ class DefaultController extends Controller
      */
     public function actionCreate()
     {
-        $model = new OrhidLegends();
-      $model2 = new RegistrationForm();
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['index']);
-        } else {
-                if (Yii::$app->user->can('legendCreate')) {
-                  Yii::$app->view->registerJsFile('/js/mail.js');
+      $legend = OrhidLegends::find()->andWhere(['text' => "Text"])->andWhere(['title' => "Title"])->one();
+      if ($legend) {
+        $model = $legend;
+        $model->text = "";
+        $model->title = "";
+      }else{
+        $model = new OrhidLegends('init');
+      }
 
-                    //return $this->render('@app/modules/user/views/user/registration.jade', ['model' => $model2,]);
-                    return $this->render('create', ['model' => $model, 'fileUpload' => new Fileupload(),]);
-                }
-                else {
-                    return $this->redirect(['index']);
-                }
+      if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['index']);
+      } else {
+        if (Yii::$app->user->can('legendCreate')) {
+          Yii::$app->view->registerJsFile('/js/mail.js');
+
+          //return $this->render('@app/modules/user/views/user/registration.jade', ['model' => $model2,]);
+          return $this->render('create', ['model' => $model, 'fileUpload' => new Fileupload($model->id),]);
+        }else {
+          return $this->redirect(['index']);
         }
+      }
     }
 
     /**

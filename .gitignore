@@ -36,6 +36,7 @@ params.php
 Будет удалено .gitignore
 /vendor_/
 /web/user_file/
+/web/legends_files/
 /web/assets/*
 # ignoring slider pictures
 /web/img/slider/

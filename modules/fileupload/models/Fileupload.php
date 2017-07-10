@@ -13,6 +13,7 @@ class Fileupload extends Model
    */
   public $image;
   public $imagePath;
+  public $legend;
 
   public function rules()
   {
@@ -21,16 +22,28 @@ class Fileupload extends Model
     ];
   }
 
-  public function upload()
+  public function __construct($search=null, $config = [])
+  {
+    if ($search != null){
+      $this->legend = $search;
+    }
+    parent::__construct($config);
+  }
+
+  public function upload($id=null)
   {
     if ($this->validate()) {
-      $path=\Yii::$app->user->identity->userDir.'upload/';
-      //return $path;
+      if ($id!=null){
+        $path = 'legends_files/'.$id.'/';
+      }else {
+        $path = \Yii::$app->user->identity->userDir . 'upload/';
+      }
       if (!file_exists($path)) {
         mkdir($path, 0777, true);   // Создаем директорию при отсутствии
       }
-      $this->imagePath=explode('/',$this->image->tempName);
-      $this->imagePath=$this->imagePath[count($this->imagePath)-1];
+
+      $this->imagePath=explode('\\',$this->image->tempName);
+      $this->imagePath=explode('.', $this->imagePath[count($this->imagePath)-1])[0];;
       $this->imagePath= $path.$this->imagePath . '.' . $this->image->extension;
 
       $img = (new Image($this->image->tempName));

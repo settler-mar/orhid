@@ -24,22 +24,18 @@ class DefaultController extends Controller
     ];
   }
 
-  public function actionUpload(){
+  public function actionUpload($id=null){
     if (!Yii::$app->request->isAjax) {
       return 'Only on Ajax';
     }
-
     $request = Yii::$app->request;
     $model = new Fileupload();
     $response = [];
     if ($request->isPost) {
-//return var_dump(UploadedFile::getInstance($model, 'image'));
       Yii::$app->response->getHeaders()->set('Vary', 'Accept');
       Yii::$app->response->format = Response::FORMAT_JSON;
-
       $model->image = UploadedFile::getInstance($model, 'image');
-      return $response[] = ['error' => 'fsefs'];
-      if ($model->upload()) {
+      if ($model->upload($id)) {
         $response['files'][] =
           [
             'name' => $model->image->name,
@@ -61,7 +57,11 @@ class DefaultController extends Controller
   }
 
   public function actionGet(){
-    $path=\Yii::$app->user->identity->userDir.'upload/';
+    if (isset($_POST['legend'])){
+      $path = 'legends_files/'.$_POST['legend'].'/';
+    }else{
+      $path=\Yii::$app->user->identity->userDir.'upload/';
+    }
     if (!file_exists($path)) {
       mkdir($path, 0777, true);   // Создаем директорию при отсутствии
     };
