@@ -45,7 +45,7 @@ use dosamigos\fileupload\FileUpload;
 
     <?= $form->field($model, 'video')->widget(FileInput::classname(),['type'=>'video']); ?>
 
-    <button class="multiload">Add images</button>
+    <a class="multiload">Add images</a>
 
     <?= $form->field($model, 'language')->dropDownList(['0' => 'English','1' => 'Русский']) ?>
 

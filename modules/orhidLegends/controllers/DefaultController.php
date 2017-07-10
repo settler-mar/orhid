@@ -96,7 +96,7 @@ class DefaultController extends Controller
           Yii::$app->view->registerJsFile('/js/mail.js');
 
           //return $this->render('@app/modules/user/views/user/registration.jade', ['model' => $model2,]);
-          return $this->render('create', ['model' => $model, 'fileUpload' => new Fileupload($model->id),]);
+          return $this->render('create', ['model' => $model, 'fileUpload' => new Fileupload($model->id)]);
         }else {
           return $this->redirect(['index']);
         }
@@ -120,8 +120,9 @@ class DefaultController extends Controller
         }
         else {                                              // begin update
             if (Yii::$app->user->can('legendUpdate')) {
+              Yii::$app->view->registerJsFile('/js/mail.js');
                 return $this->render('update', [
-                    'model' => $model,
+                    'model' => $model,'fileUpload' => new Fileupload($id)
                 ]);
             }
             else{

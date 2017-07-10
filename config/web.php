@@ -61,7 +61,11 @@ $config = [
                 'site/<action>/<action2>'=>'404',
                 //базовые страницы в основном контроллере
 
-                '<action:(top|shop|about|blog|stories|mans|competitions|onlinehelp|services)>' => 'site/<action>',
+                '<action:(top|shop|about|blog|mans|competitions|onlinehelp|services)>' => 'site/<action>',
+
+                'stories'=>'orhidLegends/default/index',
+                'stories/<action>'=>'orhidLegends/default/<action>',
+                'stories/<action>/<id:\d+>'=>'orhidLegends/default/<action>/<id:\d+>',
 
                 //Страница пользователя
                 '<action:(user)>/<id:\d+>' => 'site/user/',
