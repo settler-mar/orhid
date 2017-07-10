@@ -2,7 +2,6 @@ function fileuploaddone(e, data){
   $('.progress_bar').hide();
   $('.fileinput-button').show();
   $('.progress_bar span').width("0");
-  console.log(data.result);
   img=add_file_to_list(data.result.files[0].url);
   img.click()
   popup.open({message:"Picture was successfully uploaded.",type:'info',title:"File upload done"})

@@ -114,7 +114,10 @@ class DefaultController extends Controller
         $model = $this->findModel($id);
         $old_address =$model->image;
         if ($model->load(Yii::$app->request->post())){   // data from request
-            if ($model->image==null) $model->image = $old_address;
+
+          if ($model->image==null) $model->image = $old_address;
+            if (!$model->cover) $model->cover = $model->oldAttributes['cover'];
+            if ($model->video_del) $model->deleteVideo();
             $model->save();
             return $this->redirect(['index']);
         }
@@ -140,6 +143,7 @@ class DefaultController extends Controller
     {
         if (Yii::$app->user->can('legendDelete')) {
             if (file_exists($this->findModel($id)->image)) unlink($this->findModel($id)->image);
+            $this->findModel($id)->deleteEverything();
             $this->findModel($id)->delete();
         }
 

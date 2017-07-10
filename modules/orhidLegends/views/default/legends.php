@@ -22,27 +22,29 @@ $this->title = 'Legends orhid';
 
       <div class="legend_icon">
         <span class="glyphicon glyphicon-camera"></span>
-        <span class="glyphicon glyphicon-facetime-video"></span>
+        <?php if ($legend->video) {?> <span class="glyphicon glyphicon-facetime-video"></span> <?php }?>
       </div>
       <div class="leg_tit">
         <?= $legend->title ?>
       </div>
 
 
-    <div>
-    <?php  if ($canUpdate) { ?>
-      <?= Html::a('Update', ['update', 'id' => $legend->id], ['class' => 'btn btn-primary']) ?>
-    <?php } ?>
-    <?php  if ($canDelete) { ?>
-      <?= Html::a('Delete', ['delete', 'id' => $legend->id], [
+
+    </div>
+
+      <?php  if ($canUpdate) { ?>
+        <?= Html::a('Update', ['update', 'id' => $legend->id], ['class' => 'btn btn-primary']) ?>
+      <?php } ?>
+      <?php  if ($canDelete) { ?>
+        <?= Html::a('Delete', ['delete', 'id' => $legend->id], [
           'class' => 'btn btn-danger',
           'data' => [
             'confirm' => 'Are you sure you want to delete this item?',
             'method' => 'post',
           ],
         ]) ?>
-    <?php } ?>
-    </div>    </div>
+      <?php } ?>
+
   <?php } ?>
 
 				</div>

@@ -41,10 +41,16 @@ use dosamigos\fileupload\FileUpload;
         ]
     ]);?>
 
-    <?= $form->field($model, 'cover')->widget(CropImageUpload::className(),['options'=>['accept'=>'image/jpeg']]);?>
+    <?= $form->field($model, 'cover')->widget(CropImageUpload::className(),['options'=>['accept'=>'image/jpeg'], 'value'=> $model->cover]);?>
+
+    <?= $form->field($model, 'cover_del')->hiddenInput(['class' => 'cover_del'])->label(false) ?>
 
     <?= $form->field($model, 'video')->widget(FileInput::classname(),['type'=>'video']); ?>
-
+    <?php if ($model->video) {?>
+      <a class="del_video">Delete current video </a>
+      <span class="text_for_video"></span> <?php
+    } ?>
+    <?= $form->field($model, 'video_del')->hiddenInput(['class' => 'video_del'])->label(false) ?>
     <a class="multiload">Add images</a>
 
     <?= $form->field($model, 'language')->dropDownList(['0' => 'English','1' => 'Русский']) ?>
@@ -98,6 +104,15 @@ use dosamigos\fileupload\FileUpload;
 <?php echo "
 <script>
   $(document).ready(function() {
+    $('.del_video').on('click', function(){
+      $('.text_for_video').text('Video file will delete');
+      $('.video_del').val(1);
+    })    
+    $('.del_cover').on('click', function(){
+      $('.text_for_cover').text('Cover file will delete');
+      $('.cover_del').val(1);
+    })
+    
     $('.multiload').on('click',function() {
       $('.photo_list').addClass('loading');
       $('.photo_list>*').remove();
