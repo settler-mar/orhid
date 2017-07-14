@@ -203,6 +203,7 @@ class SiteController extends Controller
                 'user.sex' => 1, //Только женщины
                 'moderate'=>1, //только прошедшие модерацию
             ])
+            ->orderBy('top DESC')
             ->all(); //выводим все что получилось
     //  foreach ($user as $qqq){
       //  ddd($qqq->relatedRecords['city']['city']);}
@@ -220,7 +221,7 @@ class SiteController extends Controller
           'user.sex' => 0, //Только мужчины
           'moderate'=>1, //только прошедшие модерацию
         ])
-
+        ->orderBy('top DESC')
         //->asArray()
         ->all(); //выводим все что получилось
       $page=StaticPages::find()->where(['id' => 11])->asArray()->one();
