@@ -212,7 +212,7 @@ class SiteController extends Controller
         return $this->render('top',['user'=>$user,'page'=>$page]);
     }
 
-    public function actionMans()
+    public function actionMen()
     {
       $user=User::find()
         ->joinWith(['profile','city','role']) //добавляем вывод из связвнных таблиц
