@@ -88,7 +88,7 @@ class User extends ActiveRecord  implements IdentityInterface
             ['username', 'match', 'pattern' => '/^[a-z]\w*$/i'],
             ['email', 'email'],
             ['password', 'string', 'min' => 6, 'max' => 61],
-            [['sex', 'city', 'country', 'moderate', 'status','credits','tariff_end_date','tariff_id'], 'integer'],
+            [['sex', 'city', 'country', 'moderate', 'status','top','credits','tariff_end_date','tariff_id'], 'integer'],
             ['photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert']],
             [['photo'], 'image',
                 'minHeight' => 500,
