@@ -11,7 +11,11 @@
     $view->title = $model->first_name.' '.date('Y',$model->profile['birthday']);
     $view->params['breadcrumbs'][] = $view->title;
 
-    $old=date('Y',time()-$model->profile['birthday'])-1970;
+    if ($model->profile['birthday']){
+        $old=date('Y',time()-$model->profile['birthday'])-1970;
+    }else{
+        $old = "No data";
+    }
     $online = (time()-($model->last_online)<User::MAX_ONLINE_TIME);
     $profile=$model->profile;
 

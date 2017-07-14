@@ -60,6 +60,8 @@ class Profile extends \yii\db\ActiveRecord
     {
         return [
             [['passport', 'user_id', 'moderated', 'looking_age_from', 'looking_age_to', 'intro_age_from', 'intro_age_to'], 'integer','message' => 'Must be only numbers.'],
+            [['birthday'], 'safe'],
+            [['birthday'], 'safe'],
             [['passport', 'weight', 'height', 'eyes', 'heir', 'education', 'religion', 'marital_status', 'children_count', 'lang_proficiency', 'smoking'], 'validateList'],
             [['photo0','photo1','photo2','photo3','photo3','photo4','photo5','passport_img_1','passport_img_2','passport_img_3'], 'file', 'skipOnEmpty' => true, 'extensions' => 'jpg, jpeg'],
             [['photo0','photo1','photo2','photo3','photo3','photo4','photo5'], 'image',
@@ -399,6 +401,7 @@ class Profile extends \yii\db\ActiveRecord
     }
 
     public function beforeSave($insert){
+        $this->birthday = strtotime ($this->birthday);
         //После сохранения обрабатываем файловую информацтю
         //Создаем массив для обновления
         $fileToBd = [];
