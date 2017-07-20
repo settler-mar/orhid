@@ -24,9 +24,7 @@ class staticPagesRules extends Object implements UrlRuleInterface{
    */
   public function createUrl($manager, $route, $params)
   {
-    d($params);
-    d($route);
-    ddd($manager);
+
   }
 
   public function parseRequest($manager, $request)
