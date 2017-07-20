@@ -67,7 +67,6 @@ class SiteController extends Controller
     public function actionIndex()
     {
       $page=StaticPages::find()->where(['id' => 1])->asArray()->one();
-var_dump(1111);
       $user=User::find()
         ->joinWith(['profile','city','role']) //добавляем вывод из связвнных таблиц
         ->where([
