@@ -12,7 +12,7 @@
         "irc": "irc://irc.freenode.net/yii",
         "source": "https://github.com/yiisoft/yii2"
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "require": {
         "php": ">=5.4.0",
         "yiisoft/yii2": "~2.0.5",
@@ -33,9 +33,8 @@
         "thiagotalma/yii2-simplecolorpicker": "dev-master",
         "kartik-v/yii2-widget-colorinput": "dev-master",
         "paypal/rest-api-sdk-php": "^1.11",
-        "raveren/kint": "^1.0",
-        "asofter/yii2-imperavi-redactor": "^0.0.3",
-        "2amigos/yii2-file-upload-widget": "dev-master"
+        "kint-php/kint": "^1.0",
+        "asofter/yii2-imperavi-redactor": "^0.0.3"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.0.0",

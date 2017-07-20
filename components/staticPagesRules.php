@@ -13,20 +13,21 @@ use yii\base\Object;
 use app\modules\staticPages\models\StaticPages;
 
 
-class staticPagesRules extends Object implements UrlRuleInterface
-{
+class staticPagesRules extends Object implements UrlRuleInterface{
+
+  /**
+   * Creates a URL according to the given route and parameters.
+   * @param UrlManager $manager the URL manager
+   * @param string $route the route. It should not have slashes at the beginning or the end.
+   * @param array $params the parameters
+   * @return string|bool the created URL, or false if this rule cannot be used for creating this URL.
+   */
   public function createUrl($manager, $route, $params)
   {
-    //return 'site/index';
-   /* if ($route === 'car/index') {
-      if (isset($params['manufacturer'], $params['model'])) {
-        return $params['manufacturer'] . '/' . $params['model'];
-      } elseif (isset($params['manufacturer'])) {
-        return $params['manufacturer'];
-      }
-    }
-    return false;  // данное правило не применимо
-  */}
+    d($params);
+    d($route);
+    ddd($manager);
+  }
 
   public function parseRequest($manager, $request)
   {
