@@ -96,6 +96,13 @@
             return false;
         },
       ],[
+        'attribute'=>'top',
+        'filter'=>array(''=>'All',0=>"No",1=>"Yes"),
+        'value' => function ($model, $key, $index, $column) {
+          if ($model->top) return 'Yes';
+          else return 'No';
+        }
+      ],[
         'attribute'=>'moderate',
         'filter'=>array(''=>'All',0=>"NOT",1=>"YES",2=>'Wait'),
         'value' => function ($model, $key, $index, $column) {

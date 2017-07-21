@@ -34,8 +34,8 @@
   - $form = ActiveForm::begin(['id' => 'form-signup','fieldConfig' => ['template' =>$template_input ],'options' => ['enctype'=>'multipart/form-data']]);
 
   .form-left-block
-    != $form -> field($model, 'top') -> dropDownList([0=>"No",1=>"Yes"]);
     != $form -> field($model, 'status') -> dropDownList([0=>"Blocked",1=>'Active',2=>"Wait"]);
+    != $form -> field($model, 'top') -> dropDownList([0 => "No", 1 => "Yes"]);
     != $form -> field($model, 'photo') -> widget(CropImageUpload::className(), ['options' => ['accept' => 'image/jpeg']]);
 
     .form-group
