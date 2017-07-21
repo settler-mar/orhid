@@ -35,13 +35,14 @@
 
   .form-left-block
     != $form -> field($model, 'status') -> dropDownList([0=>"Blocked",1=>'Active',2=>"Wait"]);
-    != $form -> field($model, 'top') -> dropDownList([0 => "No", 1 => "Yes"]);
+    != (!$model->isManager())?($form -> field($model, 'top') -> dropDownList([0 => "No", 1 => "Yes"])):('')
     != $form -> field($model, 'photo') -> widget(CropImageUpload::className(), ['options' => ['accept' => 'image/jpeg']]);
 
     .form-group
       label.control-label Username
       span= $model->username
 
+    != $form->field($model, 'first_name')->textInput(['placeholder' => 'First name']);
     != $form->field($model, 'first_name')->textInput(['placeholder' => 'First name']);
 
     != $form->field($model, 'last_name')->textInput(['placeholder' => 'Last name']);

@@ -173,7 +173,7 @@ class AdminController extends Controller
 
         return $this->render('@app/modules/user/views/user/profile', [
             'model' => $model,
-            'profile' =>$profile
+            'profile' =>$profile,
         ]);
 
     }
