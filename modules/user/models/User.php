@@ -582,7 +582,7 @@ class User extends ActiveRecord  implements IdentityInterface
 
     public function rmdir($id) {
         //чистим папку файла
-        $path = $this->getUserPath($id);
+        $path = User::getUserPath($id);
         $files = glob($path."*");
         foreach ($files as $file) {
             if (file_exists($file)) {
