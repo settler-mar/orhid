@@ -44,7 +44,7 @@ $config = [
             'rules' => [
                 //закрываем пямой доступ к /user/user
                 'user/user/<action>'=>'404',
-                'user/country/<action>'=>'user/country/<action>',
+          //      'user/country/<action>'=>'user/country/<action>',
                 'user/user/<action>/<action2>'=>'404',
                 '/chat/default/<action>'=>'404',
                 '/mail/default/<action>'=>'404',
