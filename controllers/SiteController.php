@@ -73,7 +73,7 @@ class SiteController extends Controller
           'auth_assignment.user_id'=>null, //убераем с выборки всех пользователей с ролями
           'user.sex' => 1, //Только женщины
           'moderate'=>1, //только прошедшие модерацию
-          'user.id'=>[5, 6, 7, 8, 21, 23],
+         // 'user.id'=>[5, 6, 7, 8, 21, 23],
         ])
       /*$cnt=$user->count();
       if($cnt>6){
@@ -83,6 +83,7 @@ class SiteController extends Controller
       };
       $user=$user*/
       //  ->offset($offset)
+        ->orderBy(['top'=> SORT_DESC])
         ->limit(6)
         ->all();
         //->all(); //выводим все что получилось
