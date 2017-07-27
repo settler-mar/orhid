@@ -107,7 +107,7 @@ $('.us_on').click(function(){
         //console.log(gallery.currItem);
         //console.log(gallery.getCurrentIndex());
         //gallery.zoomTo(1, {x:gallery.viewportSize.x/2,y:gallery.viewportSize.y/2}, 500);
-        gallery.toggleDesktopZoom();
+        //gallery.toggleDesktopZoom();
       }
     });
 
