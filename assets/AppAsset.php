@@ -15,12 +15,15 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/fonts.css',
-        'js/fancybox/jquery.fancybox.css',
+        'js/photoswipe/PhotoSwipe/photoswipe.css',
+        'js/photoswipe/PhotoSwipe/default-skin/default-skin.css',
         'css/site.css',
         'css/admin.css',
     ];
     public $js = [
-        'js/fancybox/jquery.fancybox.js'
+        'js/photoswipe/PhotoSwipe/photoswipe.min.js',
+        'js/photoswipe/PhotoSwipe/photoswipe-ui-default.min.js',
+        'js/photoswipe/jqPhotoSwipe.min.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

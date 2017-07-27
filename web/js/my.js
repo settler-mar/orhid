@@ -100,7 +100,17 @@ $('.us_on').click(function(){
             'class':'fancy'
         }));
     }
-    $('a.photo_people,a.fancy,.one_img a').fancybox();
+    $('a.photo_people,a.fancy,.one_img a').jqPhotoSwipe({
+      galleryOpen: function (gallery) {
+        //with `gallery` object you can access all methods and properties described here http://photoswipe.com/documentation/api.html
+        //console.log(gallery);
+        //console.log(gallery.currItem);
+        //console.log(gallery.getCurrentIndex());
+        //gallery.zoomTo(1, {x:gallery.viewportSize.x/2,y:gallery.viewportSize.y/2}, 500);
+        gallery.toggleDesktopZoom();
+      }
+    });
+
     $('.girl_id_chose').on('change',function(){
         a=$('.chouse_girl_form a.send_gift');
         v=parseInt(this.value);
