@@ -18,7 +18,7 @@ class StaticPagesSearch extends StaticPages
     public function rules()
     {
         return [
-            [['id', 'language'], 'integer'],
+            [['id'], 'integer'],
             [['name', 'text'], 'safe'],
         ];
     }
@@ -60,7 +60,6 @@ class StaticPagesSearch extends StaticPages
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'language' => $this->language,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
