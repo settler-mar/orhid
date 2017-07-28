@@ -10,7 +10,6 @@ use Yii;
  * @property integer $id
  * @property string $name
  * @property string $text
- * @property integer $language
  */
 class StaticPages extends \yii\db\ActiveRecord
 {
@@ -29,7 +28,6 @@ class StaticPages extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'title','index','url'], 'required'],
-            [['language'], 'integer'],
             [['name'], 'string', 'max' => 32],
             [['title'], 'string', 'max' => 50],
             [['meta_title'], 'string', 'max' => 50],
@@ -48,7 +46,6 @@ class StaticPages extends \yii\db\ActiveRecord
             'id' => 'ID',
             'name' => 'Name',
             'text' => 'Text',
-            'language' => 'Language',
             'title' => 'Title',
             'meta_title' => 'Meta title',
             'keywords' => 'Keywords',
