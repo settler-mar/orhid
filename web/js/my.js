@@ -118,6 +118,15 @@ $('.us_on').click(function(){
         href=a.attr('base_href')+v+a.attr('dop_href');
         a.attr('href',href)
     })
+
+    $('#nav-toggle').on('click',function(){
+        $body=$('body')
+        if($body.hasClass('menu_open')){
+            $body.removeClass('menu_open')
+        }else{
+            $body.addClass('menu_open')
+        }
+    })
 });
 
 function init_file_prev(obj){

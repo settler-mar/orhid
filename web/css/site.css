@@ -2836,3 +2836,8 @@ table [name="UserSearch[username]"] {
 
 .girl_id_chose {border:1px solid #aa3b3e; padding:8px; margin:10px 20px 20px 20px; display:block;}
 #select_1:checked~.chouse_girl_form span{font-style:italic; color:#0b0501; font-weight:bold; margin:0px 20px 20px 20px;}
+
+
+.menu_open #contFrm {display:block;}
+.menu_open .top_menu ul {display:block;}
+.menu_open .top_menu {height:100%;}
