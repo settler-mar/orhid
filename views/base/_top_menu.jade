@@ -6,11 +6,16 @@
         ['label' => 'Services', 'url'=>'/services'],
         ['label' => 'About us', 'url'=>'/about'],
         ['label' => 'Blog', 'url'=>'/blog'],
-        ['label' => 'Happy history', 'url'=>'/stories'],
-        ['label' => 'Mens', 'url'=>'/men'],
-        ['label' => 'Конкурсы', 'url'=>'/competitions'],
-        ['label' => 'Help', 'url'=>'/onlinehelp'],
-    ]
+        ['label' => 'Love stories', 'url'=>'/stories'],
+        ['label' => 'Gift shop', 'url'=>'/user-gift/0'],
+        ['label' => 'Partner ship', 'url'=>'/partnership']
+    ];
+    if( Yii::$app->user->isGuest){
+        $menuItems[]=['label' => 'Registration', 'url'=>'/registration'];
+    }else{
+        $menuItems[]=['label' => 'My account', 'url'=>'/profile'];
+    };
+    $menuItems[]=['label' => 'Help', 'url'=>'/onlinehelp'];
 
 .into
     +navbar($menuItems)
