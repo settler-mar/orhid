@@ -18,7 +18,7 @@ class OrhidLegendsSearch extends OrhidLegends
     public function rules()
     {
         return [
-            [['id', 'language', 'state'], 'integer'],
+            [['id', 'state'], 'integer'],
             [['title', 'text', 'image'], 'safe'],
         ];
     }
@@ -60,7 +60,6 @@ class OrhidLegendsSearch extends OrhidLegends
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'language' => $this->language,
             'state' => $this->state,
         ]);
 

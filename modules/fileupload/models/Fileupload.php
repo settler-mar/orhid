@@ -38,13 +38,18 @@ class Fileupload extends Model
       }else {
         $path = \Yii::$app->user->identity->userDir . 'upload/';
       }
-      if (!file_exists($path)) {
+      $bp=\Yii::$app->basePath.'/web/';
+      if (!file_exists($bp.$path)) {
         mkdir($path, 0777, true);   // Создаем директорию при отсутствии
       }
 
       $this->imagePath=explode('\\',$this->image->tempName);
       $this->imagePath=explode('.', $this->imagePath[count($this->imagePath)-1])[0];;
       $this->imagePath= $path.$this->imagePath . '.' . $this->image->extension;
+      $this->imagePath=str_replace('tmp','',$this->imagePath);
+      $this->imagePath=str_replace('php','',$this->imagePath);
+      $this->imagePath=str_replace('//','/',$this->imagePath);
+      $this->imagePath=str_replace('//','/',$this->imagePath);
 
       $img = (new Image($this->image->tempName));
       $imgWidth = $img->getWidth();
@@ -61,7 +66,7 @@ class Fileupload extends Model
           $img->fitToHeight(1000);
         }
       }
-      $img->saveAs($this->imagePath);
+      $img->saveAs($bp.$this->imagePath);
 
       //$this->image->saveAs($this->imagePath);
       return true;

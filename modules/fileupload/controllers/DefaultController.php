@@ -62,6 +62,8 @@ class DefaultController extends Controller
     }else{
       $path=\Yii::$app->user->identity->userDir.'upload/';
     }
+    //$path=Yii::$app->basePath.$path;
+
     if (!file_exists($path)) {
       mkdir($path, 0777, true);   // Создаем директорию при отсутствии
     };

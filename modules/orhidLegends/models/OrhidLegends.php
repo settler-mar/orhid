@@ -39,7 +39,6 @@ class OrhidLegends extends \yii\db\ActiveRecord
   public function __construct($search=null, $config = [])
   {
     if ($search == 'init'){
-      $this->language = 0;
       $this->state = 0;
       $this->text = "Text";
       $this->title = "Title";
@@ -60,8 +59,8 @@ class OrhidLegends extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'text', 'language', 'state'], 'required'],
-            [['language', 'state'], 'integer'],
+            [['title', 'text', 'state'], 'required'],
+            [['state'], 'integer'],
             [['title'], 'string', 'max' => 64],
             [['text'], 'string'],
             [['video_del','cover_del'], 'safe'],
@@ -99,7 +98,6 @@ class OrhidLegends extends \yii\db\ActiveRecord
             'text' => 'Text',
             'image' => 'Image',
             'cover' => 'Cover',
-            'language' => 'Language',
             'state' => 'State',
         ];
     }

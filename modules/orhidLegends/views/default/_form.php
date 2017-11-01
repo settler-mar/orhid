@@ -53,8 +53,6 @@ use dosamigos\fileupload\FileUpload;
     <?= $form->field($model, 'video_del')->hiddenInput(['class' => 'video_del'])->label(false) ?>
     <a class="multiload">Add images</a>
 
-    <?= $form->field($model, 'language')->dropDownList(['0' => 'English','1' => 'Русский']) ?>
-
     <?= $form->field($model, 'state')->dropDownList(['0' => 'Не публиковано','1' => 'Опубликовано'])?>
 
     <div class="form-group">
