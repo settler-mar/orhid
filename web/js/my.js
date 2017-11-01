@@ -117,10 +117,10 @@ $('.us_on').click(function(){
         if(!v)v=0;
         href=a.attr('base_href')+v+a.attr('dop_href');
         a.attr('href',href)
-    })
+    });
 
     $('#nav-toggle').on('click',function(){
-        $body=$('body')
+        $body=$('body');
         if($body.hasClass('menu_open')){
             $body.removeClass('menu_open')
         }else{
