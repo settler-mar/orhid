@@ -3,4 +3,4 @@
 -$view->params['breadcrumbs'][] = ['label' => 'Tarificator Tables', 'url' => ['index']]
 -$view->params['breadcrumbs'][] = $view->title
 .tarificator-table-create
-  !=$view->render('_form', ['model' => $model, 'tariffs' => $tariffs])
+  !=$view->render('_form', ['model' => $model, 'tariffs' => $tariffs,'includeData' => $model->includeData])

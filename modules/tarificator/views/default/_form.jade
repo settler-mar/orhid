@@ -36,13 +36,20 @@
             'header' => 'Unlimited',
             'format' => 'raw',
             'value' => function($model) use ($form,$includeData){
-                        return Html::checkbox( 'checkBox_'.$model->code, $includeData[$model->code] && $includeData[$model->code]=='unlimited',null);
+                        return Html::checkbox(
+                        'checkBox_'.$model->code,
+                        isset($includeData[$model->code]) && $includeData[$model->code]=='unlimited',
+                        null);
                         }
         ],[
             'header' => 'Numder of units',
             'format' => 'raw',
             'value' => function($model) use ($form,$includeData){
-                        return Html::input("text",'inputText_'.$model->code,$includeData[$model->code] && $includeData[$model->code]!='unlimited'?$includeData[$model->code]:NULL);
+                        return Html::input(
+                        "text",
+                        'inputText_'.$model->code,
+                        isset($includeData[$model->code]) && $includeData[$model->code]!='unlimited'?
+                            $includeData[$model->code]:NULL);
                    }
         ],
     ]
@@ -53,4 +60,13 @@
     !=Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])
   -ActiveForm::end()
 
+script(type='text/javascript').
+    $(document).ready(function() {
+        if($("input[name='hide_the_tarifTable']").attr("checked") == 'checked'){
+            $("#w1").hide();
+            setTimeout(function(){
+                $(".field-tarificatortable-credits").show(500);
+            },300)
+        }
+    });
 

@@ -17,59 +17,64 @@ use yii\helpers\Json;
  */
 class TarificatorTable extends \yii\db\ActiveRecord
 {
-    public function getPayments()
-    {
-        return $this->hasMany(Payments::className(),['pos_id' => 'id']);
-    }
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return 'tarificatorTable';
-    }
+  public function getPayments()
+  {
+    return $this->hasMany(Payments::className(), ['pos_id' => 'id']);
+  }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['name','timer', 'price', 'description','color'], 'required'],
-            [['timer','credits'], 'integer'],
-            [['price'], 'number'],
-            [['description','color'], 'string'],
-            [['name'], 'string', 'max' => 32],
-        ];
-    }
+  /**
+   * @inheritdoc
+   */
+  public static function tableName()
+  {
+    return 'tarificatorTable';
+  }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'timer' => 'Time',
-            'price' => 'Price',
-            'credeits' =>'Credits',
-            'color' => 'Color',
-            'description' => 'Description',
-            'includeData' => 'Include Data',
-        ];
+  /**
+   * @inheritdoc
+   */
+  public function rules()
+  {
+    return [
+      [['name', 'timer', 'price', 'description', 'color'], 'required'],
+      [['timer', 'credits'], 'integer'],
+      [['price'], 'number'],
+      [['description', 'color'], 'string'],
+      [['name'], 'string', 'max' => 32],
+    ];
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function attributeLabels()
+  {
+    return [
+      'id' => 'ID',
+      'name' => 'Name',
+      'timer' => 'Time',
+      'price' => 'Price',
+      'credeits' => 'Credits',
+      'color' => 'Color',
+      'description' => 'Description',
+      'includeData' => 'Include Data',
+    ];
+  }
+
+  public function beforeSave($insert)
+  {
+    $query = Tariff::find()->all();
+    $request = Yii::$app->request->post();
+    $jsonArray = [];
+    foreach ($query as $t) {
+      if (
+        isset($request['checkBox_' . $t->code]) &&
+        $request['checkBox_' . $t->code] == '1'
+      ) {
+        $jsonArray[$t->code] = "unlimited";
+      } else if ($request['inputText_' . $t->code] != "") $jsonArray[$t->code] = $request['inputText_' . $t->code];
     }
-    public function beforeSave($insert)
-    {
-        $query = Tariff::find()->all();
-        $request = Yii::$app->request->post();
-        foreach ($query as $t){
-            if ($request['checkBox_'.$t->code]=='1') {
-                $jsonArray[$t->code] = "unlimited";
-            }
-            else if ($request['inputText_'.$t->code]!="") $jsonArray[$t->code] = $request['inputText_'.$t->code];
-        }
-        $this->includeData = json_encode($jsonArray);
-        return parent::beforeSave($insert);
-    }
+    $this->includeData = json_encode($jsonArray);
+    return parent::beforeSave($insert);
+  }
 }
