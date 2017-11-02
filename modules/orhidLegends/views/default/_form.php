@@ -11,7 +11,6 @@ use dosamigos\fileupload\FileUpload;
 /* @var $model app\modules\orhidLegends\models\OrhidLegends */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<h1> <?= $model->id ?></h1>
 <div class="orhid-legends-form">
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
@@ -50,27 +49,14 @@ use dosamigos\fileupload\FileUpload;
       <a class="del_video">Delete current video </a>
       <span class="text_for_video"></span> <?php
     } ?>
+
     <?= $form->field($model, 'video_del')->hiddenInput(['class' => 'video_del'])->label(false) ?>
-    <a class="multiload">Add images</a>
 
-    <?= $form->field($model, 'state')->dropDownList(['0' => 'Не публиковано','1' => 'Опубликовано'])?>
+  <div class="photo_list">
 
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-    </div>
+  </div>
 
-    <?php ActiveForm::end(); ?>
-
-</div>
-
-<div class="file_insert_model_bg">
-  <div class="file_insert_model">
-    <div class="close">X</div>
-    <div class="title">Select photo</div>
-    <div class="photo_list">
-
-    </div>
-
+  <div class="form-group">
     <div>
       <div>
         You can upload new file from your PC.
@@ -95,9 +81,18 @@ use dosamigos\fileupload\FileUpload;
         ],
       ]);?>
     </div>
-    <a class="insert_photo">Insert photo</a>
   </div>
+
+    <?= $form->field($model, 'state')->dropDownList(['0' => 'Не публиковано','1' => 'Опубликовано'])?>
+
+    <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+
 </div>
+
 
 <?php echo "
 <script>
@@ -111,25 +106,23 @@ use dosamigos\fileupload\FileUpload;
       $('.cover_del').val(1);
     })
     
-    $('.multiload').on('click',function() {
-      $('.photo_list').addClass('loading');
-      $('.photo_list>*').remove();
-      $('.file_insert_model_bg .title').hide();
-      $('.file_insert_model_bg').show();
-      $('.insert_photo').hide();
-      data={
-        legend:  ".$model->id."
-      };
-      $.post('/fileupload/default/get', data, function (data) {
-        console.log(data);
-        $('.photo_list').removeClass('loading');
-        if (data.length > 0) {
-          for (i = 0; i < data.length; i++) {
-            add_file_to_list(data[i])
-          }
+    $('.photo_list').addClass('loading');
+    $('.photo_list>*').remove();
+    $('.file_insert_model_bg .title').hide();
+    $('.file_insert_model_bg').show();
+    $('.insert_photo').hide();
+    data={
+      legend:  " . $model->id . "
+    };
+    $.post('/fileupload/default/get', data, function (data) {
+      console.log(data);
+      $('.photo_list').removeClass('loading');
+      if (data.length > 0) {
+        for (i = 0; i < data.length; i++) {
+          add_file_to_list(data[i])
         }
-      }, 'json');
-    });
-  });
+      }
+    }, 'json');
+   });
 </script>
 "; ?>
