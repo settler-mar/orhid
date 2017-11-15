@@ -509,7 +509,12 @@ class User extends ActiveRecord  implements IdentityInterface
                 $cropParam = array(0, 0, 100, 100);
             }
 
-            $img = (new Image($photo->tempName));
+            if(exif_imagetype($photo->tempName)==2){
+              $img = (new Image(imagecreatefromjpeg($photo->tempName)));
+            }else {
+              $img = (new Image($photo->tempName));
+            }
+
             $imgWidth = $img->getWidth();
             $imgHeight = $img->getHeight();
 
