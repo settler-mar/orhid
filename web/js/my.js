@@ -514,20 +514,20 @@ function set_fav(user,s){
 
 
 
-$('.legend_block').click(function(){
+$('.legend_block').click(function() {
     if ($('.modal').is(":hidden")) {
-					$('.modal').show();
-					$("body").addClass("lock");	
+        $('.modal').show();
+        $("body").addClass("lock");
 
-			 } else {
-				
-				$('.modal').hide;
-	            $("body").removeClass("lock");	
-				
-}
-	 return false;
+    } else {
+        $('.modal').hide;
+        $("body").removeClass("lock");
+    }
+    return false;
 });
-
+$('.legend_block .btn').click(function (e) {
+    e.stopPropagation()
+})
 
 
 $('.leg_close').click(function(){

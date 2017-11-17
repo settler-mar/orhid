@@ -44,7 +44,7 @@ params.php
 # ignoring tinyMce redactor pictures
 /web/image/
 
-/web/index.php
+
 
 *.log
 *.tmp
@@ -54,3 +54,4 @@ params.php
 /web/uploads_thumbs/
 /web/uploads/
 /composer.lock
+/config/start_param.php

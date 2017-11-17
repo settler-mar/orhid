@@ -52,12 +52,16 @@ class DefaultController extends Controller
         if (!is_dir('image/uploads/')) mkdir('image/uploads/');
         if (!is_dir('image/uploads_thumbs/')) mkdir('image/uploads_thumbs/');
 
-      $legends = OrhidLegends::find()->all();
+      $legends = OrhidLegends::find();
+      if (Yii::$app->user->isGuest || !Yii::$app->user->can('userManager')) {
+        $legends=$legends->where(['state'=>1]);
+      }
+      $legends = $legends->all();
         return $this->render('legends', [
             'legends' => $legends,
-            'canCreate' => Yii::$app->user->can('legendCreate'),
-            'canUpdate' => Yii::$app->user->can('legendUpdate'),
-            'canDelete' => Yii::$app->user->can('legendDelete'),
+            'canCreate' => !Yii::$app->user->isGuest && Yii::$app->user->can('legendCreate'),
+            'canUpdate' => !Yii::$app->user->isGuest && Yii::$app->user->can('legendUpdate'),
+            'canDelete' => !Yii::$app->user->isGuest && Yii::$app->user->can('legendDelete'),
         ]);
     }
 

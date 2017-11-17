@@ -28,10 +28,6 @@ $this->title = 'Legends orhid';
         <?= $legend->title ?>
       </div>
 
-
-
-    </div>
-
       <?php  if ($canUpdate) { ?>
         <?= Html::a('Update', ['update', 'id' => $legend->id], ['class' => 'btn btn-primary']) ?>
       <?php } ?>
@@ -44,6 +40,10 @@ $this->title = 'Legends orhid';
           ],
         ]) ?>
       <?php } ?>
+
+    </div>
+
+
 
   <?php } ?>
 
