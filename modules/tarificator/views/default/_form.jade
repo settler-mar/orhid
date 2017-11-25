@@ -4,12 +4,11 @@
 -use yii\widgets\ActiveForm
 -use dosamigos\tinymce\TinyMce;
 -use yii\helpers\Json;
--use kartik\color\ColorInput;
+
 .tarificator-table-form
   -$form = ActiveForm::begin();
   !=$form->field($model, 'name')->textInput(['maxlength' => true]);
   !=$form->field($model, 'price')->textInput()
-  !=$form->field($model, 'color')->widget(ColorInput::classname(), ['options' => ['placeholder' => 'Select color ...'],])
   !=$form->field($model, 'timer')->textInput()
   -
     echo $form->field($model, 'description')->widget(TinyMce::className(), [
@@ -53,20 +52,11 @@
                    }
         ],
     ]
-  != Html::checkbox('hide_the_tarifTable',$model->credits,['label'=>'credit package'])
+
   !=$form->field($model, 'credits')->textInput()
   !=GridView::widget(['dataProvider' => $tariffs, 'columns' => $columns])
   .form-group
     !=Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary'])
   -ActiveForm::end()
 
-script(type='text/javascript').
-    $(document).ready(function() {
-        if($("input[name='hide_the_tarifTable']").attr("checked") == 'checked'){
-            $("#w1").hide();
-            setTimeout(function(){
-                $(".field-tarificatortable-credits").show(500);
-            },300)
-        }
-    });
 

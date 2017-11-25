@@ -18,21 +18,11 @@
     if ($canUpdate == 1) $template = '{update}'; else $template = '';
 
     $columns = [
-    [
-      'attribute'=>'name',
-      'format' => 'raw',
-      'value' => function($data){
-        return '<span '.
-                  'style="background: '.$data->color.';'.
-                  'color: #fff;'.
-                  'display: block;'.
-                  'text-align: center;"'.
-                '>'.$data->name.'</span>';
-      },
-    ],
+    'name',
     'price',
     'timer',
     [
+      'format' => 'raw',
       'attribute'=>'description',
       'value' => function($data){return crop_str(strip_tags($data->description),150,'...');},
      ],

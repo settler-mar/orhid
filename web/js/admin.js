@@ -21,20 +21,4 @@ $(document).ready(function() {
             parse_input_json(response)
         },'json');
     })
-
-    $(".field-tarificatortable-credits").hide();
-    $("input[name='hide_the_tarifTable']" ).on( "click", analiz_tarif_type);
-
-    function analiz_tarif_type(){
-        if($("input[name='hide_the_tarifTable']").attr("checked") == 'checked') {
-            $("#w1" ).show(500);
-            $(".field-tarificatortable-credits").hide();
-            $("input[name='hide_the_tarifTable']").attr('checked', false);
-        }
-        else{
-            $("#w1").hide();
-            $(".field-tarificatortable-credits").show(500);
-            $("input[name='hide_the_tarifTable']").attr('checked', true);
-        }
-    }
 })

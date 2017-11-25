@@ -9,56 +9,268 @@
 
 .site-contact
     .all_tarif
-        -
-          foreach($tarificatorTariffs as $tarif){
-
-        .tarif(style= 'background:'.$tarif->color)
-            .tar_1(style= 'color:'.$tarif->color)
+        .tarif(style='background:#cd7f32')
+            .tar_1(style='color:#cd7f32')
                 p
-                    -echo $tarif->name;
+                    | Bronze
             .tar_2
-                p(data-select-like-a-boss= $tarif->id)
-                   -echo '$'.$tarif->price;
-                span per month
+                p(data-select-like-a-boss='1')
+                    | $0
+                span
+                    | per month
             .tar_3
-                -
-                    $array = json_decode($tarif->includeData);
-                    if ($array) foreach($array as $key => $value)
-                    {
                 p
-                    -echo $tariffElements[$key]['description']
+                    | All Incoming Emails
                     span
-                        -echo $value
-                -}
-                //.more_tar Read more
+                        | unlimited
+                p
+                    | Introduction emails
+                    span
+                        | -
+                p
+                    | Follow-Up e-mails
+                    span
+                        | -
+                p
+                    | Member’s credits
+                    span
+                        | -
                 -if($guest==0){
-                a(href='/payment/tariff/'.$tarif->id,name =$tarif->name) buy
+                a(href='/payment/tariff/1',name ='Bronze') buy
                 -}else{
                 p Авторизуйтесь или
                 a Зарегистрируйтесь
                 -}
-        -}
 
 
-        .all_credits
-            p.credits Кредитные пакеты
-            - foreach($tarificatorCredits as $tarif){
-                .tarif_unit(style= 'background:'.$tarif->color)
-                    .tar_1(style= 'color:'.$tarif->color)
-                        -echo $tarif->name;
-                    .tar_4
-                        p
-                            -echo 'credits '.$tarif->credits;
-                    .tar_2
-                        p
-                            -echo '$'.$tarif->price;
-                    .tar_3
-                        p
-                            //.more_tar Read more
-                            -if($guest==0){
-                            a(href='/payment/tariff/'.$tarif->id,name =$tarif->name) buy
-                            -}else{
-                            p Авторизуйтесь или
-                            a Зарегистрируйтесь
-                            -}
-            -}
+        .tarif(style='background:#c0c0c0')
+            .tar_1(style='color:#c0c0c0')
+                p
+                    | Silver
+            .tar_2
+                p(data-select-like-a-boss='1')
+                    | $10
+                span
+                    | per month
+            .tar_3
+                p
+                    | All Incoming Emails
+                    span
+                        | unlimited
+                p
+                    | Introduction emails
+                    span
+                        | 10
+                p
+                    | Follow-Up e-mails
+                    span
+                        | -
+                p
+                    | Member’s credits
+                    span
+                        | -
+                -if($guest==0){
+                a(href='/payment/tariff/2',name ='Silver') buy
+                -}else{
+                p Авторизуйтесь или
+                a Зарегистрируйтесь
+                -}
+
+        .tarif(style='background:#ffd700')
+            .tar_1(style='color:#ffd700')
+                p
+                    | Gold
+            .tar_2
+                p(data-select-like-a-boss='1')
+                    | $30
+                span
+                    | per month
+            .tar_3
+                p
+                    | All Incoming Emails
+                    span
+                        | unlimited
+                p
+                    | Introduction emails
+                    span
+                        | 20
+                p
+                    | Follow-Up e-mails
+                    span
+                        | 15
+                p
+                    | Member’s credits
+                    span
+                        | -
+                -if($guest==0){
+                a(href='/payment/tariff/3',name ='Gold') buy
+                -}else{
+                p Авторизуйтесь или
+                a Зарегистрируйтесь
+                -}
+
+        .tarif(style='background:#e5e4e2')
+            .tar_1(style='color:#e5e4e2')
+                p
+                    | Platinum
+            .tar_2
+                p(data-select-like-a-boss='1')
+                    | $40
+                span
+                    | per month
+            .tar_3
+                p
+                    | All Incoming Emails
+                    span
+                        | unlimited
+                p
+                    | Introduction emails
+                    span
+                        | 30
+                p
+                    | Follow-Up e-mails
+                    span
+                        | 20
+                p
+                    | Member’s credits
+                    span
+                        | -
+                -if($guest==0){
+                a(href='/payment/tariff/4',name ='Platinum') buy
+                -}else{
+                p Авторизуйтесь или
+                a Зарегистрируйтесь
+                -}
+
+        .tarif(style='background:#b9f2ff')
+            .tar_1(style='color:#b9f2ff')
+                p
+                    | Diamond
+            .tar_2
+                p(data-select-like-a-boss='1')
+                    | $450
+                span
+                    | per month
+            .tar_3
+                p
+                    | All Incoming Emails
+                    span
+                        | unlimited
+                p
+                    | Introduction emails
+                    span
+                        | -
+                p
+                    | Follow-Up e-mails
+                    span
+                        | 100
+                p
+                    | Member’s credits
+                    span
+                        | 600
+                -if($guest==0){
+                a(href='/payment/tariff/5',name ='Diamond') buy
+                -}else{
+                p Авторизуйтесь или
+                a Зарегистрируйтесь
+                -}
+
+    .title_1
+        span Price per package
+
+    table
+        thead
+            tr
+                th Service name
+                th Price
+        tbody
+            tr
+                td Introduction Video costs
+                td 4 credits
+            tr
+                td Outcoming Introductions
+                td 7 credits per email
+            tr
+                td Outcoming Follow-ups
+                td 7 credits per email
+            tr
+                td Live Chat
+                td 0.5 credit per minute
+
+    .title_1
+        span Credits costs
+
+    table
+        thead
+            tr
+                th Credit count
+                th Price
+                th Price per credit
+                th
+        tbody
+            tr
+                td 40
+                td $30
+                td $0.75
+                td
+                    -if($guest==0){
+                    a(href='/payment/tariff/6',name ='Diamond') buy
+                    -}else{
+                    p Авторизуйтесь или
+                    a Зарегистрируйтесь
+                    -}
+            tr
+                td 100
+                td $70
+                td $0.7
+                td
+                    -if($guest==0){
+                    a(href='/payment/tariff/7',name ='Diamond') buy
+                    -}else{
+                    p Авторизуйтесь или
+                    a Зарегистрируйтесь
+                    -}
+            tr
+                td 200
+                td $120
+                td $0.6
+                td
+                    -if($guest==0){
+                    a(href='/payment/tariff/8',name ='Diamond') buy
+                    -}else{
+                    p Авторизуйтесь или
+                    a Зарегистрируйтесь
+                    -}
+            tr
+                td 300
+                td $170
+                td $0.57
+                td
+                    -if($guest==0){
+                    a(href='/payment/tariff/9',name ='Diamond') buy
+                    -}else{
+                    p Авторизуйтесь или
+                    a Зарегистрируйтесь
+                    -}
+            tr
+                td 500
+                td $250
+                td $0.5
+                td
+                    -if($guest==0){
+                    a(href='/payment/tariff/10',name ='Diamond') buy
+                    -}else{
+                    p Авторизуйтесь или
+                    a Зарегистрируйтесь
+                    -}
+            tr
+                td 1000
+                td $470
+                td $0.47
+                td
+                    -if($guest==0){
+                    a(href='/payment/tariff/11',name ='Diamond') buy
+                    -}else{
+                    p Авторизуйтесь или
+                    a Зарегистрируйтесь
+                    -}
