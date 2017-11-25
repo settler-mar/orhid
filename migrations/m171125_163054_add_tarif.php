@@ -37,7 +37,7 @@ class m171125_163054_add_tarif extends Migration
         ],
       ]);
 
-      $this->dropColumn('tarificatorTable', 'color');
+      //$this->dropColumn('tarificatorTable', 'color');
 
       $this->batchInsert('tarificatorTable', [
         'id',
