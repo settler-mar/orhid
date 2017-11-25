@@ -129,5 +129,19 @@
             param(name='allowScriptAccess', value='always')
             param(name='movie', value='/player/uppod.swf')
             param(name='flashvars', value="comment=test&st=/player/video209-1292.txt&file=/".$profile['video_about'])
+
     -}
+
+    .video.video_registration
+        | Для просмотра видео необходимо авторизироваться
+
+    .video.video_pay
+        | Для просмотра видео необходимо
+        a(href='/user/'.$model->id.'?open_video')
+        | оплатить его просмотр
+
+    .video.video_no_money
+        | Для просмотра видео необходимо
+        a(href='/services') пополнить баланс
+        | , а затем оплатить просмотр видео
 

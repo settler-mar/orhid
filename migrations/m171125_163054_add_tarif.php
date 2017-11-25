@@ -6,7 +6,6 @@ class m171125_163054_add_tarif extends Migration
 {
     public function safeUp()
     {
-/*
       $this->batchInsert('tarifTimerTable', [
         'price',
         'code',
@@ -33,7 +32,7 @@ class m171125_163054_add_tarif extends Migration
           'Live Chat'
         ],
       ]);
-*/
+
       $this->dropColumn('tarificatorTable', 'color');
 
       $this->batchInsert('tarificatorTable', [
