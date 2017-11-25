@@ -6,6 +6,10 @@ class m171125_163054_add_tarif extends Migration
 {
     public function safeUp()
     {
+      $this->truncateTable('tarifTimerTable');
+      $this->truncateTable('tarificatorTable');
+
+
       $this->batchInsert('tarifTimerTable', [
         'price',
         'code',
