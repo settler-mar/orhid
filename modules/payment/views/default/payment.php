@@ -21,17 +21,27 @@ $this->params['breadcrumbs'][] = $this->title;
 </div>
 
 <div class="form_gift_1">
-  <?php $form = ActiveForm::begin(); ?>
-  <div class="pay_block">
-    <label class="paypal_1">
-      <input type="radio" value="0" name="method" checked>
-    </label>
+  <?php
+    if($order->price>0) {
+      ?>
+      <?php $form = ActiveForm::begin(); ?>
+      <div class="pay_block">
+        <label class="paypal_1">
+          <input type="radio" value="0" name="method" checked>
+        </label>
 
-    <label class="visa_1">
-      <input type="radio" value="1" name="method">
-    </label>
-  </div>
+        <label class="visa_1">
+          <input type="radio" value="1" name="method">
+        </label>
+      </div>
 
-  <input class="send_g" type="submit" value="Send">
-  <?php ActiveForm::end(); ?>
+      <input class="send_g" type="submit" value="Send">
+      <?php ActiveForm::end(); ?>
+      <?php
+    }else{
+      ?>
+      This position is FREE and is provided by default if there is not more than what is not selected.
+      <?php
+    }
+  ?>
 </div>

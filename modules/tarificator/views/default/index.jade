@@ -29,7 +29,7 @@
     [
       'attribute'=>'type',
       'value' => function($data){
-        return $data->credits==0?'Packet tariff':'Unit packet';
+        return strlen($data->includeData) < 5?'Packet tariff':'Unit packet';
       },
      ],
     [

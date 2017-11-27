@@ -303,10 +303,16 @@ class DefaultController extends Controller
       //ddd($tariff);
 
       $user = User::find()->where(['id' => $user])->one();
-      if ($tariff->credits == 0) {
+      if (strlen($tariff->includeData) < 5) {
+
+        if($user->credits!=0) {
+          $tariff->includeData = json_decode($tariff->includeData, true);
+        }
+
         $user->tariff_unit = $tariff->includeData;
         $user->tariff_end_date = time() + $tariff->timer * 60 * 60 * 24;
         $user->tariff_id = $tariff->id;
+
       } else {
         $user->credits += $tariff->credits;
       }
