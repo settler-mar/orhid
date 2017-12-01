@@ -728,6 +728,17 @@ display:inline-block;
 }
 
 @media (max-width: 500px) {
+.price_per_package {text-align:left; border-spacing: 0px 2px; font-size:14px; width:100%;}
+.price_per_package tr {background:#f4ebe4;}
+.price_per_package thead tr {background:#aa3b3e; color:#fff;}
+.price_per_package td, .price_per_package th {padding:10px 10px 10px 10px;}
+
+.credits_cost p {margin-bottom:0; line-height:1.0}
+.credits_cost {text-align:left; border-spacing: 0px 2px; font-size:14px; width:100%;}
+.credits_cost tr {background:#f4ebe4;}
+.credits_cost thead tr {background:#aa3b3e; color:#fff;}
+.credits_cost td, .credits_cost th {padding:6px 6px 6px 10px;}
+  
   .leg_okno { margin:20px auto; width:calc(96% - 30px); }
   .photo_leg a {width:30%;  display:inline-block; margin:0px 1% 1% 0;}
   .users img {
