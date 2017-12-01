@@ -37,7 +37,7 @@ class m171125_163054_add_tarif extends Migration
         ],
       ]);
 
-      //$this->dropColumn('tarificatorTable', 'color');
+      $this->dropColumn('tarificatorTable', 'color');
 
       $this->batchInsert('tarificatorTable', [
         'id',
@@ -156,19 +156,4 @@ class m171125_163054_add_tarif extends Migration
 
         return false;
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m171125_163054_add_tarif cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }

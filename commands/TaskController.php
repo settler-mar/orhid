@@ -7,6 +7,7 @@
 
 namespace app\commands;
 
+use app\module\task\models\Task;
 use app\modules\user\models\User;
 use yii\console\Controller;
 
@@ -21,8 +22,7 @@ use yii\console\Controller;
 class TaskController extends Controller
 {
   /**
-   * This command echoes what you have entered as the message.
-   * @param string $message the message to be echoed.
+   * Задать пароль пользователю
    */
   public function actionSetPass($email,$pass)
   {
@@ -47,6 +47,27 @@ class TaskController extends Controller
     }else{
       echo 'Ошибка изменения пароля'."\n";
       ddd($user->errors);
+    }
+  }
+
+  /**
+   * Выполнение действий по расписанию
+   */
+  public function actionIndex(){
+    //Смена тарифа
+    $tasks = Task::find()
+      ->andWhere(['task' => 1])
+      ->andWhere(['<', 'add_time', time()+600]) // + 10 минут к текущему времени
+      ->all();
+    foreach ($tasks as $task) {
+      $user=User::find()
+        ->where(['id'=>$task->user_id])
+        ->one();
+
+      $user->tariff_unit=$task->params; //задаем дпнные тарифа
+      $user->save();
+
+      $task->delete(); //удаляем задачу
     }
   }
 }

@@ -205,6 +205,9 @@ $config = [
         'fileupload' => [
           'class' => 'app\modules\fileupload\Module',
         ],
+      'task' => [
+        'class' => 'app\modules\task\Module',
+      ],
     ],
 ];
 
