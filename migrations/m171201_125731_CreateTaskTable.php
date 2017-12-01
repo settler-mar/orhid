@@ -16,6 +16,7 @@ class m171201_125731_CreateTaskTable extends Migration
     ]);
 
     $this->addColumn('payments', 'comment', $this->string()->null());
+    $this->addColumn('user', 'pays_video', $this->string()->null());
   }
 
   public function safeDown()
@@ -24,7 +25,8 @@ class m171201_125731_CreateTaskTable extends Migration
     $this->dropTable('task');
 
     $this->dropColumn('payments', 'comment');
-    return false;
+    $this->dropColumn('user', 'pays_video');
+
   }
 
 }
