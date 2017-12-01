@@ -35,11 +35,14 @@
                     | Member’s credits
                     span
                         | -
+
+                -if(!Yii::$app->user->identity->role){
                 -if($guest==0){
                 a(href='/payment/tariff/1',name ='Bronze') buy
                 -}else{
                 div Log in or
                 a Sign up
+                -}
                 -}
 
 
@@ -69,11 +72,14 @@
                     | Member’s credits
                     span
                         | -
+
+                -if(!Yii::$app->user->identity->role){
                 -if($guest==0){
                 a(href='/payment/tariff/2',name ='Silver') buy
                 -}else{
                 div Log in or
                 a Sign up
+                -}
                 -}
 
         .tarif(style='background:#ffd700')
@@ -102,11 +108,13 @@
                     | Member’s credits
                     span
                         | -
+                -if(!Yii::$app->user->identity->role){
                 -if($guest==0){
                 a(href='/payment/tariff/3',name ='Gold') buy
                 -}else{
                 div Log in or
                 a Sign up
+                -}
                 -}
 
         .tarif(style='background:#e5e4e2')
@@ -135,11 +143,13 @@
                     | Member’s credits
                     span
                         | -
-                -if($guest==0){
-                a(href='/payment/tariff/4',name ='Platinum') buy
-                -}else{
-                div Log in or
-                a Sign up
+                -if(!Yii::$app->user->identity->role){
+                    -if($guest==0){
+                    a(href='/payment/tariff/4',name ='Platinum') buy
+                    -}else{
+                    div Log in or
+                    a Sign up
+                    -}
                 -}
 
         .tarif(style='background:#b9f2ff')
@@ -168,11 +178,14 @@
                     | Member’s credits
                     span
                         | 600
+
+                -if(!Yii::$app->user->identity->role){
                 -if($guest==0){
                 a(href='/payment/tariff/5',name ='Diamond') buy
                 -}else{
                 div Log in or
                 a Sign up
+                -}
                 -}
 
     .title_1
@@ -213,64 +226,76 @@
                 td $30
                 td $0.75
                 td
+                    -if(!Yii::$app->user->identity->role){
                     -if($guest==0){
                     a(href='/payment/tariff/6',name ='Diamond') buy
                     -}else{
                     p Log in or
                     a Sign up
                     -}
+                    -}
             tr
                 td 100
                 td $70
-                td $0.7ssss
+                td $0.7
                 td
+                    -if(!Yii::$app->user->identity->role){
                     -if($guest==0){
                     a(href='/payment/tariff/7',name ='Diamond') buy
                     -}else{
                     p Log in or
                     a Sign up
                     -}
+                    -}
             tr
                 td 200
                 td $120
                 td $0.6
                 td
+                    -if(!Yii::$app->user->identity->role){
                     -if($guest==0){
                     a(href='/payment/tariff/8',name ='Diamond') buy
                     -}else{
                     p Log in or
                     a Sign up
                     -}
+                    -}
             tr
                 td 300
                 td $170
                 td $0.57
                 td
+                    -if(!Yii::$app->user->identity->role){
                     -if($guest==0){
                     a(href='/payment/tariff/9',name ='Diamond') buy
                     -}else{
                     p Log in or
                     a Sign up
                     -}
+                    -}
             tr
                 td 500
                 td $250
                 td $0.5
                 td
+                    -if(!Yii::$app->user->identity->role){
                     -if($guest==0){
                     a(href='/payment/tariff/10',name ='Diamond') buy
                     -}else{
                     p Log in or
                     a Sign up
                     -}
+                    -}
             tr
                 td 1000
                 td $470
                 td $0.47
                 td
+                    -if(!Yii::$app->user->identity->role){
                     -if($guest==0){
                     a(href='/payment/tariff/11',name ='Diamond') buy
                     -}else{
                     p Log in or
                     a Sign up
+                    -}
                     -}
