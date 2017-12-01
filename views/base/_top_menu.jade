@@ -2,14 +2,17 @@
 
 -
     $menuItems = [
-        ['label' => 'Top', 'url'=>'/top'],
-        ['label' => 'Services', 'url'=>'/services'],
-        ['label' => 'About us', 'url'=>'/about'],
-        ['label' => 'Blog', 'url'=>'/blog'],
-        ['label' => 'Love stories', 'url'=>'/stories'],
-        ['label' => 'Gift shop', 'url'=>'/user-gift/0'],
-        ['label' => 'Partner ship', 'url'=>'/partnership']
+        ['label' => 'Top', 'url'=>'/top']
     ];
+    if( Yii::$app->user->isGuest || Yii::$app->user->identity->role || Yii::$app->user->sex==0){
+        $menuItems[] = ['label' => 'Services', 'url'=>'/services'];
+    };
+    $menuItems[] = ['label' => 'About us', 'url'=>'/about'];
+    $menuItems[] = ['label' => 'Blog', 'url'=>'/blog'];
+    $menuItems[] = ['label' => 'Love stories', 'url'=>'/stories'];
+    $menuItems[] = ['label' => 'Gift shop', 'url'=>'/user-gift/0'];
+    $menuItems[] = ['label' => 'Partner ship', 'url'=>'/partnership'];
+
     if( Yii::$app->user->isGuest){
         $menuItems[]=['label' => 'Registration', 'url'=>'/registration'];
     }else{

@@ -36,7 +36,8 @@ html(lang=Yii::$app->language xmlns="http://www.w3.org/1999/xhtml")
         .main
             .top_menu
                 include ../base/_top_menu
-            include ../base/_admin_menu
+            - if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role)
+                include ../base/_admin_menu
             - if (!isset($view->params['hide_title'])||$view->params['hide_title']==false){
                 .content
                     .into
