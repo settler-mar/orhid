@@ -24,28 +24,28 @@ class TaskController extends Controller
   /**
    * Задать пароль пользователю
    */
-  public function actionSetPass($email,$pass)
+  public function actionSetPass($email, $pass)
   {
-    $user=User::find()
-      ->where(['email'=>$email])
+    $user = User::find()
+      ->where(['email' => $email])
       ->one();
 
-    if(!$user){
-      echo 'Пользователь не найден'."\n";
+    if (!$user) {
+      echo 'Пользователь не найден' . "\n";
       exit;
     }
 
 
     $user->setPassword($pass);
-    if(strlen($user->phone)<3){
-      $user->phone="+123456789012";
+    if (strlen($user->phone) < 3) {
+      $user->phone = "+123456789012";
     }
 
-    if($user->save()){
-      echo 'Пароль изменен'."\n";
+    if ($user->save()) {
+      echo 'Пароль изменен' . "\n";
       exit;
-    }else{
-      echo 'Ошибка изменения пароля'."\n";
+    } else {
+      echo 'Ошибка изменения пароля' . "\n";
       ddd($user->errors);
     }
   }
@@ -53,18 +53,21 @@ class TaskController extends Controller
   /**
    * Выполнение действий по расписанию
    */
-  public function actionIndex(){
+  public function actionIndex()
+  {
     //Смена тарифа
     $tasks = Task::find()
       ->andWhere(['task' => 1])
-      ->andWhere(['<', 'add_time', time()+600]) // + 10 минут к текущему времени
+      ->andWhere(['<', 'add_time', time() + 600])// + 10 минут к текущему времени
       ->all();
     foreach ($tasks as $task) {
-      $user=User::find()
-        ->where(['id'=>$task->user_id])
+      $user = User::find()
+        ->where(['id' => $task->user_id])
         ->one();
 
-      $user->tariff_unit=$task->params; //задаем дпнные тарифа
+      $tarif = json_decode($task->params, true);
+      $user->tariff_unit = $tarif['tariff_unit']; //задаем данные тарифа
+      $user->tariff_id = $tarif['tariff_id']; //задаем текущий тариф
       $user->save();
 
       $task->delete(); //удаляем задачу
