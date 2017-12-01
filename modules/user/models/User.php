@@ -597,4 +597,9 @@ class User extends ActiveRecord  implements IdentityInterface
         if(file_exists($path))rmdir($path);
         return true;
     }
+
+    public function videoIsOpen($id){
+      $video=explode(',',$this->pays_video);
+      return in_array($id,$video);
+    }
 }

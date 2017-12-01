@@ -4,7 +4,7 @@
     $menuItems = [
         ['label' => 'Top', 'url'=>'/top']
     ];
-    if( Yii::$app->user->isGuest || Yii::$app->user->identity->role || Yii::$app->user->sex==0){
+    if( Yii::$app->user->isGuest || Yii::$app->user->identity->role || Yii::$app->user->identity->sex==0){
         $menuItems[] = ['label' => 'Services', 'url'=>'/services'];
     };
     $menuItems[] = ['label' => 'About us', 'url'=>'/about'];

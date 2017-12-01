@@ -123,25 +123,26 @@
     -}
 
     - if( strlen($profile['video_about']) > 0){
-        object#videoplayer6381(type='application/x-shockwave-flash', data='/player/uppod.swf', width='320', height='240')
-            param(name='bgcolor', value='#ffffff')
-            param(name='allowFullScreen', value='true')
-            param(name='allowScriptAccess', value='always')
-            param(name='movie', value='/player/uppod.swf')
-            param(name='flashvars', value="comment=test&st=/player/video209-1292.txt&file=/".$profile['video_about'])
+        -if(Yii::$app->user->isGuest){
+            .video.video_registration
+                | Для просмотра видео необходимо авторизироваться
+        -}else if (Yii::$app->user->identity->role || Yii::$app->user->identity->videoIsOpen($model->id)){
+            object#videoplayer6381(type='application/x-shockwave-flash', data='/player/uppod.swf', width='320', height='240')
+                param(name='bgcolor', value='#ffffff')
+                param(name='allowFullScreen', value='true')
+                param(name='allowScriptAccess', value='always')
+                param(name='movie', value='/player/uppod.swf')
+                param(name='flashvars', value="comment=test&st=/player/video209-1292.txt&file=/".$profile['video_about'])
+        -}else {
+            .video.video_pay
+                | Для просмотра видео необходимо
+                a(href='/user/'.$model->id.'?open_video') оплатить
+                | его просмотр
+        -}
+        //.video.video_no_money
+            | Для просмотра видео необходимо
+            a(href='/services') пополнить баланс
+            | , а затем оплатить просмотр видео
+
 
     -}
-
-    .video.video_registration
-        | Для просмотра видео необходимо авторизироваться
-
-    .video.video_pay
-        | Для просмотра видео необходимо
-        a(href='/user/'.$model->id.'?open_video')
-        | оплатить его просмотр
-
-    .video.video_no_money
-        | Для просмотра видео необходимо
-        a(href='/services') пополнить баланс
-        | , а затем оплатить просмотр видео
-

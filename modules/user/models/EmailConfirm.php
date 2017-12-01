@@ -44,7 +44,8 @@ class EmailConfirm extends Model
 
         $geo = new \jisoft\sypexgeo\Sypexgeo();
         $geo->get($_SERVER["REMOTE_ADDR"]);
-        if($geo && $user->country==$geo->country['id']) {
+
+        if($geo && count($geo->country) && $user->country==$geo->country['id']) {
             $user->moderate = 1;
         }
 
