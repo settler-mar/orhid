@@ -173,7 +173,7 @@ class DefaultController extends Controller
       $pay->pay_time = time();
       $pay->save();
       //ddd($pay);
-      return $this->applay_tariff($pay->type, $pay->pos_id, $pay->client_id);
+      return $this->applay_tariff($pay->type, $pay->pos_id, $pay->client_id,$pay);
     }
 
     throw new NotFoundHttpException('Error payment. Contact your administrator.');
@@ -274,7 +274,7 @@ class DefaultController extends Controller
             $customer->code = $payment->getId();
             $customer->save();
 
-            return $this->applay_tariff($order->type, $order->id, Yii::$app->user->getId());
+            return $this->applay_tariff($order->type, $order->id, Yii::$app->user->getId(),$customer);
           }
 
           //ddd($payment);
@@ -297,7 +297,7 @@ class DefaultController extends Controller
     ]);
   }
 
-  public function applay_tariff($type, $tarif, $user)
+  public function applay_tariff($type, $tarif, $user,$pay)
   {
     if ($type == 1) { //оплата тарифа
       //d($pay);
@@ -306,6 +306,9 @@ class DefaultController extends Controller
 
       $user = User::find()->where(['id' => $user])->one();
       if (strlen($tariff->includeData) < 5) {
+
+        $pay->comment = 'Activate date '.date("m/d/y H:i",max($user->tariff_end_date ,time()));
+        $pay->save();
 
         //если есть кредиты то добавляем их
         if ($user->credits != 0) {
@@ -319,8 +322,6 @@ class DefaultController extends Controller
           $user->tariff_end_date = time() + $tariff->timer * 60 * 60 * 24;//задаем время начала тарифа
           $user->tariff_id = $tariff->id;
         } else {
-          $user->tariff_end_date += $tariff->timer * 60 * 60 * 24; //добавлям к врмени окончания тарифа его период
-
           $task = new Task();
           $task->user_id = $user->id;
           $task->task_id = 1;
@@ -330,9 +331,9 @@ class DefaultController extends Controller
             'tariff_unit' => $tariff->includeData
           ]);
           $task->save();
+
+          $user->tariff_end_date += $tariff->timer * 60 * 60 * 24; //добавлям к врмени окончания тарифа его период
         }
-
-
       } else {
         $user->credits += $tariff->credits;
       }
