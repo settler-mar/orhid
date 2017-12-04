@@ -2890,3 +2890,16 @@ top:4px; left:2px;}
 .credits_cost td, .credits_cost th {padding:6px 20px 6px 20px;}
 
 .video {background:#f4e7de; margin-bottom:4px; padding:14px 20px}
+
+dl{
+  display: block;
+}
+
+dl div{
+  font-weight: bold;
+  width: 280px;
+}
+dl dd{
+  font-weight: normal;
+  float: right;
+}

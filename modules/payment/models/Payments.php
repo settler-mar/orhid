@@ -2,6 +2,8 @@
 
 namespace app\modules\payment\models;
 
+use app\modules\shop\models\ShopStore;
+use app\modules\tariff\models\Tariff;
 use Yii;
 use app\modules\tarificator\models\TarificatorTable;
 use app\modules\user\models\User;
@@ -32,12 +34,14 @@ class Payments extends \yii\db\ActiveRecord
             //'3'=>'Text for status 3333'
         );
     }
+
     public static function statusText($param)
     {
         $textForStatus = Payments::getTextStatus();
         if ($param < count($textForStatus)) return  $textForStatus[$param];
         else return 'Unknown status';
     }
+
     public static function getTextMethod(){
         return array(
             ''=>'All',
@@ -74,6 +78,7 @@ class Payments extends \yii\db\ActiveRecord
             [['type', 'pos_id', 'status','client_id'], 'integer'],
             [['price'], 'number'],
             [['code'], 'string', 'max' => 100],
+            [['comment'], 'string', 'max' => 255],
         ];
     }
 
@@ -95,6 +100,40 @@ class Payments extends \yii\db\ActiveRecord
           'pay_time'=>'Pay Time',
           'pay_time_from'=>'Pay Time from',
           'pay_time_to'=>'Pay Time to',
+          'typeText'=>'Type',
         ];
+    }
+
+    public function getTypeText(){
+      if($this->type==1){
+        return 'Tariff/credit';
+      }
+      if($this->type==2){
+        return 'Gift';
+      }
+      return 'Unknown';
+    }
+
+    public function getDetail(){
+      $dop=$this->comment?' ('.$this->comment.')':'';
+      if($this->type==1){
+        $detail=TarificatorTable::find()
+          ->where(['id'=>$this->pos_id])
+          ->asArray()
+          ->one();
+        if($detail){
+          return $detail['name'].$dop;
+        }
+      }
+      if($this->type==2){
+        $detail=ShopStore::find()
+          ->where(['id'=>$this->pos_id])
+          ->asArray()
+          ->one();
+        if($detail){
+          return $detail['title'].$dop;
+        }
+      }
+      return 'Unknown';
     }
 }

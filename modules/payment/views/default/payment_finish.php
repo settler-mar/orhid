@@ -20,5 +20,5 @@ $this->params['breadcrumbs'][] = $this->title;
 </p>
 
 <p>
-  Для просмотра баланса перейдите по <a href="/user/balance">ссылке</a>
+  Для просмотра баланса перейдите по <a href="/payment">ссылке</a>
 </p>

@@ -21,6 +21,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'content' => function($data){
                 return  date("j-M-Y H:i", $data->create_time);
             },],
+        'typeText',
+        'detail',
         ['attribute'=> 'price',
             'content' => function($data){
                 return  number_format($data->price, 2, ',', ' ');
@@ -34,7 +36,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 return $data::MethodPayText($data->method);
             },],
       'code',
-      'comment'
     ],
 ]); ?>
 

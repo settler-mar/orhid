@@ -83,24 +83,25 @@ class DefaultController extends Controller
     } else {
       $user = User::find()->where(['id' => Yii::$app->user->id])->one();
       if ($user->sex == '0') {
-        $currentTariff = Payments::find()
-          ->andWhere(['client_id' => Yii::$app->user->id])
-          ->andWhere(['status' => Payments::STATUS_ACTIVE])
-          ->with(['tarificatorTable'])
-          ->one();
-        if ($currentTariff == null) {
+        $searchModel = new PaymentSearch();
+        $query=[
+          'PaymentSearch'=>[
+            'client' => Yii::$app->user->id
+          ]
+        ];
+        $dataProvider = $searchModel->search($query);
+        /*if ($currentTariff == null) {
           $currentTariff = Payments::find()
             ->andWhere(['client_id' => Yii::$app->user->id])
             ->andWhere(['status' => Payments::TIME_OUT])
             ->orderBy('pay_time')
             ->with(['tarificatorTable'])
             ->one();
-        }
-        $tariffs = Tariff::find()->select(['code', 'description'])->asArray()->all();
+        }*/
+        //$tariffs = Tariff::find()->select(['code', 'description'])->asArray()->all();
 
         return $this->render('index', [
-          'currentTariff' => $currentTariff,
-          'tariffs' => $tariffs,
+          'dataProvider' => $dataProvider,
           'user' => $user,
         ]);
       } else {
@@ -278,21 +279,21 @@ class DefaultController extends Controller
     if ($type == 1) { //оплата тарифа
       //d($pay);
       $tariff = TarificatorTable::find()->where(['id' => $tarif])->one();
-      //ddd($tariff);
+      //d($tariff);
 
       $user = User::find()->where(['id' => $user])->one();
-      if (strlen($tariff->includeData) < 5) {
+      if (strlen($tariff->includeData) > 5) {
 
-        $pay->comment = 'Activate date '.date("m/d/y H:i",max($user->tariff_end_date ,time()));
+        $pay->comment = 'Activate date '.date("j-M-Y H:i",max($user->tariff_end_date ,time()));
         $pay->save();
-
+        //d($pay);
         //если есть кредиты то добавляем их
         if ($user->credits != 0) {
           $tariff->includeData = json_decode($tariff->includeData, true);
           $tariff->includeData['credits'] = $user->credits;
           $tariff->includeData = json_encode($tariff->includeData);
         }
-
+        //d($tariff);
         if ($user->tariff_end_date < time() + 600) { //если тариф уже закнчен или ему осталось менее 10 минут
           $user->tariff_unit = $tariff->includeData;
           $user->tariff_end_date = time() + $tariff->timer * 60 * 60 * 24;//задаем время начала тарифа
@@ -314,6 +315,8 @@ class DefaultController extends Controller
         $user->credits += $tariff->credits;
       }
       $user->save();
+
+      //d($user);
 
       $order = (object)[
         'id' => $tariff->id,

@@ -5,6 +5,7 @@ namespace app\modules\user\models;
 use app\models\LbCity;
 use app\models\LbCountry;
 use app\modules\chat\models\Chat;
+use app\modules\tarificator\models\TarificatorTable;
 use johnitvn\rbacplus\models\AssignmentSearch;
 use Yii;
 use app\modules\user\models\User;
@@ -154,6 +155,10 @@ class User extends ActiveRecord  implements IdentityInterface
     {
         return $this->hasMany(AuthAssignment::className(), ['user_id' => 'id']);
     }
+  public function getTariff()
+  {
+    return $this->hasOne(TarificatorTable::className(), ['id' => 'tariff_id']);
+  }
 
     //public function getChatMsgIn(){
       //return  $this->hasMany(Chat::className(), ['user_to' => 'id']);
@@ -602,4 +607,40 @@ class User extends ActiveRecord  implements IdentityInterface
       $video=explode(',',$this->pays_video);
       return in_array($id,$video);
     }
+
+    public function getTariff_name(){
+      return $this->tariff->name;
+    }
+
+  public function getTariffUnits(){
+    $tariff=json_decode($this->tariff->includeData, true);
+    if ($this->tariff->credits != 0) {
+      $tariff->includeData['credits'] = $this->tariff->credits;
+    }
+    $useres_unit=json_decode($this->tariff_unit,true);
+
+    $code=[];
+    foreach($tariff as $k=>&$unit){
+      if($unit) {
+        $unit = [
+          'start' => $unit,
+          'users' => $useres_unit[$k]
+        ];
+        $code[] = $k;
+      }else{
+        unset($tariff[$k]);
+      }
+    };
+
+    $code=Tariff::find()
+      ->where(['code'=>$code])
+      ->asArray()
+      ->all();
+
+    foreach($code as &$unit){
+      $tariff[$unit['code']]['name']=$unit['description'];
+    };
+
+    return $tariff;
+  }
 }
