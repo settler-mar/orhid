@@ -1,6 +1,6 @@
 <?php
 
-namespace app\module\task;
+namespace app\modules\task;
 
 /**
  * task module definition class
@@ -10,7 +10,7 @@ class Module extends \yii\base\Module
     /**
      * @inheritdoc
      */
-    public $controllerNamespace = 'app\module\task\controllers';
+    public $controllerNamespace = 'app\modules\task\controllers';
 
     /**
      * @inheritdoc

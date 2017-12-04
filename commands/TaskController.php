@@ -7,7 +7,7 @@
 
 namespace app\commands;
 
-use app\module\task\models\Task;
+use app\modules\task\models\Task;
 use app\modules\user\models\User;
 use yii\console\Controller;
 

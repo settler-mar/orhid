@@ -2893,8 +2893,12 @@ top:4px; left:2px;}
 
 dl{
   display: block;
+  font-size: 16px;
 }
 
+dl h2{
+  font-size: 20px;
+}
 dl div{
   font-weight: bold;
   width: 280px;
@@ -2902,4 +2906,5 @@ dl div{
 dl dd{
   font-weight: normal;
   float: right;
+  color: #ac3b3f;
 }

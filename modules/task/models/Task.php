@@ -1,6 +1,6 @@
 <?php
 
-namespace app\module\task\models;
+namespace app\modules\task\models;
 
 use Yii;
 

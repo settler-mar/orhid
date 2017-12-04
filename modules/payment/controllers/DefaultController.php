@@ -2,7 +2,6 @@
 
 namespace app\modules\payment\controllers;
 
-use app\module\task\models\Task;
 use app\modules\tariff\models\Tariff;
 use Yii;
 use app\modules\payment\models\Payments;
@@ -15,6 +14,7 @@ use app\modules\payment\models\Card;
 use app\modules\tarificator\models\TarificatorTable;
 use app\modules\user\models\User;
 use app\modules\payment\models\PaymentFilterForm;
+use app\modules\task\models\Task as Tasks;
 
 use PayPal\Api\Address;
 use PayPal\Api\CreditCard;
@@ -299,7 +299,7 @@ class DefaultController extends Controller
           $user->tariff_end_date = time() + $tariff->timer * 60 * 60 * 24;//задаем время начала тарифа
           $user->tariff_id = $tariff->id;
         } else {
-          $task = new Task();
+          $task = new Tasks();
           $task->user_id = $user->id;
           $task->task_id = 1;
           $task->date_todo = $user->tariff_end_date;
