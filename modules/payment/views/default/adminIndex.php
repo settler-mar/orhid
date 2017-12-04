@@ -6,19 +6,20 @@ use app\modules\payment\models\PaymentFilterForm;
 $this->title = 'Admin Payments Lists';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<?= $this->render('paymentFilterForm', ['model' => $filterForm]);?>
+<?= $this->render('paymentFilterForm', ['model' => $searchModel]);?>
 <?= GridView::widget([
     'dataProvider' => $dataProvider,
-    'filterModel' => $searchModel,
+    //'filterModel' => $searchModel,
     'columns' => [
         ['class' => 'yii\grid\SerialColumn'],
         ['attribute'=> 'client_id',
             'content' => function($data){
-                return $data->user->first_name.' '.$data->user->last_name.'('.$data->user->id.')';
+               $user=$data->user;
+               return $user->first_name.' '.$user->last_name.'('.$user->id.')';
             },],
-        ['attribute'=> 'pay_time',
+        ['attribute'=> 'create_time',
             'content' => function($data){
-                return  date("j-M-Y H:i:s", $data->pay_time);
+                return  date("j-M-Y H:i", $data->create_time);
             },],
         ['attribute'=> 'price',
             'content' => function($data){
@@ -32,6 +33,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'content' => function($data){
                 return $data::MethodPayText($data->method);
             },],
+      'code',
+      'comment'
     ],
 ]); ?>
 

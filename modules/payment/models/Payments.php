@@ -26,10 +26,10 @@ class Payments extends \yii\db\ActiveRecord
     public static function getTextStatus(){
         return array(
             '' => 'All',
-            '0'=>'Text for status 0000',
-            '1'=>'Text for status 1111',
-            '2'=>'Text for status 2222',
-            '3'=>'Text for status 3333'
+            '0'=>'Not pay',
+            '1'=>'Pay',
+            //'2'=>'Text for status 2222',
+            //'3'=>'Text for status 3333'
         );
     }
     public static function statusText($param)
@@ -40,10 +40,9 @@ class Payments extends \yii\db\ActiveRecord
     }
     public static function getTextMethod(){
         return array(
-            ''=>'По умолчанию',
+            ''=>'All',
             '1'=>'PayPal',
-            '2'=>'Card',
-            '3'=>'Administrator'
+            '2'=>'Card'
         );
     }
     public static function MethodPayText($param)
@@ -93,6 +92,9 @@ class Payments extends \yii\db\ActiveRecord
             'code' => 'Code',
             'status' => 'Status',
             'clientId' => 'clientId',
+          'pay_time'=>'Pay Time',
+          'pay_time_from'=>'Pay Time from',
+          'pay_time_to'=>'Pay Time to',
         ];
     }
 }

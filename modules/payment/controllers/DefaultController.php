@@ -60,18 +60,20 @@ class DefaultController extends Controller
    */
   public function actionIndex()
   {
-    $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId())['administrator'];
+    $role = Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId());
+
+    $role=isset($role['administrator']);
     if ($role) {
       $filterForm = new PaymentFilterForm();
 
+      $query=[];
+
       if (Yii::$app->request->post()) {
-        $filterForm->load(Yii::$app->request->post());
-        $query['PaymentSearch'] = $filterForm->toArray();
-        $time_to = ['pay_time_to' => $filterForm->pay_time_to];
+        $query['PaymentSearch'] = Yii::$app->request->post('PaymentSearch');
       }
 
       $searchModel = new PaymentSearch();
-      $dataProvider = $searchModel->search($query, $time_to);
+      $dataProvider = $searchModel->search($query);
 
       return $this->render('adminIndex', [
         'searchModel' => $searchModel,
@@ -80,7 +82,7 @@ class DefaultController extends Controller
       ]);
     } else {
       $user = User::find()->where(['id' => Yii::$app->user->id])->one();
-      if ($user->sex == '1') {
+      if ($user->sex == '0') {
         $currentTariff = Payments::find()
           ->andWhere(['client_id' => Yii::$app->user->id])
           ->andWhere(['status' => Payments::STATUS_ACTIVE])
@@ -107,32 +109,6 @@ class DefaultController extends Controller
     }
   }
 
-  /**
-   * Displays a single Payments model.
-   * @param integer $id
-   * @return mixed
-   */
-  public function actionView($id)
-  {
-    return $this->render('view', [
-      'model' => $this->findModel($id),
-    ]);
-  }
-
-  public function actionUpdate($id)
-  {
-    $model = $this->findModel($id);
-
-    if ($model->load(Yii::$app->request->post())) {
-      $model->method = 3;
-      $model->save();
-      return $this->redirect(['index']);
-    } else {
-      return $this->render('update', [
-        'model' => $this->findModel($id),
-      ]);
-    }
-  }
 
 
   /**

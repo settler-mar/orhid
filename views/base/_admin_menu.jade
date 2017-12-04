@@ -6,7 +6,8 @@ if (Yii::$app->user->can('userManager'))
         $menuItems[] = ['label' => 'Country', 'url' => '/user/country'];
         $menuItems[] = ['label' => 'Shop', 'url' => '/shop/shop'];
         $menuItems[] = ['label' => 'Slider', 'url' => '/slider/admin'];
-
+-
+    $menuItems[] = ['label' => 'Payments', 'url' => '/payment'];
 
 
 if (Yii::$app->user->can('serviceCommands'))

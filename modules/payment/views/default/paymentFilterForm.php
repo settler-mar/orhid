@@ -13,10 +13,10 @@ use app\modules\payment\models\Payments;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'client_id')->textInput() ?>
+    <?= $form->field($model, 'client')->textInput() ?>
     <?= $form->field($model, 'method')->dropDownList( Payments::getTextMethod()) ?>
     <?= $form->field($model, 'status')->dropDownList( Payments::getTextStatus()) ?>
-    <?= $form->field($model, 'pay_time')->widget(\yii\jui\DatePicker::classname(), [
+    <?= $form->field($model, 'pay_time_from')->widget(\yii\jui\DatePicker::classname(), [
         'dateFormat' => 'yyyy-MM-dd',
     ]) ?>
     <?= $form->field($model, 'pay_time_to')->widget(\yii\jui\DatePicker::classname(), [
