@@ -70,7 +70,7 @@ class User extends ActiveRecord  implements IdentityInterface
 
     //Достаточно ли баланса на кредитных юнитах
     if ($arr[$code]) {
-      if ($arr[$code] > 0) {
+      if ($arr[$code] > $units) {
         //если на балансе достаточно то списываем
         $arr[$code] -= $units;
         $iCan = true;
@@ -87,31 +87,36 @@ class User extends ActiveRecord  implements IdentityInterface
         ->one();
       $price = $price['price'] * $units;
 
-      //еслть ли пакетные кредиты
-      if ($arr['credits'] && $arr['credits'] > 0) {
-        $arr['credits'] -= $price;
+      if ($price == 0) { //для случая когда таймер только начат или услуга бесплатно но только для положительного баланса
+        $iCan = (($arr['credits'] && $arr['credits'] > 0) || $this->credits > 0);
+      } else {
 
-        if ($arr['credits'] < 0) {
-          //если не хватило тарифных кредитов то пробуем добрать из основных
-          $this->credits += $arr['credits'];
-          if ($this->credits > 0) {
+        //еслть ли пакетные кредиты
+        if ($arr['credits'] && $arr['credits'] > 0) {
+          $arr['credits'] -= $price;
+
+          if ($arr['credits'] < 0) {
+            //если не хватило тарифных кредитов то пробуем добрать из основных
+            $this->credits += $arr['credits'];
+            if ($this->credits > 0) {
+              $iCan = true;
+              $arr['credits'] = 0;
+            }
+          } else {
             $iCan = true;
-            $arr['credits'] = 0;
           }
         } else {
-          $iCan = true;
-        }
-      } else {
-        //в случаи отсутствия тарифных кредитов пробуем списать с баланса
-        $this->credits -= $price;
-        if ($this->credits > 0) {
-          $iCan = true;
+          //в случаи отсутствия тарифных кредитов пробуем списать с баланса
+          $this->credits -= $price;
+          if ($this->credits > 0) {
+            $iCan = true;
+          }
         }
       }
     }
 
     if (!$write_off && $iCan) { //Если действие доступно и списывание раздрешено
-      $this->tariff_unit=json_encode($arr);
+      $this->tariff_unit = json_encode($arr);
       $this->save();
     }
 
