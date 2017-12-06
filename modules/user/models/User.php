@@ -130,6 +130,17 @@ class User extends ActiveRecord  implements IdentityInterface
     return $iCan;
   }
 
+  public function addBayVideo($id){
+    if(strlen($this->pays_video)>0) {
+      $video = explode(',', $this->pays_video);
+    }else{
+      $video = array();
+    }
+    $video[]=$id;
+    $this->pays_video = implode(',',$video);
+    $this->save();
+  }
+
   function behaviors()
   {
     return [

@@ -125,7 +125,7 @@
     - if( strlen($profile['video_about']) > 0){
         -if(Yii::$app->user->isGuest){
             .video.video_registration
-                | Для просмотра видео необходимо авторизироваться
+                | Please log in to view this video.
         -}else if (Yii::$app->user->identity->role || Yii::$app->user->identity->videoIsOpen($model->id)){
             object#videoplayer6381(type='application/x-shockwave-flash', data='/player/uppod.swf', width='320', height='240')
                 param(name='bgcolor', value='#ffffff')
@@ -134,15 +134,30 @@
                 param(name='movie', value='/player/uppod.swf')
                 param(name='flashvars', value="comment=test&st=/player/video209-1292.txt&file=/".$profile['video_about'])
         -}else {
-            .video.video_pay
-                | Для просмотра видео необходимо
-                a(href='/user/'.$model->id.'?open_video') оплатить
-                | его просмотр
+            -if(Yii::$app->user->identity->canIdo("video_intro",true)){
+                .video.video_pay
+                    | To view the video you need
+                    a(href='/user/'.$model->id.'?open_video') to pay
+                    | for viewing it
+            -}else{
+                .video.video_no_money
+                    | To watch the video, you need
+                    a(href='/services') replenish the balance
+                    | , and then pay for the video
+
+            -}
         -}
-        //.video.video_no_money
-            | Для просмотра видео необходимо
-            a(href='/services') пополнить баланс
-            | , а затем оплатить просмотр видео
-
-
     -}
+
+-if ( Yii::$app->session->hasFlash('success')) {
+    script(type='text/javascript').
+        $(document).ready(function () {
+            popup.open({message: '<?=Yii::$app->session->getFlash('success');?>', type: 'success', time: 10000});
+        });
+- }
+-if ( Yii::$app->session->hasFlash('error')) {
+script(type='text/javascript').
+    $(document).ready(function () {
+        popup.open({message: '<?=Yii::$app->session->getFlash('error');?>', type: 'err', time: 10000});
+    });
+- }
