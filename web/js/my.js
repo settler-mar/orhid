@@ -362,7 +362,7 @@ var userChat = (function() {
         }
 
         if(data.users){
-            if(data.users.length==0){
+            if(data.users.length==0 && this.user==0){
                 this.timer();
                 $('.user_all .loading').html('<span>You have not started a single dialogue yet. To start the dialogue, go to the profile of the user you like and click the chat button.</span>');
                 return;

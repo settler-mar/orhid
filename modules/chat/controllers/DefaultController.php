@@ -126,6 +126,7 @@ class DefaultController extends Controller
         $users_arr[]=$u_id;
       };
 
+      $users_arr[]=$user_from;
       $users = User::find()
         ->joinWith(['profile','role'])
         ->where(['id' => $users_arr,'moderate'=>1])
@@ -144,6 +145,8 @@ class DefaultController extends Controller
         }
         if(isset($users_data[$user->id])) {
           $out['users'][] = $u + $users_data[$user->id];
+        }else{
+          $out['users'][] = $u;
         }
       }
 

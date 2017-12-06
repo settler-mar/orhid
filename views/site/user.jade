@@ -101,7 +101,7 @@
     - if(($v==0 || $v!=($model->sex+1)) && $is_admin<1){
     .chat_us
         a(href= '/chat/'.$model->id) Live chat
-        a(href='#') Send message
+        a(href='/mail/'.$model->id) Send message
         //a(href='#') Live video chat
         a(href= '/user-gift/'.$model->id) Send a gift
     -}
@@ -112,7 +112,7 @@
                 | Login as this user
     -}
     #profile_mini.profile
-        | Нопия портфолио
+        | Копия портфолио
 
     - $photos = explode(',',$profile['photos']);
     - if( strlen($profile['photos']) > 0){
