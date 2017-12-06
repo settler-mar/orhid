@@ -83,6 +83,11 @@ class DefaultController extends Controller
         'time' => (int)$request->post('last_msg'),
         'users' => array()
       );
+      $Access=$this->testAccess($user_from>0);
+      if(!$Access) {
+        $out['err'] = 'Credits have ended on the balance sheet. To continue communication, you need to replenish the balance.';
+        return json_encode($out);
+      }
 
       $users_arr=array($request->post('user'));
       $users_data=array();
@@ -194,16 +199,15 @@ class DefaultController extends Controller
     $my_id=Yii::$app->user->identity->id;
     $request = Yii::$app->request;
 
-    $user = User::find()->where(['id'=>Yii::$app->user->id])->one();
-
-     /* if ((Yii::$app->user->identity->sex==1)&&($user->canIdo('chatUnit')!=1)) {
-          $out = array(
-              'time' => time(),
-              'status'=>1, //0 это все норм.
-              'msg' => 'Not enough chatUnit in your tariff for Messenger'
-          );
-          return json_encode($out);
-      }*/
+    $Access=$this->testAccess(true);
+    if(!$Access){
+      $out = array(
+        'time' => time(),
+        'status'=>1, //0 это все норм.
+        'msg' => 'Credits have ended on the balance sheet. To continue communication, you need to replenish the balance.'
+      );
+      return json_encode($out);
+    }
 
     // вставить новую строку данных
     $message = new Chat();
@@ -216,5 +220,9 @@ class DefaultController extends Controller
     $message->save();
 
     return json_encode($out);
+  }
+
+  private function testAccess($write_off=false){
+    return Yii::$app->user->identity->canIdo('chat_text',$write_off);
   }
 }

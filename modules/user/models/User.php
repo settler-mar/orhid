@@ -47,29 +47,28 @@ class User extends ActiveRecord  implements IdentityInterface
     return 'user';
   }
 
-  public function canIdo($code, $write_off = true)
+  public function canIdo($code, $write_off = false)
   {
     if ($this->sex == 1) return true; //если женщина то для нее нет тарификации
-
     $iCan = false;
 
     $arr = json_decode($this->tariff_unit, true);;
     if (in_array($code, array('chat_text'))) {
       if (strlen($this->last_pays) < 8) {
-        $this->last_pays = [];
+        $last_pays = [];
       } else {
-        $this->last_pays = json_decode($this->last_pays, true);
+        $last_pays = json_decode($this->last_pays, true);
       }
-      $units = (time() - ($this->last_pays[$code] || time())) / 60;
+      $units = (time() - (isset($last_pays[$code])?$last_pays[$code]:time())) / 60;
 
-      $this->last_pays[$code] = time();
-      $this->last_pays = json_encode($this->last_pays);
+      $last_pays[$code] = time();
+      $this->last_pays = json_encode($last_pays);
     } else {
       $units = 1;
     }
 
     //Достаточно ли баланса на кредитных юнитах
-    if ($arr[$code]) {
+    if (isset($arr[$code])) {
       if ($arr[$code] > $units) {
         //если на балансе достаточно то списываем
         $arr[$code] -= $units;
@@ -699,7 +698,7 @@ class User extends ActiveRecord  implements IdentityInterface
   {
     $tariff = json_decode($this->tariff->includeData, true);
     if ($this->tariff->credits != 0) {
-      $tariff->includeData['credits'] = $this->tariff->credits;
+      $tariff['credits'] = $this->tariff->credits;
     }
     $useres_unit = json_decode($this->tariff_unit, true);
 
@@ -708,7 +707,7 @@ class User extends ActiveRecord  implements IdentityInterface
       if ($unit) {
         $unit = [
           'start' => $unit,
-          'users' => $useres_unit[$k]
+          'users' => number_format($useres_unit[$k],$k=='credits'?0:0,'.',' ')
         ];
         $code[] = $k;
       } else {
@@ -725,6 +724,9 @@ class User extends ActiveRecord  implements IdentityInterface
       $tariff[$unit['code']]['name'] = $unit['description'];
     };
 
+    if(isset($tariff['credits'])){
+      $tariff['credits']['name'] = 'Credits';
+    }
     return $tariff;
   }
 }

@@ -341,7 +341,7 @@ var userChat = (function() {
         t_user=[];
         tot_fav=0;
 
-        if(data.favorites.indexOf(this.user+'')<0) {
+        if(data.favorites && data.favorites.indexOf(this.user+'')<0) {
             $('.add_fav').show();
             $('.remove_fav').hide();
         }else{
@@ -349,7 +349,24 @@ var userChat = (function() {
             $('.remove_fav').show();
         }
 
+        if(data.err){
+            if($('.user_all .loading').length==0) {
+                $('.mess_block').html('<div class=loading></div>');
+            }
+
+            if($('.user_all .loading .err').length==0) {
+                $('.user_all .loading').html('<span class="err">'+data.err+'</span>');
+            }
+            this.timer();
+            return;
+        }
+
         if(data.users){
+            if(data.users.length==0){
+                this.timer();
+                $('.user_all .loading').html('<span>You have not started a single dialogue yet. To start the dialogue, go to the profile of the user you like and click the chat button.</span>');
+                return;
+            }
             user_out='';
             msg_cnt=[];
             tot_new=0;

@@ -130,6 +130,9 @@ class DefaultController extends Controller
 
   public function actionFinish()
   {
+    if(Yii::$app->request->get('success')=='false'){
+      $this->redirect('/payment');
+    }
     $pay = new DoPayment();
     try {
       $payment = $pay->finishPayment();
@@ -287,15 +290,16 @@ class DefaultController extends Controller
         $pay->comment = 'Activate date '.date("j-M-Y H:i",max($user->tariff_end_date ,time()));
         $pay->save();
         //d($pay);
+        $includeData=$tariff->includeData;
         //если есть кредиты то добавляем их
-        if ($user->credits != 0) {
-          $tariff->includeData = json_decode($tariff->includeData, true);
-          $tariff->includeData['credits'] = $user->credits;
-          $tariff->includeData = json_encode($tariff->includeData);
+        if ($tariff->credits != 0) {
+          $includeData = json_decode($includeData, true);
+          $includeData['credits'] = $tariff->credits;
+          $includeData = json_encode($includeData);
         }
-        //d($tariff);
+        //d($includeData);
         if ($user->tariff_end_date < time() + 600) { //если тариф уже закнчен или ему осталось менее 10 минут
-          $user->tariff_unit = $tariff->includeData;
+          $user->tariff_unit = $includeData;
           $user->tariff_end_date = time() + $tariff->timer * 60 * 60 * 24;//задаем время начала тарифа
           $user->tariff_id = $tariff->id;
         } else {
@@ -305,7 +309,7 @@ class DefaultController extends Controller
           $task->date_todo = $user->tariff_end_date;
           $task->params = json_encode([
             'tarif_id' => $tariff->id,
-            'tariff_unit' => $tariff->includeData
+            'tariff_unit' => $includeData
           ]);
           $task->save();
 

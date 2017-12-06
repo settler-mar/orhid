@@ -171,7 +171,7 @@ img {
 .text_legend {margin-top:-14px; margin-bottom:40px; color:#761013;}
 .text_legend p {text-align:center; line-height:1.2; font-size:20px;  font-family: "Times New Roman", Times, serif;
   font-style: italic;}
-.legend_block { 
+.legend_block {
   display: inline-block;
   vertical-align: top;
   width: 18.6%;
@@ -195,7 +195,7 @@ img {
   margin-bottom: 6px;
   color: #ac3b3f;
   padding: 0 16px;
-  line-height: 1.1; 
+  line-height: 1.1;
 }
 
 .leg_txt {
@@ -214,15 +214,15 @@ img {
 .lock {overflow:hidden; left:-8px;}
 
 .modal {position: fixed;z-index:10;left: 0;top: 0;width: 100%;height: 100%;text-align: center;white-space: nowrap;background:rgba(0, 0, 0, 0.51);overflow-y: auto;
-overflow-x:hidden;-webkit-overflow-scrolling: touch; display:none;}
+  overflow-x:hidden;-webkit-overflow-scrolling: touch; display:none;}
 .modal > * {-webkit-transform: translateZ(0px);}
 .modal:after {content: ""; display: inline-block; width: 0; height: 100%; vertical-align: middle;}
 .modal_in {display: inline-block; vertical-align: middle; text-align: left; white-space: normal; width:100%;  padding:30px 0 30px 0;}
 
 
 
-.okno {background: #fff;max-width: 600px;  padding: 0px;  width:calc(86% - 40px); margin:auto; 
-position:relative; padding-bottom:10px; box-shadow:0px 6px 24px rgba(0, 0, 0, 0.48); z-index:20; overflow:hidden;}
+.okno {background: #fff;max-width: 600px;  padding: 0px;  width:calc(86% - 40px); margin:auto;
+  position:relative; padding-bottom:10px; box-shadow:0px 6px 24px rgba(0, 0, 0, 0.48); z-index:20; overflow:hidden;}
 /*---------------------------------*/
 
 .leg_close {position:absolute; right:0px; top:0px; font-size:44px; font-weight:300;  width:36px; padding-left:14px; cursor:pointer;}
@@ -276,16 +276,16 @@ position:relative; padding-bottom:10px; box-shadow:0px 6px 24px rgba(0, 0, 0, 0.
   width: 100%;
   min-height: 30px;
   background: rgba(33, 15, 9, 0.7);
-  position: absolute; 
+  position: absolute;
   bottom: 0;
-  padding: 40px 0 0px 0; 
+  padding: 40px 0 0px 0;
 }
 
 .top_star .into dl {
   display: inline-block;
   vertical-align: top; width:33%;
   overflow: hidden;
-   
+
 }
 
 /*.top_star .into dl:first-child {
@@ -827,8 +827,8 @@ position:relative; padding-bottom:10px; box-shadow:0px 6px 24px rgba(0, 0, 0, 0.
 .title_1 > span {
   display: inline-block;
   margin: 0 .4em;
-  
- 
+
+
 }
 
 .title_1:before,
@@ -1850,7 +1850,7 @@ input {
   width: 100%;
   overflow: hidden;
   padding:6px 0;
- 
+
   cursor: pointer;
   border-bottom: 1px solid rgb(245, 227, 213);;
 }
@@ -1858,14 +1858,14 @@ input {
 .us_on img {
   width: 30px;
   height: 30px;
-display:inline-block;
-  margin-right: 8px; 
+  display:inline-block;
+  margin-right: 8px;
   border-radius: 50%; vertical-align:middle; margin-left:10px;
 }
 
 .us_on span {
-   font-weight:bold;   width:calc(100% - 76px);
-  display: inline-block; vertical-align:middle; 
+  font-weight:bold;   width:calc(100% - 76px);
+  display: inline-block; vertical-align:middle;
 }
 
 .us_on:hover {
@@ -1875,12 +1875,12 @@ display:inline-block;
   background: rgb(245, 227, 213);
 }
 
-.us_on b { 
+.us_on b {
   font-weight: 600;
   color: #fff;
   text-align: center; display:inline-block;
   width: 16px; height:14px;
-  font-size: 10px; background:#ac3b3f; border-radius:50%; padding:1px; padding-top:3px; 
+  font-size: 10px; background:#ac3b3f; border-radius:50%; padding:1px; padding-top:3px;
 }
 
 .new_mes {
@@ -2409,7 +2409,7 @@ table [name="UserSearch[username]"] {
 .all_tarif {text-align: center; margin-left:0;
   margin-bottom: 40px;}
 .tarif {width:calc(20% - 4px); display: inline-block; background: #f8eadf; padding:0 0px 10px 0px;
-   margin-bottom: 30px; font-size: 16px; overflow:hidden; position:relative; left:0px;}
+  margin-bottom: 30px; font-size: 16px; overflow:hidden; position:relative; left:0px;}
 
 .tarif p {margin-bottom: 0;}
 
@@ -2425,12 +2425,22 @@ table [name="UserSearch[username]"] {
 .tar_1 p:after {right: -10px; left: inherit;}
 .loading{
   height: 50px;
-  min-height: 50px;
+  min-height: 110px;
   width: 100%;
   background:url("/img/ajax-loader.gif") 50% 50% no-repeat;
   background-size: initial;
+  text-align: center;
+  padding-top: 20px;
+  position: relative;
 }
-
+.loading span{
+  position:absolute;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  font-size: 1.3em;
+  color: #ac3b3f;
+}
 
 .tar_2 p {color: #000; font-size: 5.4rem; margin-bottom: -10px;}
 .tar_2 span {font-size:1.5rem;}
@@ -2817,7 +2827,7 @@ table [name="UserSearch[username]"] {
   content:attr(counter);
   position: absolute;
   right: 0px;
-  bottom: -34px; background:#ffffff; border:1px solid #ac3b3f; padding:5px 12px 4px 12px; 
+  bottom: -34px; background:#ffffff; border:1px solid #ac3b3f; padding:5px 12px 4px 12px;
 }
 .emojionearea.err .emojionearea-editor{
   background: #ff99b1;
@@ -2844,7 +2854,7 @@ table [name="UserSearch[username]"] {
 
 
 #nav-toggle { cursor: pointer; padding: 20px 35px 22px 10px; position:absolute; display:none;
-top:4px; left:2px;}
+  top:4px; left:2px;}
 #nav-toggle span, #nav-toggle span:before, #nav-toggle span:after {
   cursor: pointer;
   border-radius: 1px;
@@ -2856,7 +2866,7 @@ top:4px; left:2px;}
   content: '';
 }
 #nav-toggle span:before {
-  top: -10px; 
+  top: -10px;
 }
 #nav-toggle span:after {
   bottom: -10px;
