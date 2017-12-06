@@ -4,11 +4,12 @@
     span
         strong= $username
         a(href='logout') Logout!
-.top_mes
-    a.chat_cnt(href='/chat') Chat
-    a.mail_cnt(href='/mail') Mail
-.top_mes
-
+- if (count(Yii::$app->user->identity->role)==0){
+    .top_mes
+        a.chat_cnt(href='/chat') Chat
+        a.mail_cnt(href='/mail') Mail
+    .top_mes
+-}
 
 if ($toAdmin)
     .toAdmin
