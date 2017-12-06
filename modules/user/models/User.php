@@ -59,7 +59,15 @@ class User extends ActiveRecord  implements IdentityInterface
       } else {
         $last_pays = json_decode($this->last_pays, true);
       }
-      $units = (time() - (isset($last_pays[$code])?$last_pays[$code]:time())) / 60;
+
+      $time=isset($last_pays[$code])?time()-$last_pays[$code]:0;
+      if($time>5*60){ //если прошло более 5 минут то считаем что время не уже закончилось и начался новый интервал
+        $time=0;
+        $units = 0;
+      }else{
+        $units = $time / 60;
+      }
+
 
       $last_pays[$code] = time();
       $this->last_pays = json_encode($last_pays);
