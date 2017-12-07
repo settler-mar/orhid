@@ -529,13 +529,46 @@ function set_fav(user,s){
 
 /*LEGEND*/
 
-
-
 $('.legend_block').click(function() {
     if ($('.modal').is(":hidden")) {
+        $this=$(this);
+        $('.modal .icon_legend p').text($this.find('.leg_tit').text());
+        $('.modal .icon_legend img').attr('src',$this.find('.image_legend img').attr('src'));
+        $('.modal .leg_txt').html($this.find('.leg_text').html());
+        $('.modal .leg_video').html('').hide();
+        $('.modal .photo_leg').html('').removeClass('loading');
+
+        if($this.find('.glyphicon-camera').length>0){
+            $('.modal .photo_leg').addClass('loading');
+            data={
+                legend:  $this.attr('code')
+            };
+            $.post('/fileupload/default/get', data, function (data) {
+                $('.modal .photo_leg').html('').removeClass('loading');
+                if (data.length > 0) {
+                    imgs='';
+                    for (i = 0; i < data.length; i++) {
+                        imgs+='<a class="fancybox" href="'+data[i]+'" data-fancybox-group="gallery2" alt=""><img src="'+data[i]+'"></a>';
+                    }
+                    $('.modal .photo_leg').append(imgs)
+                    $('.modal .photo_leg a').jqPhotoSwipe()
+                }
+            }, 'json');
+        }
+        if($this.find('.glyphicon-facetime-video').length>0){
+            video=$this.find('.glyphicon-facetime-video').attr('url');
+            video='<object id="videoplayer6381" type="application/x-shockwave-flash" data="/player/uppod.swf" width="320" height="240">'+
+              '<param name="bgcolor" value="#ffffff">'+
+              '<param name="allowFullScreen" value="true">'+
+              '<param name="allowScriptAccess" value="always">'+
+              '<param name="movie" value="/player/uppod.swf">'+
+              '<param name="flashvars" value="comment=test&amp;st=/player/video209-1292.txt&amp;file='+video+'">'+
+              '</object>';
+            $('.modal .leg_video').html(video).show();
+        }
+
         $('.modal').show();
         $("body").addClass("lock");
-
     } else {
         $('.modal').hide;
         $("body").removeClass("lock");

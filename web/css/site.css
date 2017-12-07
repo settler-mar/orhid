@@ -197,19 +197,25 @@ img {
   padding: 0 16px;
   line-height: 1.1;
 }
-
-.leg_txt {
-  line-height: 1.4;
+.leg_text{
+  display: none;
   padding: 0px;
   padding-top: 0;
   height: 0;
   overflow: hidden;
+}
+.leg_txt {
+  line-height: 1.4;
 }
 
 .leg_txt p {
   line-height: 1.4;
 }
 
+.leg_video{
+  text-align: center;
+  margin-bottom: 10px;
+}
 /*------ МОДАЛЬНОЕ ОКНО ------*/
 .lock {overflow:hidden; left:-8px;}
 

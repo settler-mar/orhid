@@ -210,4 +210,13 @@ class OrhidLegends extends \yii\db\ActiveRecord
     }
     return rmdir($dir);
   }
+
+  public function getPhotoCount(){
+    $path = 'legends_files/'.$this->id.'/';
+
+    if (!file_exists($path)) {
+      return 0;
+    };
+    return count(scandir($path))-2;
+  }
 }
