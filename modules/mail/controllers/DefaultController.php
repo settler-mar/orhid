@@ -128,27 +128,41 @@ class DefaultController extends Controller
  //   if($user->sex==Yii::$app->user->identity->sex || (Yii::$app->user->identity->isManager()))
   //    throw new \yii\web\NotFoundHttpException('No rights for access to chat with the user. Contact your administrator.');
 
-
+    $is_introduce=true;
     if($id>0){
       $model = new Mail();
-      //тут вписать правила отправки
+
       if ($model->load(Yii::$app->request->post())){
-        $model->user_from=$my_id;
-        $model->user_to=$id;
-        $model->created_at=time();
 
-        $model->message = strip_tags($model->message,'<img>,<p>,<strong>,<em>');
-        $model->message = preg_replace("#[^а-яА-ЯA-Za-z0-9;:_.,?<>'\"/= -]+#u", '', $model->message);
+        $mails_count = Mail::find()
+          ->orWhere(['user_from'=>$my_id,'user_to'=>$id])
+          ->count();
+        $is_introduce=!$mails_count;
+        $rule_name=$is_introduce?'mail_intro_out':'mail_out';
+        //тут вписать правила отправки
 
-        if($model->save()) {
 
+        if(!Yii::$app->user->identity->canIdo($rule_name)){
+          Yii::$app->session->addFlash(
+            'error',
+            'Credits have ended on the balance sheet. To continue communication, you need to replenish the balance.'
+          );
+        }else {
+          $model->user_from = $my_id;
+          $model->user_to = $id;
+          $model->created_at = time();
+
+          $model->message = strip_tags($model->message, '<img>,<p>,<strong>,<em>');
+          $model->message = preg_replace("#[^а-яА-ЯA-Za-z0-9;:_.,?<>'\"/= -]+#u", '', $model->message);
+
+          //Сообщение обязательно должно содержать текст
+          if (strlen(strip_tags($model->message)) < 5 || !$model->save()) {
+            Yii::$app->session->addFlash('error', 'The message you send should contain text.');
+          } else {
+            return $this->redirect(['/mail/' . $id]);
+          }
         }
-        return $this->redirect(['/mail/'.$id]);
       }
-
-      Mail::updateAll(
-        array('is_read'=>'1'),
-        'user_to='.$my_id.' AND user_from='.$id);
 
       $mails = Mail::find()
         ->orWhere(['user_from'=>$id,'user_to'=>$my_id])
@@ -158,6 +172,17 @@ class DefaultController extends Controller
         ])
         ->asArray()
         ->all();
+
+      foreach ($mails as $mail){
+        if($mail['user_from']==$my_id){
+          $is_introduce=false;
+          break;
+        }
+      }
+
+      Mail::updateAll(
+        array('is_read'=>'1'),
+        'user_to='.$my_id.' AND user_from='.$id);
     }else{
       $mails=NULL;
     }
@@ -174,6 +199,8 @@ class DefaultController extends Controller
       'mails'=>$mails,
       'model'=>new Mail(),
       'fileupload'=>new Fileupload(),
+      'is_introduce'=>$is_introduce,
+      'rule_name'=>$is_introduce?'mail_intro_out':'mail_out'
     ]);
   }
 }

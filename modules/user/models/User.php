@@ -288,7 +288,8 @@ class User extends ActiveRecord  implements IdentityInterface
   public function getFullNick()
   {
     $proile = $this->getProfile()->one();
-    if ($proile->birthday > 0) {
+
+    if ($proile && $proile->birthday > 0) {
       return $this->last_name . ' ' . date('Y', $proile->birthday);
     } else {
       return $this->last_name . ' ' . $this->first_name;

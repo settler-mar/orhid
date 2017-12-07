@@ -17,7 +17,9 @@
   $old=date('Y',time()-$user->profile['birthday'])-1970;
   $online = (time()-($user->last_online)<User::MAX_ONLINE_TIME);
 ?>
-
+<?php
+if(Yii::$app->user->identity->canIdo($rule_name,true)){
+  ?>
   <?php $form = ActiveForm::begin(['id'=>"msg_form"]); ?>
 
   <?=yii\imperavi\Widget::widget([
@@ -56,7 +58,6 @@
   ]);;?>
 
   <?php ActiveForm::end(); ?>
-
   <div class="file_insert_model_bg">
     <div class="file_insert_model">
       <div class="close">X</div>
@@ -92,7 +93,15 @@
       <a class="insert_photo">Insert photo</a>
     </div>
   </div>
+<?php
+}else{
+  ?>
+  <div class="video video_no_money">
+    To send messages, you need <a href="/services">replenish the balance</a>.</div>
 
+  <?php
+}
+?>
   <div class="into">
     <!--<div class="title_1"><span>Chat</span></div>-->
 
@@ -140,3 +149,24 @@
     <div class="clear"></div>
 
   </div>
+
+<?php
+  if ( Yii::$app->session->hasFlash('success')) {
+    ?>
+  <script type='text/javascript'>
+    $(document).ready(function () {
+      popup.open({message: '<?=Yii::$app->session->getFlash('success');?>', type: 'success', time: 10000});
+    });
+  </script>
+<?php
+}
+if ( Yii::$app->session->hasFlash('error')) {
+  ?>
+    <script type='text/javascript'>
+      $(document).ready(function () {
+        popup.open({message: '<?=Yii::$app->session->getFlash('error');?>', type: 'err', time: 10000});
+      });
+    </script>
+<?php
+}
+?>
