@@ -4,16 +4,15 @@ use yii\helpers\Html;
 $this->title = 'Legends orhid';
 ?>
 
-<?php  if ($canCreate) { ?>
-  <p><?= Html::a('Create Orhid Legend', ['create'], ['class' => 'btn btn-success']) ?>  </p>
-<?php } ?>
-
 <div class="text_legend">
   <p>
     Еще один секрет счастья в семейной жизни – это внимание друг к другу. Муж и жена должны постоянно оказывать друг другу знаки самого нежного внимания и любви. Счастье жизни составляется из отдельных минут, из маленьких удовольствий – от поцелуя, улыбки, доброго взгляда, сердечного комплимента и бесчисленных маленьких, но добрых мыслей и искренних чувств. Любви тоже нужен ее ежедневный хлеб.
   </p>
 </div>
 
+<?php  if ($canCreate) { ?>
+  <p><?= Html::a('Create Orhid Legend', ['create'], ['class' => 'btn btn-success']) ?>  </p>
+<?php } ?>
 <div class="all_legend">
   <?php foreach ($legends as $legend){ ?>
     <div class="legend_block" code="<?= $legend->id ?>">
