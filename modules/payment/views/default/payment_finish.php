@@ -12,13 +12,13 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <p>
-  Спасибо, <?=$user->first_name;?> <?=$user->last_name;?>.
+  Thank you, <?=$user->first_name;?> <?=$user->last_name;?>.
 </p>
 
 <p>
-  От вас поступила оплата на сумму $<?=$order->price;?> за <?=$order->name;?>
+  You received a payment of $<?=$order->price;?> за <?=$order->name;?>
 </p>
 
 <p>
-  Для просмотра баланса перейдите по <a href="/payment">ссылке</a>
+  To view the balance, click on the <a href="/payment">link</a>
 </p>
