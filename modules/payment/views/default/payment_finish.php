@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 </p>
 
 <p>
-  You received a payment of $<?=$order->price;?> за <?=$order->name;?>
+  You received a payment of $<?=$order->price;?> for <?=$order->name;?>
 </p>
 
 <p>
