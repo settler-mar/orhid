@@ -695,7 +695,7 @@ class User extends ActiveRecord  implements IdentityInterface
     $path = User::getUserPath($id);
     $files = glob($path . "*");
     foreach ($files as $file) {
-      if (file_exists($file)) {
+      if (file_exists($file) AND is_file($file)) {
         unlink($file);
       }
     }
