@@ -13,17 +13,12 @@
   - }
   div
     !=Html::a('Create User', ['create'], ['class' => 'btn btn-success'])
+
+    | Set moderation status:
     .btn-group
-      a.btn.btn-primary.dropdown-toggle(data-toggle='dropdown', href='#')
-        | Set moderation status
-        span.caret
-      ul.dropdown-menu(atribute='moderate')
-        li(state='1')
-          a Moderated
-        li(state='0')
-          a Unmoderated
-        li(state='2')
-          a Wait
+      a.btn.btn-primary(state='1' atribute='moderate') Moderated
+      a.btn.btn-primary(state='0' atribute='moderate') Unmoderated
+      a.btn.btn-primary(state='2' atribute='moderate') Wait
 
 
   -

@@ -1,9 +1,9 @@
 $(document).ready(function() {
-    $('.dropdown-menu[atribute] li').on('click',function(){
+    $('[atribute]').on('click',function(){
         data = {};
         $this = $(this);
         data['value']=$this.attr('state');
-        data['atribute']=$this.parent().attr('atribute');
+        data['atribute']=$this.attr('atribute');
         els=$('.table [name="selection[]"]:checked');
         if(els.length==0){
             show_msg('You should mark users.','err');
