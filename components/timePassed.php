@@ -16,6 +16,7 @@ class TimePassed extends Widget{
             1                       =>  'second'
         );
 
+        if($this->timeStart==0)return'';
         $etime=time()-$this->timeStart;
 
         foreach ($a as $secs => $str)

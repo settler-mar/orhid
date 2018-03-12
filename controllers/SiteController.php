@@ -23,23 +23,23 @@ class SiteController extends Controller
   public function behaviors()
   {
     return [
-      'access' => [
-        'class' => AccessControl::className(),
-        'only' => ['logout'],
-        'rules' => [
-          [
-            'actions' => ['logout'],
-            'allow' => true,
-            'roles' => ['@'],
-          ],
+        'access' => [
+            'class' => AccessControl::className(),
+            'only' => ['logout'],
+            'rules' => [
+                [
+                    'actions' => ['logout'],
+                    'allow' => true,
+                    'roles' => ['@'],
+                ],
+            ],
         ],
-      ],
-      'verbs' => [
-        'class' => VerbFilter::className(),
-        'actions' => [
-          'logout' => ['post'],
+        'verbs' => [
+            'class' => VerbFilter::className(),
+            'actions' => [
+                'logout' => ['post'],
+            ],
         ],
-      ],
     ];
   }
 
@@ -49,13 +49,13 @@ class SiteController extends Controller
   public function actions()
   {
     return [
-      'error' => [
-        'class' => 'yii\web\ErrorAction',
-      ],
-      'captcha' => [
-        'class' => 'yii\captcha\CaptchaAction',
-        'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-      ],
+        'error' => [
+            'class' => 'yii\web\ErrorAction',
+        ],
+        'captcha' => [
+            'class' => 'yii\captcha\CaptchaAction',
+            'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
+        ],
     ];
   }
 
@@ -68,26 +68,26 @@ class SiteController extends Controller
   {
     $page = StaticPages::find()->where(['id' => 1])->asArray()->one();
     $user = User::find()
-      ->joinWith(['profile', 'city', 'role'])//добавляем вывод из связвнных таблиц
-      ->where([
-        'auth_assignment.user_id' => null, //убераем с выборки всех пользователей с ролями
-        'user.sex' => 1, //Только женщины
-        'moderate' => 1, //только прошедшие модерацию
-        // 'user.id'=>[5, 6, 7, 8, 21, 23],
-      ])
-      ->andWhere(['>','last_online',time()-User::MAX_ONLINE_TIME])
-      /*$cnt=$user->count();
-      if($cnt>6){
-        $offset=random_int(0,$cnt-6);
-      }else{
-        $offset=0;
-      };
-      $user=$user*/
-      //  ->offset($offset)
-      //->orderBy(['top' => SORT_DESC])
-      ->orderBy(['last_online' => SORT_DESC])
-      ->limit(6)
-      ->all();
+        ->joinWith(['profile', 'city', 'role'])//добавляем вывод из связвнных таблиц
+        ->where([
+            'auth_assignment.user_id' => null, //убераем с выборки всех пользователей с ролями
+            'user.sex' => 1, //Только женщины
+            'moderate' => 1, //только прошедшие модерацию
+          // 'user.id'=>[5, 6, 7, 8, 21, 23],
+        ])
+        ->andWhere(['>', 'last_online', time() - User::MAX_ONLINE_TIME])
+        /*$cnt=$user->count();
+        if($cnt>6){
+          $offset=random_int(0,$cnt-6);
+        }else{
+          $offset=0;
+        };
+        $user=$user*/
+        //  ->offset($offset)
+        //->orderBy(['top' => SORT_DESC])
+        ->orderBy(['last_online' => SORT_DESC])
+        ->limit(6)
+        ->all();
     //->all(); //выводим все что получилось
 
     return $this->render('index.jade', ['page' => $page, 'user' => $user]);
@@ -105,17 +105,17 @@ class SiteController extends Controller
 
     $guest = Yii::$app->user->isGuest;
     $page = array(
-      'title' => 'Services',
-      'meta_title' => 'Services',
-      'index' => 1,
+        'title' => 'Services',
+        'meta_title' => 'Services',
+        'index' => 1,
     );
     //return redirect
     return $this->render('services.jade', [
-      'page' => $page,
-      'guest' => $guest,
-      'tarificatorTariffs' => $tarificatorTariffs,
-      'tarificatorCredits' => $tarificatorCredits,
-      'tariffElements' => $tariffElements,
+        'page' => $page,
+        'guest' => $guest,
+        'tarificatorTariffs' => $tarificatorTariffs,
+        'tarificatorCredits' => $tarificatorCredits,
+        'tariffElements' => $tariffElements,
     ]);
   }
 
@@ -142,7 +142,7 @@ class SiteController extends Controller
       return $this->goBack();
     }
     return $this->render('login', [
-      'model' => $model,
+        'model' => $model,
     ]);
   }
 
@@ -174,8 +174,8 @@ class SiteController extends Controller
 
     $page = StaticPages::find()->where(['id' => 15])->asArray()->one();
     return $this->render('contact', [
-      'model' => $model,
-      'page' => $page
+        'model' => $model,
+        'page' => $page
     ]);
   }
 
@@ -198,15 +198,15 @@ class SiteController extends Controller
   public function actionTop()
   {
     $user = User::find()
-      ->joinWith(['profile', 'city', 'role'])//добавляем вывод из связвнных таблиц
-      ->where([
-        'auth_assignment.user_id' => null, //убераем с выборки всех пользователей с ролями
-        'user.sex' => 1, //Только женщины
-        'moderate' => 1, //только прошедшие модерацию
-        'top'=>1
-      ])
-      ->orderBy('top DESC')
-      ->all(); //выводим все что получилось
+        ->joinWith(['profile', 'city', 'role'])//добавляем вывод из связвнных таблиц
+        ->where([
+            'auth_assignment.user_id' => null, //убераем с выборки всех пользователей с ролями
+            'user.sex' => 1, //Только женщины
+            'moderate' => 1, //только прошедшие модерацию
+            'top' => 1
+        ])
+        ->orderBy('top DESC')
+        ->all(); //выводим все что получилось
     //  foreach ($user as $qqq){
     //  ddd($qqq->relatedRecords['city']['city']);}
 
@@ -223,27 +223,76 @@ class SiteController extends Controller
             'user.sex' => 1, //Только женщины
             'moderate' => 1, //только прошедшие модерацию
         ])
-        ->orderBy('top DESC')
-        //->asArray()
+        ->orderBy('top DESC');
+    $get = Yii::$app->request->get();
+    if ($get['age-min'] && $get['age-max']) {
+      $g['age-min'] = (int)$get['age-min'];
+      $g['age-max'] = (int)$get['age-max'];
+      if ($g['age-min'] > $g['age-max']) {
+        $c = $g['age-min'];
+        $g['age-min'] = $g['age-max'];
+        $g['age-max'] = $c;
+      }
+
+      if ($g['age-min'] < 18) $g['age-min'] = 18;
+      if ($g['age-max'] < 18) $g['age-max'] = 18;
+      if ($g['age-min'] > 80) $g['age-min'] = 80;
+      if ($g['age-max'] > 80) $g['age-max'] = 80;
+    } else {
+      $g = array(
+          'age-min' => 20,
+          'age-max' => 80,
+      );
+    };
+
+    $y = 60 * 60 * 24 * 356;
+    $user = $user
+        ->andWhere(['<', 'birthday', time() - $g['age-min'] * $y])
+        ->andWhere(['>', 'birthday', time() - $g['age-max'] * $y])
         ->all(); //выводим все что получилось
     $page = StaticPages::find()->where(['url' => 'ladies'])->asArray()->one();
-    return $this->render('mans', ['user' => $user, 'page' => $page]);
+    return $this->render('mans', ['user' => $user, 'page' => $page, 'g' => $g]);
   }
 
   public function actionMen()
   {
+
     $user = User::find()
-      ->joinWith(['profile', 'city', 'role'])//добавляем вывод из связвнных таблиц
-      ->where([
-        'auth_assignment.user_id' => null, //убераем с выборки всех пользователей с ролями
-        'user.sex' => 0, //Только мужчины
-        'moderate' => 1, //только прошедшие модерацию
-      ])
-      ->orderBy('top DESC')
-      //->asArray()
-      ->all(); //выводим все что получилось
-    $page = StaticPages::find()->where(['id' => 11])->asArray()->one();
-    return $this->render('mans', ['user' => $user, 'page' => $page]);
+        ->joinWith(['profile', 'city', 'role'])//добавляем вывод из связвнных таблиц
+        ->where([
+            'auth_assignment.user_id' => null, //убераем с выборки всех пользователей с ролями
+            'user.sex' => 0, //Только мужчины
+            'moderate' => 1, //только прошедшие модерацию
+        ])
+        ->orderBy('top DESC');
+    $get = Yii::$app->request->get();
+    if ($get['age-min'] && $get['age-max']) {
+      $g['age-min'] = (int)$get['age-min'];
+      $g['age-max'] = (int)$get['age-max'];
+      if ($g['age-min'] > $g['age-max']) {
+        $c = $g['age-min'];
+        $g['age-min'] = $g['age-max'];
+        $g['age-max'] = $c;
+      }
+
+      if ($g['age-min'] < 18) $g['age-min'] = 18;
+      if ($g['age-max'] < 18) $g['age-max'] = 18;
+      if ($g['age-min'] > 80) $g['age-min'] = 80;
+      if ($g['age-max'] > 80) $g['age-max'] = 80;
+    } else {
+      $g = array(
+          'age-min' => 20,
+          'age-max' => 80,
+      );
+    };
+
+    $y = 60 * 60 * 24 * 356;
+    $user = $user
+        ->andWhere(['<', 'birthday', time() - $g['age-min'] * $y])
+        ->andWhere(['>', 'birthday', time() - $g['age-max'] * $y])
+        ->all(); //выводим все что получилось
+    $page = StaticPages::find()->where(['url' => 'ladies'])->asArray()->one();
+    return $this->render('mans', ['user' => $user, 'page' => $page, 'g' => $g]);
   }
 
   /**
@@ -252,23 +301,23 @@ class SiteController extends Controller
   public function actionUser($id)
   {
     if (isset($_GET['open_video'])) {
-      if(Yii::$app->user->identity->canIdo("video_intro")){
+      if (Yii::$app->user->identity->canIdo("video_intro")) {
         Yii::$app->user->identity->addBayVideo($id);
-        Yii::$app->session->setFlash('success','Successful payment. Enjoy watching.');
-      }else{
-        Yii::$app->session->setFlash('error','There is not enough money on the account. Refill the balance.');
+        Yii::$app->session->setFlash('success', 'Successful payment. Enjoy watching.');
+      } else {
+        Yii::$app->session->setFlash('error', 'There is not enough money on the account. Refill the balance.');
       }
-      return $this->redirect('/user/'.$id);
+      return $this->redirect('/user/' . $id);
     }
 
     $user = User::find()
-      ->joinWith(['profile', 'city_', 'country_', 'role'])//добавляем вывод из связвнных таблиц
-      ->where([
-        'auth_assignment.user_id' => null, //убераем с выборки всех пользователей с ролями
-        'user.id' => $id
-      ])
-      //->asArray()
-      ->one(); //выводим все что получилось
+        ->joinWith(['profile', 'city_', 'country_', 'role'])//добавляем вывод из связвнных таблиц
+        ->where([
+            'auth_assignment.user_id' => null, //убераем с выборки всех пользователей с ролями
+            'user.id' => $id
+        ])
+        //->asArray()
+        ->one(); //выводим все что получилось
     if (!$user || $user['moderate'] != 1)
       throw new \yii\web\NotFoundHttpException('User not found or blocked');
 

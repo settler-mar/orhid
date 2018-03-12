@@ -99,7 +99,7 @@ class User extends ActiveRecord  implements IdentityInterface
       } else {
 
         //еслть ли пакетные кредиты
-        if ($arr['credits'] && $arr['credits'] > 0) {
+        if (isset($arr['credits']) && $arr['credits'] > 0) {
           $arr['credits'] -= $price;
 
           if ($arr['credits'] < 0) {

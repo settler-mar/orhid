@@ -8,7 +8,7 @@ class m180312_154043_sp_ladies extends Migration
     {
       $sp=\app\modules\staticPages\models\StaticPages::findOne(['id'=>12]);
       $sp->name="Ladies";
-      $sp->title="ladies";
+      $sp->title="Ladies";
       $sp->url='ladies';
       $sp->index=0;
       $sp->save();
