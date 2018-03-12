@@ -225,7 +225,7 @@ class SiteController extends Controller
         ])
         ->orderBy('top DESC');
     $get = Yii::$app->request->get();
-    if ($get['age-min'] && $get['age-max']) {
+    if (isset($get['age-min']) && isset($get['age-max'])) {
       $g['age-min'] = (int)$get['age-min'];
       $g['age-max'] = (int)$get['age-max'];
       if ($g['age-min'] > $g['age-max']) {
@@ -266,7 +266,7 @@ class SiteController extends Controller
         ])
         ->orderBy('top DESC');
     $get = Yii::$app->request->get();
-    if ($get['age-min'] && $get['age-max']) {
+    if (isset($get['age-min']) && isset($get['age-max'])) {
       $g['age-min'] = (int)$get['age-min'];
       $g['age-max'] = (int)$get['age-max'];
       if ($g['age-min'] > $g['age-max']) {
