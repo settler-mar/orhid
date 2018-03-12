@@ -75,6 +75,7 @@ class SiteController extends Controller
         'moderate' => 1, //только прошедшие модерацию
         // 'user.id'=>[5, 6, 7, 8, 21, 23],
       ])
+      ->andWhere(['>','last_online',time()-User::MAX_ONLINE_TIME])
       /*$cnt=$user->count();
       if($cnt>6){
         $offset=random_int(0,$cnt-6);
@@ -83,7 +84,8 @@ class SiteController extends Controller
       };
       $user=$user*/
       //  ->offset($offset)
-      ->orderBy(['top' => SORT_DESC])
+      //->orderBy(['top' => SORT_DESC])
+      ->orderBy(['last_online' => SORT_DESC])
       ->limit(6)
       ->all();
     //->all(); //выводим все что получилось
@@ -201,6 +203,7 @@ class SiteController extends Controller
         'auth_assignment.user_id' => null, //убераем с выборки всех пользователей с ролями
         'user.sex' => 1, //Только женщины
         'moderate' => 1, //только прошедшие модерацию
+        'top'=>1
       ])
       ->orderBy('top DESC')
       ->all(); //выводим все что получилось
@@ -209,6 +212,22 @@ class SiteController extends Controller
 
     $page = StaticPages::find()->where(['id' => 3])->asArray()->one();
     return $this->render('top', ['user' => $user, 'page' => $page]);
+  }
+
+  public function actionLadies()
+  {
+    $user = User::find()
+        ->joinWith(['profile', 'city', 'role'])//добавляем вывод из связвнных таблиц
+        ->where([
+            'auth_assignment.user_id' => null, //убераем с выборки всех пользователей с ролями
+            'user.sex' => 1, //Только женщины
+            'moderate' => 1, //только прошедшие модерацию
+        ])
+        ->orderBy('top DESC')
+        //->asArray()
+        ->all(); //выводим все что получилось
+    $page = StaticPages::find()->where(['url' => 'ladies'])->asArray()->one();
+    return $this->render('mans', ['user' => $user, 'page' => $page]);
   }
 
   public function actionMen()

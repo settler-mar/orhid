@@ -5,7 +5,11 @@
         ['label' => 'Top', 'url'=>'/top']
     ];
     if( Yii::$app->user->isGuest || Yii::$app->user->identity->role || Yii::$app->user->identity->sex==0){
+        $menuItems[] = ['label' => 'Ladies', 'url'=>'/ladies'];
         $menuItems[] = ['label' => 'Services', 'url'=>'/services'];
+    };
+    if( Yii::$app->user->identity->role || Yii::$app->user->identity->sex==1){
+        $menuItems[] = ['label' => 'Men', 'url'=>'/men'];
     };
     $menuItems[] = ['label' => 'About us', 'url'=>'/about'];
     //$menuItems[] = ['label' => 'Blog', 'url'=>'/blog'];
