@@ -1,6 +1,7 @@
 -
     use yii\helpers\Html;
     use app\modules\user\models\User;
+    use app\components\pagination;
 
     $view->title = $page['title'];
     $view->params['page'] = $page;
@@ -32,3 +33,4 @@
 
 include ../mixins/user
 +userMiniCard($user,User::MAX_ONLINE_TIME)
+!= pagination::widget(['this_page' => $this_page,'max_page' => $max_page,'url_param'=>$url_param])
