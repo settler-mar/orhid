@@ -227,7 +227,7 @@ class SiteController extends Controller
 
     $data = User::getUserList(0);
 
-    $data['page'] = StaticPages::find()->where(['url' => 'ladies'])->asArray()->one();
+    $data['page'] = StaticPages::find()->where(['url' => 'men'])->asArray()->one();
     return $this->render('mans', $data);
   }
 

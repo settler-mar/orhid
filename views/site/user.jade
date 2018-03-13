@@ -117,6 +117,9 @@
                 a(href= '/user/admin/login?id='.$model->id)
                     span.glyphicon.glyphicon-log-in
                     | Login as this user
+                a(href= '/user/admin/update?id='.$model->id)
+                    span.glyphicon.glyphicon-log-in
+                    | Edit this user
         -}
     -}
     //#profile_mini.profile
@@ -126,7 +129,7 @@
     - if( strlen($profile['photos']) > 0){
         .photo_us
             -foreach ($photos as $photo){
-                a.photo_people(href= $photo style= 'background-image:url('.$photo.');')
+                a.photo_people(href= $photo data-fancybox-group= 'gallery' style= 'background-image:url('.$photo.');')
             -}
     -}
 
