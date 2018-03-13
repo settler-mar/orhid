@@ -17,7 +17,7 @@ use \yii\db\ActiveRecord;
 use \yii\db\Query;
 use app\modules\tariff\models\Tariff;
 
-class User extends ActiveRecord  implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface
 {
 
   public $userDir;
@@ -60,11 +60,11 @@ class User extends ActiveRecord  implements IdentityInterface
         $last_pays = json_decode($this->last_pays, true);
       }
 
-      $time=isset($last_pays[$code])?time()-$last_pays[$code]:0;
-      if($time>5*60){ //если прошло более 5 минут то считаем что время не уже закончилось и начался новый интервал
-        $time=0;
+      $time = isset($last_pays[$code]) ? time() - $last_pays[$code] : 0;
+      if ($time > 5 * 60) { //если прошло более 5 минут то считаем что время не уже закончилось и начался новый интервал
+        $time = 0;
         $units = 0;
-      }else{
+      } else {
         $units = $time / 60;
       }
 
@@ -89,9 +89,9 @@ class User extends ActiveRecord  implements IdentityInterface
     //проверяем достаточно ли денег на балансе
     if (!$iCan) {
       $price = Tariff::find()
-        ->where(['code' => $code])
-        ->asArray()
-        ->one();
+          ->where(['code' => $code])
+          ->asArray()
+          ->one();
       $price = $price['price'] * $units;
 
       if ($price == 0) { //для случая когда таймер только начат или услуга бесплатно но только для положительного баланса
@@ -130,30 +130,31 @@ class User extends ActiveRecord  implements IdentityInterface
     return $iCan;
   }
 
-  public function addBayVideo($id){
-    if(strlen($this->pays_video)>0) {
+  public function addBayVideo($id)
+  {
+    if (strlen($this->pays_video) > 0) {
       $video = explode(',', $this->pays_video);
-    }else{
+    } else {
       $video = array();
     }
-    $video[]=$id;
-    $this->pays_video = implode(',',$video);
+    $video[] = $id;
+    $this->pays_video = implode(',', $video);
     $this->save();
   }
 
   function behaviors()
   {
     return [
-      [
-        'class' => CropImageUploadBehavior::className(),
-        'attribute' => 'photo',
-        'scenarios' => ['insert', 'update'],
-        'path' => '@webroot',
-        'url' => '@web',
-        'ratio' => 230 / 285,
-        /*'crop_field' => 'photo_crop',
-        'cropped_field' => 'photo_cropped',*/
-      ],
+        [
+            'class' => CropImageUploadBehavior::className(),
+            'attribute' => 'photo',
+            'scenarios' => ['insert', 'update'],
+            'path' => '@webroot',
+            'url' => '@web',
+            'ratio' => 230 / 285,
+          /*'crop_field' => 'photo_crop',
+          'cropped_field' => 'photo_cropped',*/
+        ],
     ];
   }
 
@@ -163,21 +164,21 @@ class User extends ActiveRecord  implements IdentityInterface
   public function rules()
   {
     return [
-      [['last_name', 'first_name', 'phone'], 'required'],
-      [['email', 'last_name', 'first_name', 'password_hash', 'favorites'], 'string', 'max' => 100],
-      [['last_pays'], 'string'],
-      [['tariff_unit'], 'string', 'max' => 400],
-      [['username'], 'string', 'max' => 25],
-      ['username', 'match', 'pattern' => '/^[a-z]\w*$/i'],
-      ['email', 'email'],
-      ['password', 'string', 'min' => 6, 'max' => 61],
-      [['sex', 'city', 'country', 'moderate', 'status', 'top', 'credits', 'tariff_end_date', 'tariff_id'], 'integer'],
-      ['photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert']],
-      [['photo'], 'image',
-        'minHeight' => 500,
-        'maxSize' => 3 * 1024 * 1024,
-        'skipOnEmpty' => true
-      ],
+        [['last_name', 'first_name', 'phone'], 'required'],
+        [['email', 'last_name', 'first_name', 'password_hash', 'favorites'], 'string', 'max' => 100],
+        [['last_pays'], 'string'],
+        [['tariff_unit'], 'string', 'max' => 400],
+        [['username'], 'string', 'max' => 25],
+        ['username', 'match', 'pattern' => '/^[a-z]\w*$/i'],
+        ['email', 'email'],
+        ['password', 'string', 'min' => 6, 'max' => 61],
+        [['sex', 'city', 'country', 'moderate', 'status', 'top', 'credits', 'tariff_end_date', 'tariff_id'], 'integer'],
+        ['photo', 'file', 'extensions' => 'jpeg', 'on' => ['insert']],
+        [['photo'], 'image',
+            'minHeight' => 500,
+            'maxSize' => 3 * 1024 * 1024,
+            'skipOnEmpty' => true
+        ],
     ];
   }
 
@@ -187,22 +188,22 @@ class User extends ActiveRecord  implements IdentityInterface
   public function attributeLabels()
   {
     return [
-      'id' => 'ID',
-      'username' => 'Username',
-      'password' => 'Password',
-      'email' => 'Email',
-      'first_name' => 'First Name',
-      'last_name' => 'Last Name',
-      'city' => 'City',
-      'country' => 'Country',
-      'sex' => 'Sex',
-      'captcha' => ' Captcha',
-      'photo' => 'Photo',
-      'phone' => 'Phone',
-      'password_hash' => 'Хеш пароля',
-      'moderate' => 'Moderation',
-      'ip' => 'Last IP',
-      'fullName' => 'Full Name',
+        'id' => 'ID',
+        'username' => 'Username',
+        'password' => 'Password',
+        'email' => 'Email',
+        'first_name' => 'First Name',
+        'last_name' => 'Last Name',
+        'city' => 'City',
+        'country' => 'Country',
+        'sex' => 'Sex',
+        'captcha' => ' Captcha',
+        'photo' => 'Photo',
+        'phone' => 'Phone',
+        'password_hash' => 'Хеш пароля',
+        'moderate' => 'Moderation',
+        'ip' => 'Last IP',
+        'fullName' => 'Full Name',
     ];
   }
 
@@ -310,10 +311,10 @@ class User extends ActiveRecord  implements IdentityInterface
   {
     if (!isset($this->roles) || !is_array($this->roles)) {
       $roles = (new Query)
-        ->select('item_name')
-        ->from('auth_assignment')
-        ->where(['user_id' => $id])
-        ->all();
+          ->select('item_name')
+          ->from('auth_assignment')
+          ->where(['user_id' => $id])
+          ->all();
       $this->roles = array();
       if ($roles) {
         foreach ($roles as $role) {
@@ -378,6 +379,48 @@ class User extends ActiveRecord  implements IdentityInterface
   public static function findByEmail($email)
   {
     return static::findOne(['email' => $email]);
+  }
+
+  public static function getUserList($sex = 0)
+  {
+    $user = User::find()
+        ->joinWith(['profile', 'city', 'role'])//добавляем вывод из связвнных таблиц
+        ->where([
+            'auth_assignment.user_id' => null, //убераем с выборки всех пользователей с ролями
+            'user.sex' => $sex, //Только определенного пола
+            'moderate' => 1, //только прошедшие модерацию
+        ])
+        ->orderBy('top DESC');
+
+    $get = Yii::$app->request->get();
+    if (isset($get['age-min']) && isset($get['age-max'])) {
+      $g['age-min'] = (int)$get['age-min'];
+      $g['age-max'] = (int)$get['age-max'];
+      if ($g['age-min'] > $g['age-max']) {
+        $c = $g['age-min'];
+        $g['age-min'] = $g['age-max'];
+        $g['age-max'] = $c;
+      }
+
+      if ($g['age-min'] < 18) $g['age-min'] = 18;
+      if ($g['age-max'] < 18) $g['age-max'] = 18;
+      if ($g['age-min'] > 80) $g['age-min'] = 80;
+      if ($g['age-max'] > 80) $g['age-max'] = 80;
+    } else {
+      $g = array(
+          'age-min' => 20,
+          'age-max' => 80,
+      );
+    };
+
+    $y = 60 * 60 * 24 * 356;
+    $user = $user
+        ->andWhere(['<', 'birthday', time() - $g['age-min'] * $y])
+        ->andWhere(['>', 'birthday', time() - $g['age-max'] * $y])
+        ->limit(10)
+        ->all(); //выводим все что получилось
+
+    return ['user' => $user, 'g' => $g];
   }
 
   /**
@@ -460,7 +503,7 @@ class User extends ActiveRecord  implements IdentityInterface
       return null;
     }
     return static::findOne([
-      'password_reset_token' => $token
+        'password_reset_token' => $token
     ]);
   }
 
@@ -570,9 +613,9 @@ class User extends ActiveRecord  implements IdentityInterface
   public static function afterLogin($id)
   {
     self::getDb()->createCommand()->update(self::tableName(), [
-      'ip' => $_SERVER["REMOTE_ADDR"],
-      'login_at' => date('Y-m-d H:i:s'),
-      'last_online' => time(),
+        'ip' => $_SERVER["REMOTE_ADDR"],
+        'login_at' => date('Y-m-d H:i:s'),
+        'last_online' => time(),
     ], ['id' => $id])->execute();
   }
 
@@ -628,17 +671,17 @@ class User extends ActiveRecord  implements IdentityInterface
       $cropParam[3] = (int)($cropParam[3] * $imgHeight / 100);
 
       $img->crop($cropParam[0], $cropParam[1], $cropParam[2], $cropParam[3])
-        ->fitToWidth(500)
-        ->saveAs($this->photo);
+          ->fitToWidth(500)
+          ->saveAs($this->photo);
 
 
       if ($img) {
         $this->removeImage($oldImage);   // удаляем старое изображение
 
         $this::getDb()
-          ->createCommand()
-          ->update($this->tableName(), ['photo' => $this->photo], ['id' => $this->id])
-          ->execute();
+            ->createCommand()
+            ->update($this->tableName(), ['photo' => $this->photo], ['id' => $this->id])
+            ->execute();
       }
     }
   }
@@ -696,10 +739,10 @@ class User extends ActiveRecord  implements IdentityInterface
     $files = glob($path . "*");
     foreach ($files as $file) {
       if (file_exists($file)) {
-        if(is_file($file)) {
+        if (is_file($file)) {
           unlink($file);
-        }else{
-          $files2 = glob($file.'/'. "*");
+        } else {
+          $files2 = glob($file . '/' . "*");
           foreach ($files2 as $file2) {
             if (file_exists($file2) && is_file($file2)) {
               unlink($file2);
@@ -736,8 +779,8 @@ class User extends ActiveRecord  implements IdentityInterface
     foreach ($tariff as $k => &$unit) {
       if ($unit) {
         $unit = [
-          'start' => $unit,
-          'users' => number_format($useres_unit[$k],$k=='credits'?0:0,'.',' ')
+            'start' => $unit,
+            'users' => number_format($useres_unit[$k], $k == 'credits' ? 0 : 0, '.', ' ')
         ];
         $code[] = $k;
       } else {
@@ -746,15 +789,15 @@ class User extends ActiveRecord  implements IdentityInterface
     };
 
     $code = Tariff::find()
-      ->where(['code' => $code])
-      ->asArray()
-      ->all();
+        ->where(['code' => $code])
+        ->asArray()
+        ->all();
 
     foreach ($code as &$unit) {
       $tariff[$unit['code']]['name'] = $unit['description'];
     };
 
-    if(isset($tariff['credits'])){
+    if (isset($tariff['credits'])) {
       $tariff['credits']['name'] = 'Credits';
     }
     return $tariff;

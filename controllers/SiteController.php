@@ -216,83 +216,19 @@ class SiteController extends Controller
 
   public function actionLadies()
   {
-    $user = User::find()
-        ->joinWith(['profile', 'city', 'role'])//добавляем вывод из связвнных таблиц
-        ->where([
-            'auth_assignment.user_id' => null, //убераем с выборки всех пользователей с ролями
-            'user.sex' => 1, //Только женщины
-            'moderate' => 1, //только прошедшие модерацию
-        ])
-        ->orderBy('top DESC');
-    $get = Yii::$app->request->get();
-    if (isset($get['age-min']) && isset($get['age-max'])) {
-      $g['age-min'] = (int)$get['age-min'];
-      $g['age-max'] = (int)$get['age-max'];
-      if ($g['age-min'] > $g['age-max']) {
-        $c = $g['age-min'];
-        $g['age-min'] = $g['age-max'];
-        $g['age-max'] = $c;
-      }
+    $data = User::getUserList(1);
 
-      if ($g['age-min'] < 18) $g['age-min'] = 18;
-      if ($g['age-max'] < 18) $g['age-max'] = 18;
-      if ($g['age-min'] > 80) $g['age-min'] = 80;
-      if ($g['age-max'] > 80) $g['age-max'] = 80;
-    } else {
-      $g = array(
-          'age-min' => 20,
-          'age-max' => 80,
-      );
-    };
-
-    $y = 60 * 60 * 24 * 356;
-    $user = $user
-        ->andWhere(['<', 'birthday', time() - $g['age-min'] * $y])
-        ->andWhere(['>', 'birthday', time() - $g['age-max'] * $y])
-        ->all(); //выводим все что получилось
-    $page = StaticPages::find()->where(['url' => 'ladies'])->asArray()->one();
-    return $this->render('mans', ['user' => $user, 'page' => $page, 'g' => $g]);
+    $data['page'] = StaticPages::find()->where(['url' => 'ladies'])->asArray()->one();
+    return $this->render('mans', $data);
   }
 
   public function actionMen()
   {
 
-    $user = User::find()
-        ->joinWith(['profile', 'city', 'role'])//добавляем вывод из связвнных таблиц
-        ->where([
-            'auth_assignment.user_id' => null, //убераем с выборки всех пользователей с ролями
-            'user.sex' => 0, //Только мужчины
-            'moderate' => 1, //только прошедшие модерацию
-        ])
-        ->orderBy('top DESC');
-    $get = Yii::$app->request->get();
-    if (isset($get['age-min']) && isset($get['age-max'])) {
-      $g['age-min'] = (int)$get['age-min'];
-      $g['age-max'] = (int)$get['age-max'];
-      if ($g['age-min'] > $g['age-max']) {
-        $c = $g['age-min'];
-        $g['age-min'] = $g['age-max'];
-        $g['age-max'] = $c;
-      }
+    $data = User::getUserList(0);
 
-      if ($g['age-min'] < 18) $g['age-min'] = 18;
-      if ($g['age-max'] < 18) $g['age-max'] = 18;
-      if ($g['age-min'] > 80) $g['age-min'] = 80;
-      if ($g['age-max'] > 80) $g['age-max'] = 80;
-    } else {
-      $g = array(
-          'age-min' => 20,
-          'age-max' => 80,
-      );
-    };
-
-    $y = 60 * 60 * 24 * 356;
-    $user = $user
-        ->andWhere(['<', 'birthday', time() - $g['age-min'] * $y])
-        ->andWhere(['>', 'birthday', time() - $g['age-max'] * $y])
-        ->all(); //выводим все что получилось
-    $page = StaticPages::find()->where(['url' => 'ladies'])->asArray()->one();
-    return $this->render('mans', ['user' => $user, 'page' => $page, 'g' => $g]);
+    $data['page'] = StaticPages::find()->where(['url' => 'ladies'])->asArray()->one();
+    return $this->render('mans', $data);
   }
 
   /**
