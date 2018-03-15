@@ -183,7 +183,7 @@ $config = [
             'class' => 'app\modules\payment\Module',
             'clientId' => $personal['paypal_client_id'],
             'clientSecret' => $personal['paypal_client_secret'],
-            'baseUrl' => 'http://127.0.0.1:8080/payment/finish',
+            'baseUrl' => $personal['site_url'].'/payment/finish',
           //'isProduction' => false,
           // This is config file for the PayPal system
             'config' => [
