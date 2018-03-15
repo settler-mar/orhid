@@ -255,7 +255,8 @@ class SiteController extends Controller
         ])
         //->asArray()
         ->one(); //выводим все что получилось
-    if (!$user || $user['moderate'] != 1)
+
+    if (!$user || ($user['moderate']==1 && $user['moderate'] != 1))
       throw new \yii\web\NotFoundHttpException('User not found or blocked');
 
 

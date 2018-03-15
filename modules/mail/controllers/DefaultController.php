@@ -23,7 +23,7 @@ class DefaultController extends Controller
     if(Yii::$app->user->isGuest)
       throw new \yii\web\NotFoundHttpException('Page is available only to authorized users.');
 
-    if(Yii::$app->user->identity->moderate!=1)
+    if(Yii::$app->user->identity->sex==1 AND Yii::$app->user->identity->moderate!=1)
       throw new \yii\web\NotFoundHttpException('Page is available only after moderation profiles.');
 
     if(count(Yii::$app->user->identity->role)>0){

@@ -56,6 +56,10 @@ a:hover {
   text-decoration: none;
 }
 
+.content {
+  height:calc(100vh - 420px);
+}
+
 img {
   border: none;
 }

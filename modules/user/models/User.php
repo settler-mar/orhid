@@ -94,7 +94,7 @@ class User extends ActiveRecord implements IdentityInterface
           ->one();
       $price = $price['price'] * $units;
 
-      if ($price == 0) { //для случая когда таймер только начат или услуга бесплатно но только для положительного баланса
+      if ($price == 0 && isset($arr['credits'])) { //для случая когда таймер только начат или услуга бесплатно но только для положительного баланса
         $iCan = (($arr['credits'] && $arr['credits'] > 0) || $this->credits > 0);
       } else {
 
@@ -290,7 +290,7 @@ class User extends ActiveRecord implements IdentityInterface
   {
     $proile = $this->getProfile()->one();
 
-    if ($proile && $proile->birthday > 0) {
+    if ($proile && $proile->birthday != 0) {
       return $this->last_name . ' ' . date('Y', $proile->birthday);
     } else {
       return $this->last_name . ' ' . $this->first_name;
