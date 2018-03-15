@@ -197,26 +197,25 @@ class SiteController extends Controller
    */
   public function actionTop()
   {
-    $user = User::find()
-        ->joinWith(['profile', 'city', 'role'])//добавляем вывод из связвнных таблиц
-        ->where([
-            'auth_assignment.user_id' => null, //убераем с выборки всех пользователей с ролями
-            'user.sex' => 1, //Только женщины
-            'moderate' => 1, //только прошедшие модерацию
-            'top' => 1
-        ])
-        ->orderBy('top DESC')
-        ->all(); //выводим все что получилось
+    $data = User::getUserList([
+        'user.sex' => 1, //Только женщины
+        'moderate' => 1, //только прошедшие модерацию
+        'top' => 1
+    ],false);
+
     //  foreach ($user as $qqq){
     //  ddd($qqq->relatedRecords['city']['city']);}
 
-    $page = StaticPages::find()->where(['id' => 3])->asArray()->one();
-    return $this->render('top', ['user' => $user, 'page' => $page]);
+    $data['page'] = StaticPages::find()->where(['url' => 'top'])->asArray()->one();
+    return $this->render('top', $data);
   }
 
   public function actionLadies()
   {
-    $data = User::getUserList(1);
+    $data = User::getUserList([
+      'user.sex' => 1, //Только определенного женщины
+      'moderate' => 1, //только прошедшие модерацию
+    ]);
 
     $data['page'] = StaticPages::find()->where(['url' => 'ladies'])->asArray()->one();
     return $this->render('mans', $data);
@@ -224,8 +223,10 @@ class SiteController extends Controller
 
   public function actionMen()
   {
-
-    $data = User::getUserList(0);
+    $data = User::getUserList([
+        'user.sex' => 0, //Только определенного мужчины
+        //'moderate' => 1, //только прошедшие модерацию
+    ]);
 
     $data['page'] = StaticPages::find()->where(['url' => 'men'])->asArray()->one();
     return $this->render('mans', $data);

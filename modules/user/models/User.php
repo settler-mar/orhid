@@ -381,23 +381,23 @@ class User extends ActiveRecord implements IdentityInterface
     return static::findOne(['email' => $email]);
   }
 
-  public static function getUserList($sex = 0)
+  public static function getUserList($andWhere = false, $limit = 30)
   {
+    $data = [];
+
     $url_param = [];
     $user = User::find()
         ->joinWith(['profile', 'city', 'role'])//добавляем вывод из связвнных таблиц
         ->where([
             'auth_assignment.user_id' => null, //убераем с выборки всех пользователей с ролями
-            'user.sex' => $sex, //Только определенного пола
-            'moderate' => 1, //только прошедшие модерацию
         ])
         ->orderBy('top DESC');
-
+    if ($andWhere) {
+      $user = $user->andWhere($andWhere);
+    }
     $get = Yii::$app->request->get();
 
-    $limit = 30;
     $page = isset($get['page']) ? (int)$get['page'] - 1 : 0;
-
     if (isset($get['age-min']) && isset($get['age-max'])) {
       $g['age-min'] = (int)$get['age-min'];
       $g['age-max'] = (int)$get['age-max'];
@@ -412,7 +412,7 @@ class User extends ActiveRecord implements IdentityInterface
       if ($g['age-min'] > 80) $g['age-min'] = 80;
       if ($g['age-max'] > 80) $g['age-max'] = 80;
 
-      $url_param=$g;
+      $url_param = $g;
     } else {
       $g = array(
           'age-min' => 20,
@@ -420,29 +420,34 @@ class User extends ActiveRecord implements IdentityInterface
       );
     };
 
+    $data['g'] = $g;
+
     $y = 60 * 60 * 24 * 356;
     $user = $user
         ->andWhere(['<', 'birthday', time() - $g['age-min'] * $y])
         ->andWhere(['>', 'birthday', time() - $g['age-max'] * $y]);
 
-    $count = $user->count();
-    $max_page = ceil($count / $limit);
-    if ($page < 0) $page = 0;
-    if ($page >= $max_page) $page = $max_page - 1;
 
-    $user = $user
-        ->limit($limit)
-        ->offset($limit*$page)
-        ->all(); //выводим все что получилось
-    $page++;
+    if ($limit) {
+      $count = $user->count();
+      $max_page = ceil($count / $limit);
+      if ($page < 0) $page = 0;
+      if ($page >= $max_page) $page = $max_page - 1;
+      $user = $user
+          ->limit($limit)
+          ->offset($limit * $page)
+          ->all(); //выводим все что получилось
+      $page++;
+      $data['this_page'] = $page;
+      $data['max_page'] = $max_page;
+      $data['url_param'] = $url_param;
+    } else {
+      $user = $user
+          ->all(); //выводим все что получилось
+    }
 
-    return [
-        'user' => $user,
-        'g' => $g,
-        'this_page' => $page,
-        'max_page' => $max_page,
-        'url_param' => $url_param,
-    ];
+    $data['user'] = $user;
+    return $data;
   }
 
   /**
