@@ -10,26 +10,52 @@
 
 .search_mini
   form(method='get')
-      label Age from:
-      select(name='age-min')
-          - for ($i=18; $i<=80; $i++) {
-              -if($g['age-min']==$i){
-                  option(value= $i, selected='selected')= $i
-              -}else{
-                  option(value= $i)= $i
-              -}
-          - }
+      .form_wrap
+          label Age from:
+          select(name='age-min')
+              - for ($i=18; $i<=80; $i++) {
+                  -if($g['age-min']==$i){
+                      option(value= $i, selected='selected')= $i
+                  -}else{
+                      option(value= $i)= $i
+                  -}
+              - }
 
-      |             to:
-      select(name='age-max')
-          - for ($i=18; $i<=80; $i++) {
-              -if($g['age-max']==$i){
-                  option(value= $i, selected='selected')= $i
-              -}else{
-                  option(value= $i)= $i
-              -}
-          - }
+          |             to:
+          select(name='age-max')
+              - for ($i=18; $i<=80; $i++) {
+                  -if($g['age-max']==$i){
+                      option(value= $i, selected='selected')= $i
+                  -}else{
+                      option(value= $i)= $i
+                  -}
+              - }
+      .form_wrap
+          label User id:
+          input(name='id', value=$g['id'])
+
+      .form_wrap
+          label Lang Proficiency:
+          select(name=lang)
+              each $item, $i in $list['lang']
+                  -if($g['lang']==$i){
+                      option(value= $i, selected='selected')= $item
+                  -}else{
+                      option(value= $i)= $item
+                  -}
+
+      .form_wrap
+          label Children:
+          select(name='children')
+              each $item, $i in $list['children']
+                  -if($g['children']==$i){
+                      option(value= $i, selected='selected')= $item
+                  -}else{
+                      option(value= $i)= $item
+                  -}
+
       input.search_button(type='submit', value='Search')
+      a.reset_button(href= $b_url) Reset
 
 include ../mixins/user
 +userMiniCard($user,User::MAX_ONLINE_TIME)

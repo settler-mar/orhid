@@ -395,31 +395,93 @@ class User extends ActiveRecord implements IdentityInterface
     if ($andWhere) {
       $user = $user->andWhere($andWhere);
     }
+
+    $data['list']=array(
+        'lang'=>array(
+            -1 => 'Any',
+            0  => 'Unknown',
+            1  => 'basic',
+            2  => 'intermediate',
+            3  => 'good',
+            4  => 'excellent',
+        ),
+        'children'=>array(
+            -1 => 'Any',
+            0  => '0',
+            1  => '1',
+            2  => '2',
+            3  => '3',
+            4  => '4',
+            5  => '5',
+            6  => '6',
+            7  => '7',
+            8  => '8',
+        ),
+
+    );
+
     $get = Yii::$app->request->get();
-
     $page = isset($get['page']) ? (int)$get['page'] - 1 : 0;
-    if (isset($get['age-min']) && isset($get['age-max'])) {
-      $g['age-min'] = (int)$get['age-min'];
-      $g['age-max'] = (int)$get['age-max'];
-      if ($g['age-min'] > $g['age-max']) {
-        $c = $g['age-min'];
-        $g['age-min'] = $g['age-max'];
-        $g['age-max'] = $c;
-      }
 
-      if ($g['age-min'] < 18) $g['age-min'] = 18;
-      if ($g['age-max'] < 18) $g['age-max'] = 18;
-      if ($g['age-min'] > 80) $g['age-min'] = 80;
-      if ($g['age-max'] > 80) $g['age-max'] = 80;
-
-      $url_param = $g;
-    } else {
+    if (isset($get['id']) && $get['id']==(int)$get['id'] && $get['id']>0) {
       $g = array(
           'age-min' => 20,
           'age-max' => 80,
+          'lang' =>-1,
+          'children' =>-1,
+          'id'=>(int)$get['id']
       );
-    };
+      $user = $user
+          ->andWhere(['=', 'user.id', $g['id']]);
+    }else {
+      if (isset($get['age-min']) && isset($get['age-max'])) {
+        $g['age-min'] = (int)$get['age-min'];
+        $g['age-max'] = (int)$get['age-max'];
+        if ($g['age-min'] > $g['age-max']) {
+          $c = $g['age-min'];
+          $g['age-min'] = $g['age-max'];
+          $g['age-max'] = $c;
+        }
 
+        if ($g['age-min'] < 18) $g['age-min'] = 18;
+        if ($g['age-max'] < 18) $g['age-max'] = 18;
+        if ($g['age-min'] > 80) $g['age-min'] = 80;
+        if ($g['age-max'] > 80) $g['age-max'] = 80;
+
+        $url_param = $g;
+      } else {
+        $g = array(
+            'age-min' => 20,
+            'age-max' => 80,
+        );
+      };
+
+      if (
+          isset($get['lang']) &&
+          isset($data['list']['lang'][$get['lang']]) &&
+          $get['lang'] > -1
+      ) {
+        $g['lang'] = (int)$get['lang'];
+        $url_param['lang'] = $g['lang'];
+        $user = $user
+            ->andWhere(['>=', 'lang_proficiency', $g['lang']]);
+      } else {
+        $g['lang'] = -1;
+      };
+
+      if (
+          isset($get['children']) &&
+          isset($data['list']['children'][$get['children']]) &&
+          $get['children'] > -1
+      ) {
+        $g['children'] = (int)$get['children'];
+        $url_param['children'] = $g['children'];
+        $user = $user
+            ->andWhere(['=', 'children_count', $g['children']]);
+      } else {
+        $g['children'] = -1;
+      };
+    }
     $data['g'] = $g;
 
     $y = 60 * 60 * 24 * 356;
@@ -446,6 +508,7 @@ class User extends ActiveRecord implements IdentityInterface
           ->all(); //выводим все что получилось
     }
 
+    $data['b_url']=Yii::$app->request->getPathInfo();
     $data['user'] = $user;
     return $data;
   }
