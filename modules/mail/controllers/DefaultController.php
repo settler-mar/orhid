@@ -118,7 +118,7 @@ class DefaultController extends Controller
       $user=User::findRandom();
     }
 
-    if(!$user || ($user->moderate!=1))
+    if(!$user || ($user->sex!=1 && $user->moderate!=1))
       throw new \yii\web\NotFoundHttpException('User not found or blocked');
 
     //d($user);

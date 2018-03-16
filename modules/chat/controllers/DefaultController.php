@@ -57,7 +57,7 @@ class DefaultController extends Controller
         $user=User::findRandom();
       }
 
-      if(!$user || ($user->moderate!=1))
+      if(!$user || ($user->moderate!=1 && $user->sex==1))
         throw new \yii\web\NotFoundHttpException('User not found or blocked');
 
       //d($user);
@@ -126,10 +126,16 @@ class DefaultController extends Controller
         $users_arr[]=$u_id;
       };
 
+      if(Yii::$app->user->identity->sex==1){
+        $mod=[0,1,2];
+      }else{
+        $mod=1;
+      }
+
       $users_arr[]=$user_from;
       $users = User::find()
         ->joinWith(['profile','role'])
-        ->where(['id' => $users_arr,'moderate'=>1])
+        ->where(['id' => $users_arr,'moderate'=>$mod])
         ->all();
 
       foreach($users as $user) {
